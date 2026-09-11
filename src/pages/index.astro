@@ -1,0 +1,854 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 首頁：內容與段落結構對應 ubitaiwan.org/zh 現有網站
+
+const scenarios = [
+  {
+    img: '/images/pexels-mirrographer-1116302-scaled-1-qt83qpoa0c5k6hreabo2dkuwt2o4rc5w0nvlal8ae8.webp',
+    title: '曾幾何時，年輕人的夢想從改變世界，變成了財富自由和提早退休？',
+    desc: '一面順著傳統社會期待成長，又一面迎著 AI 科技革新對產業的衝擊，我們不敢多想，明明年紀還輕，便把對自由的想像，寄託給了退休後的第二人生',
+  },
+  {
+    img: '/images/pexels-anntarazevich-5196821-scaled-2-qt83zru9vuk236lmdqnlwsjuxs0hyb4qxi92tlsof4.webp',
+    title: '出社會後汲汲營營著如何能活得比別人都好，卻在夜深人靜納悶著「我是誰？」',
+    desc: '工作、回家兩點一線，日復一日的生活，其實連呼吸也是需要資本的；我們是這個時代的薛西佛斯，推著巨石上山，又不斷被巨石輾過',
+  },
+  {
+    img: '/images/pexels-thanh-lam-822158566-26107454-scaled-2-qt84q49ffomdhqbzjmm6an7ybk5uowpwvwi01sqg0w.webp',
+    title: '當自我價值和市場價格之間，存在巨大落差，社會如何支撐每一個獨特的理想？',
+    desc: '小時候任性地選了自己喜歡的科系，傻氣心想為了理想，辛苦點沒關係，長大後才意識到理想和夢並不值錢。做電影，拿著魔法阿嬤的預算卻被要求漫威電影的效果；做社工，背負起社會的期待，卻習慣在自己無助時保持沉默',
+  },
+];
+
+const pillars = [
+  {
+    img: '/images/Frame-3.webp',
+    title: '支持更多可能',
+    desc: '在龐大的社會結構下撐起一點空間，支持你思考更多可能，也支持你休息一下',
+  },
+  {
+    img: '/images/Frame-1.webp',
+    title: '緩解生活恐懼',
+    desc: '緩解生存恐懼，賦能人們無慮傾聽真實的自我，讓天馬行空的熱情成為可能',
+  },
+  {
+    img: '/images/Frame-4.webp',
+    title: '實踐健康生活',
+    desc: '對理想社會的嚮往，期待人們更自然、更健康、更快樂、更有餘裕的生活著',
+  },
+  {
+    img: '/images/Frame-5.webp',
+    title: '探索個人志趣',
+    desc: '給予容錯空間的定心丸，鼓勵每一個靈魂去體驗世界、探索志趣、追求創造',
+  },
+];
+
+// ＃生活，本該如此 ____
+// 這是品牌自己的填空機制，不是一句靜態標語：
+// 「生活」鼓勵追求生活、拋開生存焦慮；「本該」象徵選擇權與主動權；
+// 「如此____」以填空傳達多元可能性（references-info/生活自由計畫-網頁內容素材.md）。
+// 擺攤時是讓民眾在板子上自己填，官網用輪替把同樣的意思做出來。
+// 用詞皆取自站內既有文案，未另行杜撰：
+//   安心 ← 2025 年度報告書標題「生活，本該如此安心」
+//   自然／健康／快樂／餘裕 ← 願景四支柱「更自然、更健康、更快樂、更有餘裕的生活著」
+//   自由 ← 生活自由計畫
+//   任性 ← 「帶著一點點任性去選擇，自己認為『本該如此』的生活方式」
+const fillWords = ['安心', '自由', '快樂', '健康', '自然', '有餘裕', '任性'];
+
+// 真人填過的答案。全部出自現場照片，逐字轉錄，未經潤飾——
+// 這些字就在 public/images 的照片裡，任何人都可以自己核對。
+const answers = [
+  { text: '吃想吃的！', where: '2024 浪人季．白板' },
+  { text: '環遊世界！', where: '2024 浪人季．白板' },
+  { text: '溜水啦！', where: '2024 浪人季．白板' },
+  { text: '不想再窮忙，好好來做郎', where: '2025 島嶼新日常發表會．手寫牌' },
+  { text: '生活，不是生存', where: '2025 島嶼新日常發表會．手舉牌' },
+];
+
+const partners = [
+  { img: '/images/bienlogo-thumb-1.webp', name: 'BIEN 基本收入全球網絡' },
+  { img: '/images/BIKN_Logo-1.webp', name: 'BIKN 韓國基本收入網絡' },
+  { img: '/images/308971047_389906383338154_2791920778888310062_n-1.webp', name: '國際夥伴' },
+  { img: '/images/62ab19267f813d277e9c00a9_Layer_1-2-1-1.svg', name: '國際夥伴' },
+  { img: '/images/327304050_553607316821482_4937082296517381733_n-1.webp', name: '國際夥伴' },
+];
+---
+
+<BaseLayout
+  title="UBI Taiwan | 無條件基本收入政策倡議組織，打造有韌性的台灣社會"
+  description="UBI Taiwan 是無條件基本收入（UBI）的非營利組織，倡議由國家每月發放現金，保障全民生活與經濟安全，打造更自由與有韌性的社會。#生活本該如此"
+  current="home"
+>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <img
+      class="hero__bg"
+      src="/images/2020遊行-3.webp"
+      alt="2020 年台灣第一次基本收入遊行，夕陽下遊行者高舉「我主張基本收入」標語牌，拉著 BASIC INCOME MARCH 布條歡呼吶喊"
+      width="2200" height="1464" fetchpriority="high" decoding="async"
+    />
+    <div class="hero__veil" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <h1 id="hero-title">
+        如果社會進步，是為了更好的明天<br />
+        那麼總該有一天，我們都不再需要<br />
+        <em>為了溫飽而工作、為了生存而焦慮</em>
+      </h1>
+      <p class="hero__tag">
+        <span aria-hidden="true">
+          ＃生活，本該如此
+          <span class="fill">
+            {fillWords.map((w, i) => (
+              <span class:list={['fill__word', { 'is-on': i === 0 }]}>{w}</span>
+            ))}
+            <span class="fill__all">{fillWords.join('、')}</span>
+          </span>
+        </span>
+        <span class="visually-hidden">
+          ＃生活，本該如此——{fillWords.join('、')}
+        </span>
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#ubi">認識基本收入</a>
+        <a class="btn btn--outline" href="/life-freedom/">生活自由計畫</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 問題敘事 -->
+  <section class="section" aria-labelledby="scenarios-title">
+    <div class="container">
+      <h2 id="scenarios-title">在不同人生跑道中的你，是否也曾不約而同地想過…</h2>
+      <!--
+        原本是三張等寬卡片。這三段其實是三個不同的人在問自己的問題，
+        排成一列等寬卡片會讓它們看起來像三個並列的功能項目。
+        改成左右交錯的編輯式長列，讓問題本身當主角，照片退為配角。
+      -->
+      <ol class="asks">
+        {scenarios.map((s) => (
+          <li class="ask">
+            <figure class="ask__figure">
+              <img src={s.img} alt="" loading="lazy" />
+            </figure>
+            <div class="ask__body">
+              <h3 class="ask__q">{s.title}</h3>
+              <p class="ask__d">{s.desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 願景提問 -->
+  <section class="section section--subtle" aria-labelledby="vision-title">
+    <div class="container container--narrow vision">
+      <h2 id="vision-title" class="vision__q">
+        如果有一天，社會能夠支持每個人在生理和心理需求上的基本餘裕，賦予大家選擇生活和追求理想的機會。當每個人都擁有基本收入 (UBI)，在你的想像裡，那會是什麼樣的世界？
+      </h2>
+      <p class="vision__a">這是 UBI Taiwan 夥伴和朋友們的想像，分享給你</p>
+    </div>
+  </section>
+
+  <!--
+    已經有人填過了。
+    「＃生活本該如此 ____」不是一句標語，是協會擺攤與活動時遞出去的填空題：
+    浪人季的白板、紀錄片首映會的卡片、新書發表會的手舉牌。
+    這一區把那些真實的手寫答案放回網站上——照片與文字都在 public/images 裡可以核對。
+  -->
+  <section class="section wall" aria-labelledby="wall-title">
+    <div class="container">
+      <div class="wall__head">
+        <h2 id="wall-title">已經有人填過了</h2>
+        <p>
+          這幾年擺攤、放映、發表會，我們把同一張空白卡片遞出去，
+          問每一個願意停下腳步的人：如果不必為生存煩惱，你的生活本該是什麼樣子？
+        </p>
+      </div>
+
+      <div class="wall__grid">
+        <figure class="wall__photo wall__photo--card">
+          <img
+            src="/images/25-08-02_10-13-59.webp"
+            alt="紀錄片首映會現場，一位觀眾手持印有「＃生活本該如此 ______」的空白卡片，另一人正用手機拍下"
+            width="1024" height="683" loading="lazy"
+          />
+          <figcaption>我們遞出去的，是一張空白的卡片</figcaption>
+        </figure>
+
+        <ul class="wall__notes">
+          {answers.map((a) => (
+            <li class="note">
+              <p class="note__pre">生活，本該如此</p>
+              <p class="note__text">{a.text}</p>
+              <p class="note__where">{a.where}</p>
+            </li>
+          ))}
+        </ul>
+
+        <figure class="wall__photo wall__photo--board">
+          <img
+            src="/images/20241005-06_浪人季_「生活本該如此」互動-scaled-r2uo2eds01212w0737i5ndsnjlbg90ru6w8r78fofk.webp"
+            alt="浪人季擺攤現場，一位戴橘色毛帽的參與者正在白板上寫下自己的答案，板上已有「吃想吃的！」「環遊世界！」等字跡"
+            width="600" height="600" loading="lazy"
+          />
+          <figcaption>2024 浪人季，有人寫「吃想吃的」，有人寫「環遊世界」</figcaption>
+        </figure>
+
+        <figure class="wall__photo wall__photo--signs">
+          <img
+            src="/images/PXL_20251001_125859436.webp"
+            alt="島嶼新日常新書發表會，眾人舉著手寫與印製的牌子合影，投影幕上是「A Sentence to Capture Your Ideal ＃生活本該如此」"
+            width="1024" height="771" loading="lazy"
+          />
+          <figcaption>2025 新書發表會，答案從卡片變成了手舉牌</figcaption>
+        </figure>
+
+        <figure class="wall__photo wall__photo--house">
+          <img
+            src="/images/25-08-02_12-03-31-1024x683.webp"
+            alt="紀錄片首映會滿場觀眾在戲院內合影，眾人以雙手比出 UBI Taiwan 的手勢"
+            width="1024" height="683" loading="lazy"
+          />
+          <figcaption>2025 紀錄片首映會，140 多個人坐滿了一間戲院</figcaption>
+        </figure>
+      </div>
+
+      <p class="wall__ask">那你呢？</p>
+    </div>
+  </section>
+
+  <!-- 四大支柱 -->
+  <section class="section" aria-labelledby="pillars-title">
+    <div class="container">
+      <h2 id="pillars-title">基本收入帶來的四種力量</h2>
+      <!-- 原本是四張等寬卡片；改為高低錯開、以細線相連的橫列，去掉方框感 -->
+      <ul class="forces">
+        {pillars.map((p) => (
+          <li class="force">
+            <img src={p.img} alt="" width="72" height="72" loading="lazy" />
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 生活自由計畫 宣傳帶 -->
+  <section class="section promo" aria-labelledby="promo-title">
+    <div class="container promo__inner">
+      <div>
+        <p class="promo__badge">2026 新計畫</p>
+        <h2 id="promo-title">生活自由計畫</h2>
+        <p class="promo__desc">
+          台灣首例由企業贊助的基本收入實驗：3 位主角、每月 10,000 元、連續 12 個月，
+          無條件、不限用途。由 JUJI 招財麻吉攜手 UBI Taiwan 共同推出。
+        </p>
+      </div>
+      <div class="promo__actions">
+        <a class="btn btn--warm" href="/life-freedom/">認識計畫</a>
+        <a class="btn btn--outline" href="https://juji.tw/juji-ubi-esg" rel="noopener">前往報名</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 認識 UBI -->
+  <section id="ubi" class="section section--muted" aria-labelledby="ubi-title">
+    <div class="container ubi-intro">
+      <img
+        src="/images/techny-searching-the-web-on-tablet.webp"
+        alt=""
+        class="ubi-intro__gif"
+        loading="lazy"
+      />
+      <div>
+        <h2 id="ubi-title">認識基本收入 UBI</h2>
+
+        <details class="ubi-faq" open>
+          <summary>等等！我好像還不知道什麼是基本收入 UBI</summary>
+          <div class="ubi-faq__body">
+            <p>
+              基本收入 (UBI) 政策主張由政府無條件、不做資格審查、定期向每個公民發放一定金額的現金，以滿足每一位公民最基本的生活條件。
+            </p>
+          </div>
+        </details>
+
+        <details class="ubi-faq">
+          <summary>為何 UBI Taiwan 要推行基本收入？</summary>
+          <div class="ubi-faq__body">
+            <p>
+              世界的變化越加迅速且不可預測，不論是科技、疫情、戰爭、氣候變化和地緣政治等挑戰都層出不窮，為了因應社會和經濟型態劇烈變革的衝擊，每一個人都需要具備更強的韌性，來面對生命中的不確定性，確保社會發展的長期穩定
+            </p>
+            <p>
+              UBI Taiwan 相信基本收入是提升社會整體韌性的解方，保障基本的生活條件，真正給予實質的自由，讓人們在動盪的社會中仍能衷於自我，擁有不需隨波逐流的底氣
+            </p>
+          </div>
+        </details>
+
+        <details class="ubi-faq">
+          <summary>讓我們實際一點，錢從哪裡來呢？</summary>
+          <div class="ubi-faq__body">
+            <p>
+              當我們談論到了基本收入的財政來源，UBI Taiwan 期待從 2 大面向拋磚引玉，包含 1) 財政開源節流、2) 創新社會制度
+            </p>
+            <p>
+              財政的討論方向有百百種可能性，在參考國際案例時亦需要因地制宜，我們期待能夠透過包含營業稅、大數據稅、機器人稅、能源稅、碳稅等潛在稅制的與時俱進，創造可延續的財源；並且整合社福總歸戶、縮減行政官僚的規模，降低整體社會運行的成本，並將節省的財政預算透過基本收入交還給人民
+            </p>
+            <p>
+              關於如何邁向實踐基本收入的未來，UBI Taiwan 認為創新的社會制度至關重要，計劃提出「個人所得稅回徵機制」概念：透過無條件發放搭配隔年度報稅的回徵機制，以實現低門檻、高彈性、高預測性的基本收入政策
+            </p>
+            <ul>
+              <li>
+                <strong>無條件發放</strong>：與其思考如何聰明地決定把錢發給誰，不如無條件的發放後，透過隔年度的所得稅申報來達成「後排富」效果，可以更加省力且高效地實現資源的利用效率
+              </li>
+              <li>
+                <strong>回徵機制</strong>：設定明確的基本收入所得稅回徵級距，可向高收入群體進行 100% 回徵，同時也保障低收入群體不會受到回徵，能夠在公平和效率的天秤取得平衡
+              </li>
+              <li>
+                <strong>政策彈性</strong>：政府可依據當年實際的財政情況，調整所得稅回徵級距，以應對全球經濟變化和社會的緊急需求，不僅降低政策落地的執行門檻，更有助於提高政策的可持續性
+              </li>
+              <li>
+                <strong>數據導向</strong>：通過歷史的稅收分析，政府可精準預測每年可回徵的稅額，換言之政府可基於數據進行基本收入財政規劃，提高政策的精確性和透明度
+              </li>
+            </ul>
+          </div>
+        </details>
+
+        <ul class="ubi-more">
+          <li><a href="/ubi/">什麼是基本收入：定義與五大條件 →</a></li>
+          <li><a href="/ubi/world/">全球進程：13 個國家與組織的實例 →</a></li>
+          <li><a href="/ubi/faq/">基本收入大哉問：14 個常見疑問 →</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 緣起 -->
+  <section id="milestones" class="section" aria-labelledby="origin-title">
+    <div class="container container--narrow">
+      <h2 id="origin-title">緣起</h2>
+      <p>
+        2017 年，來自美國的大男孩－羅泰 (Tyler Prochazka)，在國立政治大學舉辦了第一屆亞太基本收入國際研討會，於台灣校園展開了第一期志工計畫，與一群滿懷熱誠的年輕學子，揭幕了 UBI Taiwan 協會的開始。時至今日，我們已為台灣完成許多的第一次。
+      </p>
+      <ul class="origin-links">
+        <li>
+          <a
+            href="https://docs.google.com/document/d/10RIg148dChgR2z3ma02tFB0qkarc5O8W2qW0WLvNZ14/edit?usp=sharing"
+            rel="noopener"
+          >2017 年台灣第一份 UBI 政策白皮書</a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/watch?v=KOxIjNX9Dj4&t=6s" rel="noopener"
+          >2020 年台灣第一次 UBI 共好時代遊行</a>
+        </li>
+        <li>
+          <a href="/experiment/pilot/">2023 年台灣第一個 UBI 實驗計畫</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 我們是 UBI Taiwan -->
+  <section id="about" class="section section--inverse" aria-labelledby="about-title">
+    <div class="container container--narrow">
+      <h2 id="about-title">我們是 UBI Taiwan</h2>
+      <p>
+        我們來自學校、來自各行各業、來自各種人生背景和故事，帶著截然不同的視角參與基本收入 (UBI) 的討論和倡議，唯一相同的，就是我們無時無刻都在思考著未來社會的理想樣貌。
+      </p>
+      <p>
+        社會改革並非一蹴而就，但我們仍深深相信，我們正在討論的社會制度與願景，無比重要。期待你也能在這裡，找到一片屬於你的小角落，一同讓未來的世界都因為我們，有所不同。
+      </p>
+      <div class="about-actions">
+        <a class="btn btn--warm" href="/support/">捐款支持</a>
+        <a class="btn btn--outline about-actions__outline" href="/about/">認識我們的團隊</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 國際串聯夥伴 -->
+  <section class="section" aria-labelledby="partners-title">
+    <div class="container">
+      <h2 id="partners-title">國際串聯夥伴</h2>
+      <ul class="partners" role="list">
+        {partners.map((p) => (
+          <li><img src={p.img} alt={p.name} loading="lazy" /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* 首屏以 2020 年遊行的實拍照打底（UBI Taiwan 團隊指定的高解析原圖，2200px）。
+     focus 30% 經逐像素對比實測：最差 4.93:1，過 AA。 */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: end;
+    min-height: 78vh;
+    padding-block: var(--space-24) var(--space-16);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    z-index: -2;
+  }
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      rgba(22, 58, 84, 0.30) 0%,
+      rgba(22, 58, 84, 0.62) 46%,
+      rgba(22, 58, 84, 0.90) 100%
+    );
+  }
+  .hero__inner { max-width: 54rem; }
+  .hero__actions .btn--outline {
+    border-color: var(--color-white);
+    color: var(--color-white);
+  }
+  .hero__actions .btn--outline:hover {
+    background: var(--color-white);
+    color: var(--color-brand-800);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+  .hero h1 {
+    font-size: clamp(var(--text-2xl), 4.5vw, var(--text-4xl));
+    font-weight: 900;
+    color: var(--color-white);
+    /* 照片較亮處的保險：實測最差對比 4.59:1 已過 AA，陰影再拉開一階，
+       比把遮罩加深好——不會犧牲照片本身的可見度 */
+    text-shadow: 0 1px 14px rgba(11, 29, 42, 0.5);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--color-brand-200);
+  }
+  .hero__tag {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-white);
+    margin-top: var(--space-6);
+    text-shadow: 0 1px 14px rgba(11, 29, 42, 0.5);
+  }
+
+  /* 填空：所有詞疊在同一格，容器寬度＝最長的詞，切換時版面不跳動 */
+  .fill {
+    position: relative;
+    display: inline-grid;
+    vertical-align: baseline;
+    padding: 0 var(--space-2) var(--space-1);
+    border-bottom: 3px solid var(--color-warm-500);
+    color: var(--color-white);
+  }
+  .fill__word {
+    grid-area: 1 / 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+  /* 備援清單不能參與 grid 定寬，否則填空框會被撐成整串詞的長度 */
+  .fill__all {
+    position: absolute;
+    visibility: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .fill__word {
+    opacity: 0;
+    transform: translateY(0.32em);
+    transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+  }
+  /* 錯開進退場：舊詞先離開，新詞才進來，避免兩個詞疊在一起糊掉 */
+  .fill__word.is-on {
+    opacity: 1;
+    transform: none;
+    transition-delay: 200ms;
+  }
+  .fill__word.is-out {
+    opacity: 0;
+    transform: translateY(-0.32em);
+    transition-duration: 220ms;
+    transition-delay: 0ms;
+  }
+  /* 減少動態：完全不輪替，改一次列出所有可能性——
+     填空要傳達的是「多元可能」，靜態清單同樣說得完，不需要動畫 */
+  @media (prefers-reduced-motion: reduce) {
+    .fill { display: inline; border-bottom-width: 2px; }
+    .fill__word { display: none; }
+    .fill__all { position: static; visibility: visible; white-space: normal; }
+  }
+
+  /* ── 已經有人填過了 ────────────────────────────────
+     刻意不用等寬卡片格線：照片大小不一、各自帶一點傾斜，
+     像是把現場的紙片與照片釘在牆上，而不是排進表格。 */
+  .wall { background: var(--surface-subtle); overflow: hidden; }
+  .wall__head { max-width: var(--container-narrow); margin-bottom: var(--space-12); }
+  .wall__head p {
+    color: var(--color-ink-700);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    margin: 0;
+  }
+
+  .wall__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-8) var(--space-6);
+    align-items: start;
+  }
+
+  .wall__photo { margin: 0; }
+  .wall__photo img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .wall__photo figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-ink-500);
+    line-height: var(--leading-normal);
+  }
+  .wall__photo:hover img { transform: rotate(0) scale(1.015); }
+
+  .wall__photo--card   { grid-column: 1 / span 5;  }
+  .wall__notes         { grid-column: 6 / span 7;  }
+  .wall__photo--board  { grid-column: 1 / span 4;  }
+  .wall__photo--signs  { grid-column: 5 / span 4;  }
+  .wall__photo--house  { grid-column: 9 / span 4;  }
+
+  .wall__photo--card img   { transform: rotate(-1.4deg); }
+  .wall__photo--board img  { transform: rotate(1.6deg); }
+  .wall__photo--signs img  { transform: rotate(-0.8deg); }
+  .wall__photo--house img  { transform: rotate(1deg); }
+
+  /* 手寫答案：不用假的手寫字體，字就是字，手寫感留給照片本身 */
+  .wall__notes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+  .note {
+    background: var(--color-white);
+    border-left: 4px solid var(--color-warm-500);
+    padding: var(--space-4) var(--space-6);
+    box-shadow: var(--shadow-sm);
+  }
+  .note:nth-child(even) { margin-left: var(--space-8); }
+  .note__pre {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-500);
+  }
+  .note__text {
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-brand-800);
+    line-height: var(--leading-tight);
+  }
+  .note__where { margin: 0; font-size: var(--text-xs); color: var(--color-ink-500); }
+
+  .wall__ask {
+    margin: var(--space-16) 0 0;
+    text-align: center;
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-brand-700);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wall__photo img { transform: none !important; }
+  }
+
+  @media (max-width: 900px) {
+    .wall__grid { grid-template-columns: repeat(6, 1fr); }
+    .wall__photo--card  { grid-column: 1 / span 6; }
+    .wall__notes        { grid-column: 1 / span 6; }
+    .wall__photo--board { grid-column: 1 / span 3; }
+    .wall__photo--signs { grid-column: 4 / span 3; }
+    .wall__photo--house { grid-column: 1 / span 6; }
+    .note:nth-child(even) { margin-left: 0; }
+  }
+
+  /* ── 三個自問（原三張等寬卡片）── */
+  .asks { list-style: none; margin: var(--space-8) 0 0; padding: 0; counter-reset: ask; }
+  .ask {
+    counter-increment: ask;
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: var(--space-8) var(--space-12);
+    align-items: center;
+    padding-block: var(--space-12);
+    border-top: 1px solid var(--color-ink-300);
+  }
+  .ask:last-child { border-bottom: 1px solid var(--color-ink-300); }
+  /* 左右交錯：第二則把圖放到右邊 */
+  .ask:nth-child(even) { direction: rtl; }
+  .ask:nth-child(even) > * { direction: ltr; }
+
+  .ask__figure { margin: 0; }
+  .ask__figure img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 30%; /* 窄螢幕裁切時保留人物臉部 */
+    border-radius: var(--radius-md);
+  }
+  .ask__q {
+    position: relative;
+    font-size: var(--text-xl);
+    line-height: var(--leading-normal);
+    color: var(--color-brand-800);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+  }
+  .ask__q::before {
+    content: counter(ask, decimal-leading-zero);
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 900;
+    letter-spacing: .1em;
+    color: var(--color-warm-500);
+    margin-bottom: var(--space-2);
+  }
+  .ask__d { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  /* ── 四種力量（原四張等寬卡片）── */
+  .forces {
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-8);
+    position: relative;
+  }
+  /* 一條細線把四項串起來，取代四個各自獨立的方框 */
+  .forces::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 36px;
+    height: 1px;
+    background: var(--color-brand-200);
+  }
+  .force { position: relative; }
+  .force:nth-child(even) { margin-top: var(--space-8); }
+  .force img { width: 72px; height: 72px; object-fit: contain; margin-bottom: var(--space-3); }
+  .force h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .force p { margin: 0; color: var(--color-ink-700); font-size: var(--text-sm); line-height: var(--leading-loose); }
+
+  @media (max-width: 900px) {
+    .ask { grid-template-columns: 1fr; gap: var(--space-4); padding-block: var(--space-8); }
+    .ask:nth-child(even) { direction: ltr; }
+    .forces { grid-template-columns: repeat(2, 1fr); gap: var(--space-8) var(--space-6); }
+    .forces::before { display: none; }
+    .force:nth-child(even) { margin-top: 0; }
+  }
+  @media (max-width: 520px) {
+    .forces { grid-template-columns: 1fr; }
+  }
+
+  .vision__q {
+    color: var(--color-brand-800);
+    font-size: var(--text-xl);
+    line-height: var(--leading-normal);
+  }
+  .vision__a { font-size: var(--text-lg); color: var(--color-ink-700); }
+
+
+
+  /* 生活自由計畫 宣傳帶 */
+  .promo {
+    background: var(--surface-inverse);
+    color: var(--color-white);
+  }
+  .promo__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+  .promo__badge {
+    display: inline-block;
+    background: var(--color-warm-500);
+    color: var(--color-white);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.08em;
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .promo h2 { color: var(--color-white); margin-bottom: var(--space-2); }
+  .promo__desc {
+    color: var(--color-brand-200);
+    max-width: 38rem;
+    margin: 0;
+  }
+  .promo__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .promo__actions .btn--outline {
+    border-color: var(--color-brand-200);
+    color: var(--color-white);
+  }
+  .promo__actions .btn--outline:hover { background: rgba(255, 255, 255, 0.1); }
+
+  /* 認識 UBI 摺疊區 */
+  .ubi-faq {
+    background: var(--color-white);
+    border: 1px solid var(--color-ink-300);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+    overflow: hidden;
+  }
+  .ubi-faq summary {
+    cursor: pointer;
+    padding: var(--space-4) var(--space-6);
+    font-weight: var(--font-bold);
+    font-size: var(--text-lg);
+    color: var(--color-brand-800);
+    list-style-position: inside;
+  }
+  .ubi-faq summary:hover { background: var(--color-brand-50); }
+  .ubi-faq[open] summary { border-bottom: 1px solid var(--color-ink-100); }
+  .ubi-faq__body { padding: var(--space-4) var(--space-6) var(--space-2); }
+  .ubi-faq__body li { margin-bottom: var(--space-3); }
+  .ubi-more {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+    font-weight: var(--font-bold);
+  }
+  .ubi-more a { text-decoration: none; }
+  .ubi-more a:hover { text-decoration: underline; }
+
+  /* 關於我們區塊的行動按鈕 */
+  .about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+  .about-actions__outline {
+    border-color: var(--color-brand-200);
+    color: var(--color-white);
+  }
+  .about-actions__outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-white);
+  }
+
+  .ubi-intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+  .ubi-intro__gif {
+    width: 100%;
+    max-width: 20rem;
+    position: sticky;
+    top: 6rem;
+  }
+  .ubi-intro h3 { margin-top: var(--space-8); }
+  .ubi-intro li { margin-bottom: var(--space-3); }
+  @media (max-width: 860px) {
+    .ubi-intro { grid-template-columns: 1fr; }
+    .ubi-intro__gif { position: static; margin-inline: auto; }
+  }
+
+  .origin-links {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .origin-links a {
+    display: block;
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-brand-50);
+    border-inline-start: 4px solid var(--color-brand-500);
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-bold);
+    text-decoration: none;
+  }
+  .origin-links a:hover { background: var(--color-brand-100); }
+
+  .partners {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .partners img {
+    height: 3.5rem;
+    width: auto;
+    max-width: 11rem;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: filter var(--duration-base) var(--ease-out),
+                opacity var(--duration-base) var(--ease-out);
+  }
+  .partners li:hover img,
+  .partners li:focus-within img {
+    filter: none;
+    opacity: 1;
+  }
+</style>
+
+<script>
+  // ＃生活，本該如此 ____ 的輪替。
+  // 使用者要求減少動態時完全不跑，改由 CSS 顯示完整詞彙清單。
+  const fill = document.querySelector<HTMLElement>('.fill');
+  const words = Array.from(document.querySelectorAll<HTMLElement>('.fill__word'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (fill && words.length > 1 && !reduce.matches) {
+    let i = 0;
+    let timer = 0;
+
+    const step = () => {
+      const prev = words[i];
+      i = (i + 1) % words.length;
+      prev.classList.remove('is-on');
+      prev.classList.add('is-out');
+      words[i].classList.remove('is-out');
+      words[i].classList.add('is-on');
+      window.setTimeout(() => prev.classList.remove('is-out'), 460);
+    };
+
+    const play = () => { timer ||= window.setInterval(step, 2600); };
+    const pause = () => { window.clearInterval(timer); timer = 0; };
+
+    play();
+
+    // 滑鼠停留時暫停，讓人看得完；離開再繼續
+    fill.addEventListener('mouseenter', pause);
+    fill.addEventListener('mouseleave', play);
+    // 分頁切到背景時不空轉
+    document.addEventListener('visibilitychange', () => (document.hidden ? pause() : play()));
+  }
+</script>

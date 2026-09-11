@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// 年度報告列表頁。
+// 與國際交流列表同樣的結構理由：新增年度只需在下面的陣列加一筆，
+// 導覽維持不變。請不要再把個別年度掛進 Header。
+
+const reports = [
+  {
+    year: '2025',
+    href: '/impact/annual/2025/',
+    title: '2025 年度報告書',
+    tagline: '生活，本該如此安心',
+    lede: '完成台灣第一場基本收入實驗並產出紀錄片、代表台灣參與巴西 BIEN 全球大會、向立法院提出青年基本收入政策提案。',
+    highlights: ['實驗完成與紀錄片首映', '巴西 BIEN 全球大會', '青年政策提案與立委拜訪', '在地推廣與組織經營'],
+    photo: '/images/PXL_20251001_125859436.webp',
+    alt: '2025 島嶼新日常新書發表會，眾人舉著手寫與印製的牌子在 UBI Taiwan 布條前合影',
+  },
+  {
+    year: '2024',
+    href: '/impact/annual/2024/',
+    title: '2024 年度報告書',
+    tagline: '讓大家看見 UBI',
+    lede: '參與英國巴斯 BIEN 高峰會，並透過音樂節、校園永續節、浪人季等場合擺攤，把基本收入帶進人群。',
+    highlights: ['英國巴斯 BIEN 高峰會', '倡議擺攤', '公眾溝通'],
+    photo: '/images/20241005-06_浪人季_對話-1024x892.webp',
+    alt: '2024 浪人季擺攤現場，UBI Taiwan 夥伴與三位參與者圍著攤位桌面交談',
+  },
+];
+---
+
+<BaseLayout
+  title="年度報告｜UBI Taiwan"
+  description="UBI Taiwan 歷年年度報告書：2025 年完成台灣第一場基本收入實驗與紀錄片、參與巴西 BIEN 大會；2024 年參與英國巴斯高峰會並展開街頭倡議。"
+  current="impact-annual"
+>
+  <section class="head">
+    <div class="container">
+      <p class="eyebrow">我們的行動</p>
+      <h1>年度報告</h1>
+      <p class="head__lead">
+        每一年，我們把做過的事整理成一份報告：實驗進度、國際串聯、政策倡議、在地推廣與組織經營。
+        這是我們對支持者、也對自己的交代。
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <ol class="years">
+        {reports.map((r) => (
+          <li class="yr">
+            <a class="yr__link" href={r.href}>
+              <span class="yr__figure">
+                <img src={r.photo} alt={r.alt} width="1024" height="771" loading="lazy" />
+              </span>
+              <span class="yr__year">{r.year}</span>
+              <span class="yr__body">
+                <span class="yr__title">{r.title}</span>
+                <span class="yr__tagline">{r.tagline}</span>
+                <span class="yr__lede">{r.lede}</span>
+                <span class="yr__hl">
+                  {r.highlights.map((h) => <span class="yr__chip">{h}</span>)}
+                </span>
+              </span>
+              <span class="yr__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <p class="more">
+        更早期的成果整理在 <a href="/impact/">行動里程碑</a>，依主題而非年份分類。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head { padding-block: var(--space-16) var(--space-12); background: var(--surface-subtle); }
+  .head__lead {
+    max-width: var(--container-narrow); font-size: var(--text-lg);
+    line-height: var(--leading-loose); color: var(--color-ink-700); margin: 0;
+  }
+
+  .years { list-style: none; margin: 0; padding: 0; display: grid; }
+  .yr { border-top: 1px solid var(--color-ink-300); }
+  .yr:last-child { border-bottom: 1px solid var(--color-ink-300); }
+
+  .yr__link {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-8); align-items: start;
+    padding: var(--space-8) var(--space-4) var(--space-8) 0;
+    text-decoration: none; color: var(--color-ink-900);
+    transition: background var(--duration-base) var(--ease-out);
+  }
+  .yr__link:hover { background: var(--surface-subtle); }
+
+  .yr__year {
+    font-size: clamp(2.5rem, 7vw, 4rem); font-weight: 900; line-height: .9;
+    color: var(--color-brand-200); font-variant-numeric: tabular-nums;
+    transition: color var(--duration-base) var(--ease-out);
+  }
+  .yr__link:hover .yr__year { color: var(--color-warm-500); }
+
+  .yr__figure { display: block; overflow: hidden; border-radius: var(--radius-md); }
+  .yr__figure img {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    transition: transform 600ms var(--ease-out);
+  }
+  .yr__link:hover .yr__figure img { transform: scale(1.05); }
+  .yr__body { display: grid; gap: var(--space-2); }
+  .yr__title { font-size: var(--text-xl); font-weight: var(--font-bold); }
+  .yr__tagline { color: var(--color-brand-700); font-weight: var(--font-bold); font-size: var(--text-sm); }
+  .yr__lede { color: var(--color-ink-700); line-height: var(--leading-normal); }
+  .yr__hl { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+  .yr__chip {
+    font-size: var(--text-xs); color: var(--color-ink-700);
+    background: var(--color-ink-100); border-radius: var(--radius-full);
+    padding: 2px var(--space-3);
+  }
+  .yr__go {
+    align-self: center; font-size: var(--text-xl); color: var(--color-ink-300);
+    transition: transform var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
+  }
+  .yr__link:hover .yr__go { color: var(--color-brand-600); transform: translateX(4px); }
+
+  .more { margin-top: var(--space-8); font-size: var(--text-sm); color: var(--color-ink-500); }
+
+  @media (max-width: 640px) {
+    .yr__link { grid-template-columns: 1fr; gap: var(--space-3); }
+    .yr__figure { max-width: 22rem; }
+    .yr__go { display: none; }
+  }
+</style>

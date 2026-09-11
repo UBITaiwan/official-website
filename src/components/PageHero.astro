@@ -1,0 +1,116 @@
+---
+// 照片底的第一屏。
+// 協會偏好首屏用真實照片打底，因此把版型收成單一元件，
+// 各頁只需給圖與文案，深色遮罩與對比一致由這裡控制。
+//
+// 兩個實作重點：
+// 1. 圖用 <img> 而非 background-image，才能給 alt、fetchpriority 與寬高，
+//    避免 LCP 被延後、也避免版面在圖載入時跳動。
+// 2. 遮罩由上而下加深，讓文字所在的下半部一定夠暗；
+//    對比在最淺處（上緣 .34）仍足以承載白字。
+interface Props {
+  /** 背景照片（站內路徑） */
+  image: string;
+  /** 照片內容的描述。這些照片帶有資訊，不是純裝飾，因此給實質 alt */
+  alt: string;
+  /** 小標籤 */
+  eyebrow?: string;
+  title: string;
+  /** 導言 */
+  lead?: string;
+  /** 圖片焦點，預設置中偏上以保留人臉 */
+  focus?: string;
+  /** 首屏高度，預設 auto（依內容），full 為接近滿版 */
+  height?: 'auto' | 'full';
+  width?: number;
+  heightAttr?: number;
+}
+
+const {
+  image, alt, eyebrow, title, lead,
+  focus = 'center 35%', height = 'auto',
+  width = 1600, heightAttr = 1200,
+} = Astro.props;
+---
+
+<section class:list={['phero', { 'phero--full': height === 'full' }]}>
+  <img
+    class="phero__bg"
+    src={image}
+    alt={alt}
+    width={width}
+    height={heightAttr}
+    fetchpriority="high"
+    decoding="async"
+    style={`object-position: ${focus}`}
+  />
+  <div class="phero__veil" aria-hidden="true"></div>
+  <div class="container phero__inner">
+    {eyebrow && <p class="phero__eyebrow">{eyebrow}</p>}
+    <h1 class="phero__title">{title}</h1>
+    {lead && <p class="phero__lead">{lead}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: end;
+  }
+  .phero--full { min-height: 72vh; }
+
+  .phero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .phero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      rgba(22, 58, 84, 0.34) 0%,
+      rgba(22, 58, 84, 0.62) 48%,
+      rgba(22, 58, 84, 0.9) 100%
+    );
+  }
+
+  .phero__inner {
+    padding-block: var(--space-24) var(--space-16);
+    color: var(--color-white);
+  }
+  .phero__eyebrow {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.14em;
+    color: var(--color-brand-200);
+    margin-bottom: var(--space-4);
+  }
+  .phero__title {
+    font-size: clamp(1.9rem, 5vw, var(--text-4xl));
+    color: var(--color-white);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+    text-shadow: 0 1px 14px rgba(11, 29, 42, 0.5);
+  }
+  .phero__lead {
+    text-shadow: 0 1px 10px rgba(11, 29, 42, 0.45);
+    max-width: var(--container-narrow);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-brand-100);
+    margin: 0;
+  }
+
+  @media (max-width: 560px) {
+    .phero__inner { padding-block: var(--space-16) var(--space-12); }
+    .phero--full { min-height: 60vh; }
+  }
+</style>

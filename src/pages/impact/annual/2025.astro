@@ -1,0 +1,395 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// 2025 年度報告書：內容對應 ubitaiwan.org/zh/ubi-taiwan/2025report-impact/
+
+const highlights = [
+  {
+    id: '2025reportP1',
+    title: '基本收入實驗計畫',
+    img: '/images/25-08-02_10-13-59.webp',
+    items: ['紀錄片放映會', '參與人數：140 人', '吸引政治人物、NGO 與企業界重要人物參與', '遠見、公視等媒體報導'],
+  },
+  {
+    id: '2025reportP2',
+    title: '政策倡議',
+    img: '/images/LINE_ALBUM_UBI-Taiwan-Panel_260131_41.webp',
+    items: ['立委與政黨拜訪：6 位立法委員、1 台灣主要政黨青年部', '提出《青年基本收入政策提案》'],
+  },
+  {
+    id: '2025reportP3',
+    title: '國際串聯',
+    img: '/images/PXL_20251001_125859436.webp',
+    items: ['參與 2025 巴西 BIEN 國際年會並發表成果', '首次邀請 BIEN 主席來台交流訪問', '成功爭取主辦 BIEN 2027 印太高峰會'],
+  },
+  {
+    id: '2025reportP4',
+    title: '在地推廣',
+    img: '/images/PXL_20251003_122641683.webp',
+    items: ['擺攤：包含浪人祭等活動 5 場', '演講／讀書會／討論會：6 場', '媒體報導與投稿：8 篇', '出版小說《島嶼新日常》'],
+  },
+  {
+    id: '2025reportP5',
+    title: '組織經營',
+    img: '/images/IMG_3338.webp',
+    items: ['志工培訓', '2025 志工 T 恤', '內部聚會／出遊'],
+  },
+];
+
+const brazilPapers = [
+  {
+    title: '錢變多了，還想戒菸嗎？— 評估基本收入對台灣菸稅的效果與累退性',
+    desc: '彙整外國研究，分析收入高低是否會讓人把更多錢花在吸菸上，以及它如何影響菸稅效果。結果顯示，穩定的基本收入不會明顯增加吸菸行為，而菸稅仍能有效降低吸菸量；兩者搭配可減輕菸稅對低收入者的不利影響，形成更公平的公共健康政策。',
+  },
+  {
+    title: '邁向內在平和 — 台灣基本收入實驗下的生活重構',
+    desc: '以 UBI Taiwan 所做基本收入實驗中的受試者為核心，呈現單親母親在穩定收入支持下的生活轉變。研究結果顯示，穩定的基本收入有效減輕生存壓力，提升心理安定感，使其更能照顧自己與孩子，並在不失去工作意義的情況下，重新安排生活與工作的節奏。',
+  },
+  {
+    title: '台灣公眾對於基本收入的敘事想像：YouTube 留言分析',
+    desc: '分析台灣知名 YouTube 頻道討論中對基本收入的看法。研究結果發現，社會與倫理方面的討論是網路上最常被關注的主題，包括正面的「自由」、「生存」；負面的「人性與懶惰」、「責任」等觀點。對於聽眾來說，公平是把雙面刃，既支持資源平等分享，也強調個人責任與努力的重要。',
+  },
+  {
+    title: '台灣基本收入的敘事建構：社會位置的交織',
+    desc: '透過訪談不同社會位置的受訪者，分析台灣社會如何理解基本收入。研究發現，社會位置影響敘事方式：低社經者將基本收入視為維持生活穩定的工具，高社經者則多以自我實現與價值展現來理解，顯示基本收入在公共討論中承載著不同的期待與意義。',
+  },
+];
+
+const proposal = [
+  {
+    label: '【發給誰】社會問題挑戰 × 政府施政方向',
+    desc: '在 AI 與自動化昌盛的時代下最先承受衝擊的，往往不是已站穩腳步的人，而是剛踏入社會的青年。青年面對低薪、不穩定就業、缺乏資本與人脈等等世代風險首當其衝，因此我們選擇以 18 – 35 歲青年為起點。',
+  },
+  {
+    label: '【發多少】基本生活保障 × 務實指標參考',
+    desc: '這項政策並不是為了描繪一個富有的人生，而是回到最現實的問題：一個人，至少需要多少，才能好好活著？我們以各縣市最低生活費為參考，設計每月的基本收入金額，作為一條不讓人跌落的底線，使人們對生活保有選擇的權利。',
+  },
+  {
+    label: '【怎麼發】G2P 發放效益 × 數據驅動政策',
+    desc: '我們選擇由政府直接發放，降低門檻，也減少標籤。結合數位工具與 CBDC（中央銀行數位貨幣），讓這筆支持不只發得出去，也能被持續觀察，持續性修正與優化青年基本收入政策提案。',
+  },
+  {
+    label: '【錢從哪裡來】既有稅源 × 新興財源',
+    desc: '在高度集中的資本結構下，貧富差距日益擴大。青年基本收入嘗試整合既有稅制（如營業稅、資本利得與交易稅）調整與新興財源（如主權基金、碳稅），將 AI 與高科技帶來的紅利，轉化為社會的共同基礎。這不只是財政設計，而是一個關於「經濟成長應該如何分配」的選擇。',
+  },
+  {
+    label: '【政策配套措施】可行性 × 可預測性 × 可延續性',
+    desc: '採取「無條件發放、有條件回徵」的後排富設計，高收入者於報稅季部分回繳。透過制度化的基本收入級距式回徵機制，確保基本收入政策的可行性、財務可預測性和永續性，並重新分配經濟資本，以實踐更平等與公平的社會。',
+  },
+];
+---
+
+<BaseLayout
+  title="2025年度報告書｜UBI Taiwan"
+  description="UBI Taiwan 2025 年度報告書：生活，本該如此安心。基本收入實驗、政策倡議、國際串聯、在地推廣與組織經營。"
+  current="impact-annual"
+>
+  <section class="section section--subtle">
+    <div class="container container--narrow">
+      <h1>UBI Taiwan 2025 年度報告書</h1>
+      <h2>生活，本該如此安心</h2>
+      <p>
+        在 AI 科技快速發展下工作型態快速變動、家庭照顧壓力逐漸加重，在這充滿不確定的時代，安心的感受對許多人而言正變得越來越遙不可及。
+      </p>
+      <p>
+        UBI Taiwan 相信，無條件基本收入（UBI）不是消除風險，而是在風浪來臨時，為人們撐起一個能站穩腳步的立足之地。只是，在台灣，這樣的制度想像仍然陌生。在政策成為現實之前，需要更多理解、討論與真實經驗的累積。
+      </p>
+      <p>因此，在這一年，我們持續向外伸出觸角，讓「安心」不只是一句口號，而能被具體看見。</p>
+      <ul>
+        <li>在實驗推動上，基本收入實驗讓單親媽媽于媽媽在工作與照顧孩子之間，得以喘息與重建生活節奏；透過紀錄片放映與座談，我們讓這份安心進入公共討論。</li>
+        <li>在政策倡議上，我們走進立法院，與政策制定者討論如何以制度設計，為人民提供更穩定的安全基礎。</li>
+        <li>在國際串聯上，我們參與 BIEN（基本收入全球網路）等國際組織，將台灣的經驗帶到世界討論，也看見各地如何透過基本收入回應當代社會的不確定性。</li>
+        <li>在議題推廣上，我們透過網紅合作、Podcast 與街頭行動，讓更多人能從自身經驗出發，重新思考什麼樣的社會能讓生活真正安心。</li>
+      </ul>
+      <p>
+        安心不該由個人獨自承擔，而應由社會共同撐起，2025 年，UBI Taiwan 邁出的每一步，都是為了讓這份安心，在不確定的時代裡更接近現實。展望 2026，我們將在 2025 年累積的基礎上，持續擴大既有成果的深度與規模。
+      </p>
+      <p>
+        在實驗推動上，我們已與企業洽談合作，預計將擴大原本僅有一位受試者的基本收入實驗，累積更多實證經驗與證據，為政策討論奠定更穩固的基礎。在國際交流層面，我們也成功爭取將在 2027 年由台灣舉辦 BIEN 在印太地區的高峰論壇，讓台灣能成為亞洲地區推動基本收入議題的重要角色。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="highlights-title">
+    <div class="container">
+      <h2 id="highlights-title">年度重點</h2>
+      <div class="highlights">
+        {highlights.map((h) => (
+          <div class="highlight" id={h.id}>
+            <img src={h.img} alt="" loading="lazy" class="highlight__img" />
+            <div>
+              <h3>{h.title}</h3>
+              <ul>
+                {h.items.map((i) => <li>{i}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="exp-title">
+    <div class="container container--narrow">
+      <h2 id="exp-title">讓「安心」進入公共討論｜基本收入實驗計劃</h2>
+      <h3>計畫目標與實驗概況</h3>
+      <p>
+        本次單親家庭無條件基本收入（UBI）實驗為期兩年，是台灣第一個執行的基本收入實驗，從 2023 年 9 月執行至 2025 年 8 月，以第一年每月 10,000 元，第二年每月 5,000 元基本收入支持一個單親家庭的實驗。雖然本次實驗僅有一位受試者，但仍是台灣基本收入倡議與實驗研究的一大里程碑。
+      </p>
+      <p>
+        2025 年度延續規劃，執行單親家庭無條件基本收入（UBI）實驗，探索基本收入在台灣的可行性與對受試者生活的影響。透過每月固定無條件現金給付，觀察實驗參與者在生活品質、心理健康與未來規劃等面向的變化，並將這些來自日常生活的真實經驗帶入更廣泛的社會制度對話之中。期待實驗不僅提供個案支持，也為未來更大規模的制度性討論建立具體案例與觀察。
+      </p>
+      <p><a href="/experiment/pilot/">更多實驗資訊參考</a></p>
+
+      <h3>學術影響力：社會福利年會分享</h3>
+      <p>
+        我們報名參與國立臺北大學社會福利年會，將此實驗的設計與洞察帶入專業對話場域。除了分享實驗設計與個案觀察，也安排了學界視角，社會政策領域權威古允文教授以專業視角分析基本收入與現行社會福利制度的可能性與挑戰。期望這樣的制度性對話能促使與會者思考現有制度的侷限與未來創新的可能性，讓基本收入議題能與社會安全網、財稅政策等制度性議題交織探討。
+      </p>
+      <img src="/images/IMG_5267-1024x576.webp" alt="社會福利年會合照" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-4);" />
+
+      <h3>與大眾對話：實驗紀錄片放映會</h3>
+      <p>
+        為讓實驗成果進入更大的公共理解場域，我們舉辦了公開紀錄片放映會，以受試者生活故事為主軸，在新北市府中 15 舉行首映。紀錄片描繪單親媽媽于媽媽（化名）在獲得基本收入支持後如何重整生活、迎向未來的過程；片中採訪包括人生百味共同創辦人巫彥德、立法委員葛如鈞、知識型 YouTuber 超級歪以及 UBI Taiwan 倡議時接觸到的民眾等，從多角度討論基本收入在個體與社會層面的意義。映後座談則邀請 BIEN 全球主席 Sarath Davala、加州大學柏克萊社會福利學院副教授張祐綾、UBI Taiwan 創辦人 Tyler、紀錄片導演顏子為及實驗主角于媽媽等人，跨國連線交流與對話，使公眾更具體理解基本收入制度背後的生活與社會意義。
+      </p>
+      <ul>
+        <li>【新聞】<a href="https://basicincome.org/news/2025/08/%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%e4%b8%8d%e6%98%af%e5%a4%a2%e6%83%b3%ef%bc%9a%e5%8f%b0%e7%81%a3%e5%95%9f%e5%8b%95%e9%a6%96%e5%a0%b4ubi%e5%88%b6%e5%ba%a6%e5%af%a6%e9%a9%97%ef%bc%8c%e6%89%93/" rel="noopener">基本收入不是夢想：台灣啟動首場UBI制度實驗，打開政策想像的第一槍</a></li>
+        <li>【新聞】<a href="https://www.gvm.com.tw/article/123339" rel="noopener">遠見｜每月發一萬，台灣首場「基本收入」實驗如何改變單親家庭生活？</a></li>
+        <li>【新聞】<a href="https://www.peopo.org/news/816985" rel="noopener">PeoPo｜台灣首場「無條件基本收入」實驗，給人發錢可行嗎？</a></li>
+        <li>【影音】<a href="https://drive.google.com/file/d/1f53_SoG7F2s0tFhLCFgYCJzkJ77C-S-Z/view" rel="noopener">台灣基本收入實驗｜紀錄片精華版</a></li>
+      </ul>
+      <img src="/images/25-08-02_11-39-43-1024x683.webp" alt="實驗紀錄片放映會映後座談" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-4);" />
+
+      <h3>國際視野與交流：參與 BIEN 年會的議題統整分享</h3>
+      <p>
+        我們也將台灣單親家庭基本收入實驗的觀察與成果帶入 BIEN 的年會與論壇，並在國際場域中探討更廣泛的研究主題與制度性概念。與來自全球不同社會背景的基本收入倡議者、研究者和政策參與者交流，讓台灣實驗融入國際多維度討論之中。透過這樣的國際統整與交流，不僅讓台灣的在地經驗被國際理解，也吸收其他社會多元視角，有助於後續在研究設計、公開對話與議題推進上持續深化。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="intl-title">
+    <div class="container container--narrow">
+      <h2 id="intl-title">在不確定的時代，與世界同行｜國際串聯</h2>
+      <img src="/images/PXL_20250827_121433240-scaled.webp" alt="2025 巴西里約熱內盧 BIEN 高峰會" loading="lazy" style="border-radius: var(--radius-md); margin-bottom: var(--space-6);" />
+
+      <h3>2025 巴西里約熱內盧 BIEN 高峰會</h3>
+      <p>
+        2025 年，是 UBI Taiwan 首次踏上南半球的土地，與國際學者們分享我們在台灣基本收入的倡議政策與研究經驗。特別是在高峰會上發表的青年基本收入提案，期以緩解當前台灣年輕世代所面臨的困境和挑戰。其次，也在會議上分享台灣首部本土 UBI 主題小說《島嶼新日常》，與國際社會共同發想對於未來的想像。在研究上，我們以台灣經驗為主體透過四個主題，不同視角呈現台灣在基本收入議題上的探索與經驗。
+      </p>
+      <div class="papers">
+        {brazilPapers.map((p) => (
+          <div class="paper">
+            <h4>{p.title}</h4>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <h3 style="margin-top: var(--space-8);">BIEN 主席來台訪問</h3>
+      <img src="/images/PXL_20251001_125931859-1024x771.webp" alt="BIEN 主席來台訪問" loading="lazy" style="border-radius: var(--radius-md); margin-bottom: var(--space-4);" />
+      <p>
+        在年末為深化台灣社會福利轉型的政策實踐，UBI Taiwan 特別邀請 BIEN 主席 Sarath Davala 來台訪問。行程包括進入立法院與立法委員討論台灣政策試行的可能，與台灣青年問題的特殊性及融合數位貨幣的可能。更透過工作坊與協會的夥伴研討台灣社會貧富不均越發嚴重的現狀，與未來倡議可能的行動藍圖。
+      </p>
+
+      <h3>德國政黨 CDU／CSU 青年領袖交流</h3>
+      <img src="/images/received_1559782285233540-1024x768.webp" alt="與德國 CDU/CSU 青年領袖交流" loading="lazy" style="border-radius: var(--radius-md); margin-bottom: var(--space-4);" />
+      <p>
+        UBI Taiwan 於龍應台文化基金會，與德國執政黨德國基督教民主聯盟 (CDU) 和其姊妹黨巴伐利亞基督教社會聯盟 (CSU)，其青年黨的 26 位青年領袖分享與交流台灣當前經濟面臨的挑戰，包含 AI 對於產業的衝擊和少子化引發的社福困境。
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="policy-title">
+    <div class="container container--narrow">
+      <h2 id="policy-title">青年基本收入政策提案 & 立委與政黨拜訪｜政策倡議</h2>
+
+      <h3>在實驗之後，我們選擇走向制度</h3>
+      <p>
+        2025 年，我們從長期的街頭倡議、大眾對話，積極走向拜訪影響台灣政策決策的主力推手——政黨與立委，透過深入交流，共同探索，進一步規劃更適合台灣社會脈絡的基本收入政策。
+      </p>
+
+      <h3>凝聚國內共識</h3>
+      <p>
+        我們向立委介紹基本收入是具國際視野，又能帶動公共討論的趨勢議題，並透過交流說明基本收入的價值與可行性，促進建立長期的政策對話管道。
+      </p>
+
+      <h3>BIEN 主席與立委的政策交流</h3>
+      <p>
+        2025 下半年，我們除了持續與國際組織及學者保持聯繫外，更邀請 BIEN 主席 Sarath Davala 親臨台灣，與立法委員進行政策交流，分享國際基本收入實驗的第一線經驗，也進一步走出傳統政策場域，與比特幣協會展開對話。透過橫跨公共部門與科技社群的交流，我們嘗試讓基本收入的討論，從制度設計延伸到未來社會的想像，為台灣政策倡議打開更多元的對話空間。
+      </p>
+
+      <h3>2025 政策提案里程碑</h3>
+      <ul>
+        <li>1月8日 拜訪廖偉翔委員</li>
+        <li>3月14日 寶博士（葛如鈞委員）個人實驗紀錄片訪談</li>
+        <li>5月7日 拜訪黃捷委員</li>
+        <li>5月7日 拜訪蘇巧慧委員辦公室</li>
+        <li>5月23日 拜訪民進黨青年部</li>
+        <li>10月2日 BIEN 主席暨 UBI Taiwan 立院閉門交流</li>
+      </ul>
+      <img src="/images/20251002_143539-1-1024x768.webp" alt="立法院政策交流" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-4);" />
+
+      <h3>台灣青年基本收入政策論述</h3>
+      <p>
+        UBI Taiwan 必須有意識地從單純的議題倡議，走向政策影響的階段。讓努力不只累積情感支持，也能進入權力與制度的對話場域。在這個生成式 AI 爆發性成長的時代浪潮，造成結構性失業、分配失衡，及工作意義的動搖。同時，AI 帶動晶片需求所創造的台灣相關產業成長，更是為「基本收入是否具備財源與永續性」創造了得以被重新討論的社會條件。因此，我們決定踏出關鍵一步——為台灣量身打造一套青年基本收入的政策論述，讓基本收入成為一個必須被回應的政策選項。
+      </p>
+      <div class="papers">
+        {proposal.map((p) => (
+          <div class="paper">
+            <h4>{p.label}</h4>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="local-title">
+    <div class="container container--narrow">
+      <h2 id="local-title">源自草根的改變，正持續發生｜在地推廣</h2>
+      <p>
+        我們珍惜每一次與台灣社會不同群體對話的機會，每年都參與擺攤、講座等活動，也同時爭取在媒體平台上露出的機會，不論是投稿或接受採訪。今年我們參與了音樂祭、遊行等活動，也舉辦募資音樂會，甚至在小說《島嶼新日常》的發表會和讀書會等活動上，都與更多人一起討論基本收入。
+      </p>
+
+      <h3>與過客對話</h3>
+      <p>
+        我們理解真人互動的獨特價值。於音樂祭與遊行擺攤時，與許多人介紹了 UBI Taiwan 後就暢聊天南地北十數餘分鐘，甚至有超過半小時的有緣人，有的留下了聯絡方式，有的還成了後來的夥伴。今年，我們收到了多於往年雙北以外縣市的活動邀請，期待今後也藉著對話收穫更多青睞。謝謝來看我們的每一個你！
+      </p>
+      <h4>2025 參與活動</h4>
+      <ul>
+        <li>【擺攤】綠色浪潮</li>
+        <li>【擺攤】浪人祭</li>
+        <li>【擺攤】野人祭</li>
+        <li>【擺攤】台師大暖日永續節</li>
+        <li>【擺攤】輔大 RE:Origin 創新創業推廣市集</li>
+        <li>【演講】《生活而非生存—基本收入在台灣的倡議路徑與未來》- 中正大學哲學星期五</li>
+        <li>【演講】《人人有錢拿的生活可能嗎？》- 羅東社區大學</li>
+      </ul>
+
+      <h3>社群與新聞媒體發聲</h3>
+      <p>
+        UBI Taiwan 一直積極爭取在媒體平台上露出，相信認識我們夠久的夥伴，都能找到過去幾年的報導或採訪。今年我們順著基本收入紀錄片的分享，加上網路關於基本收入及如何回應社會變動的討論愈來愈熱烈，也讓我們在媒體上露面的機會愈來愈多。在每個月的志工聚會上常聽聞夥伴分享有媒體朋友找上我們，也收到了出乎意料的流量和回饋，很是感激。
+      </p>
+      <ul>
+        <li>【報導】<a href="https://www.gvm.com.tw/article/126048" rel="noopener">遠見｜別急著罵！若每個月都普發一萬如何</a></li>
+        <li>【影音】<a href="https://www.youtube.com/watch?v=wvPL0V9VqmM" rel="noopener">TVBS｜「每月定期發錢給全民」解決台灣3危機! 專家揭「理想金額」需9千億</a></li>
+        <li>【影音】<a href="https://www.youtube.com/watch?v=yayNSPF_McE" rel="noopener">寶博朋友說｜未來不用工作？UBI 給你「自動收入」是趨勢還是空想？AI 時代的人類生存保障！</a></li>
+        <li>【影音】<a href="https://www.youtube.com/watch?v=c6uZGTYBcYI" rel="noopener">街頭有派對｜無條件基本收入是大灑幣？還是讓年輕人追求理想？</a></li>
+      </ul>
+
+      <h3>台灣首部基本收入小說</h3>
+      <p>
+        雖然工作有很多形式，有的像是團隊運動，有的更像自我挑戰，但我們總是樂見人們在各自的舞台發亮。今年我們與海穹文化聯手推出了台灣首本基本收入主題科幻小說《島嶼新日常》與系列活動，呈現對擁有基本收入制度未來的世界樣貌。
+      </p>
+      <p>
+        在小說讀書會上，團隊夥伴、讀者和作者們交流了對於各篇章的背景和角色們的印象，也聊到故事裡外的小人物大故事。小說涉及議題豐富，像是家庭和親密關係中發生的暴力，創作者在生存無虞後是否會繼續經營創作，人們對領取基本收入、對生存資格的思考等等，邀請大家一同思索人類應該怎麼面對這樣的未來世界。
+      </p>
+      <ul>
+        <li>【新聞】<a href="https://basicincome.org/news/2026/01/%E5%8F%B0%E7%81%A3%E9%A6%96%E6%9C%AC-ubi-%E4%B8%BB%E9%A1%8C%E5%B0%8F%E8%AA%AA%E6%96%BC%E5%8F%B0%E5%8C%97%E5%9C%8B%E9%9A%9B%E7%99%BC%E8%A1%A8%E6%9C%83%E7%99%BB%E5%A0%B4%EF%BC%8Cbien-%E4%B8%BB%E5%B8%AD/" rel="noopener">台灣首本 UBI 主題小說於台北國際發表會登場，BIEN 主席 Sarath Davala 親臨致詞</a></li>
+        <li>【活動】<a href="https://www.facebook.com/SciFaSaurus/posts/pfbid04drNQv2Aad41adN6Z6JF3MMLHyoNaGiTtteQfUYh1vn2MEbv3vNruwT8oBViuckal" rel="noopener">【海穹文化】牯嶺街創意市集講座｜《島嶼新日常》中「無條件基本收入」的想像實驗室</a></li>
+        <li>【活動】<a href="https://www.facebook.com/share/p/1C5ZvzgUKy/" rel="noopener">【中華科幻學會】第一百三十八屆讀書會–《島嶼新日常》</a></li>
+      </ul>
+
+      <h3>共同募款 & 青年辯論賽</h3>
+      <p>
+        在小說之外，UBI Taiwan 也與長期合作夥伴思躍軟實力培訓所共同舉辦基本收入辯論賽，以及單親家庭募資音樂會。除了推廣基本收入至更廣闊的受眾族群之外，也讓思躍軟實力培訓所的學生在議題討論及公益活動籌備中，培養思辨與關懷社會的能力。
+      </p>
+      <p>
+        另外，我們也與詠晴天音樂家團隊一同舉辦 2025 Nature Voz •「愛語和平.育愛未來」慈善感恩音樂會，希望能集結不同單位的共同力量，一同支持弱勢需求家庭。
+      </p>
+      <ul>
+        <li><a href="https://www.facebook.com/share/p/1KSpvHpf6T/" rel="noopener">6/14 單親家庭募資音樂會邀請您一起參與</a></li>
+        <li><a href="https://ubitaiwan.neticrm.tw/civicrm/event/info?reset=1&id=12" rel="noopener">2025 Nature Voz •「愛語和平.育愛未來」慈善感恩音樂會</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="org-title">
+    <div class="container container--narrow">
+      <h2 id="org-title">在對話中尋找共同前進的方向｜組織經營</h2>
+
+      <h3>UBI Taiwan 簡介</h3>
+      <p>
+        UBI Taiwan 成員由志工與少數兼職夥伴組成，舉凡社群行銷、活動演講，或是外部接洽合作等大小事，都是由成員共同協力完成。也因為如此，每一位成員，對組織來說都是重要的無價資產，也是我們在推動基本收入倡議的重要種子。我們相信，一個能持續前進的倡議組織，來自成員之間願意彼此傾聽、一起討論，並在對話中慢慢找到方向。因此在組織經營上，我們以「在對話中尋找共同前進的方向」作為核心方式，讓每一位成員都能安心參與、被理解，也能成為行動的一部分。
+      </p>
+
+      <h3>組織架構</h3>
+      <p>
+        在日常運作中，我們依照志工的興趣與擅長的事情，將大家分成五個工作組別。每一組都有自己的討論空間與行動節奏，在組長的帶領下，一起完成不同面向的倡議工作。
+      </p>
+
+      <h3>月會</h3>
+      <p>
+        每個月的月會，是所有成員聚在一起的重要時刻。月會中，各組會分享近期在做的事情、遇到的困難，以及需要什麼樣的協助。透過公開的交流與討論，我們了解彼此的進度，一起解決困難，並討論接下來的方向。
+      </p>
+      <p>
+        在志工培訓上，我們特別重視「想像力」與「對話」。新加入的志工，會被邀請從自己的生活經驗與關心的議題出發，思考基本收入的不同面向。透過分享與討論，不同的觀點彼此碰撞，讓大家在交流中更理解彼此，也逐漸形成對倡議方向的想像。這一年我們也開始與大學合作，邀請實習生加入組織，參與日常運作與倡議行動。透過實際參與，更多年輕世代能走進非營利組織，成為公共對話的一部分。
+      </p>
+
+      <h3>相聚時刻</h3>
+      <p>
+        在制度倡議之外，我們同樣重視人與人之間的關係。UBI Taiwan 期待成為一個能安心交流、彼此支持的組織，因此透過各式輕鬆的相聚，讓成員在沒有角色與任務壓力的狀態下，慢慢認識彼此、建立信任。穿上新設計的組織 T 恤，一起輕鬆出遊、單純相聚聊天，這些看似日常的活動，讓組織成員能夠在有溫度的環境中一起前進。
+      </p>
+      <div class="photo-row">
+        <img src="/images/PXL_20250622_074815695.webp" alt="組織相聚時刻" loading="lazy" />
+        <img src="/images/DSCF3040.webp" alt="志工夥伴合影" loading="lazy" />
+        <img src="/images/IMG_9925.webp" alt="月會交流" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--inverse" aria-labelledby="cta-title">
+    <div class="container container--narrow">
+      <h2 id="cta-title">讓改變發生，從現在開始</h2>
+      <p>
+        2026 年 UBI Taiwan 迎來首位正職夥伴加入，這將是組織成立以來，第一位全職投入的夥伴，過去我們都是兼職或志工燃燒熱情！這象徵著我們將以更專業、穩定的能量推動倡議。若您支持我們持續發聲，持續陪伴更多青年實踐，歡迎透過線上捐款支持我們。
+      </p>
+      <a class="btn btn--warm" href="/support/">捐款支持</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .highlights { display: grid; gap: var(--space-6); }
+  .highlight {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  .highlight__img {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+  .highlight ul { margin: 0; padding-inline-start: var(--space-6); }
+  .highlight li { margin-bottom: var(--space-1); }
+  @media (max-width: 660px) {
+    .highlight { grid-template-columns: 1fr; }
+  }
+  .papers { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+  .photo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .photo-row img {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+  @media (max-width: 560px) {
+    .photo-row { grid-template-columns: 1fr; }
+  }
+  /* 拿掉 .card：年度重點與論文改以細線與色邊界定 */
+  .highlight {
+    border-top: 3px solid var(--color-brand-600);
+    padding-top: var(--space-5);
+  }
+  .paper { padding-block: var(--space-5); border-top: 1px solid var(--color-ink-300); }
+  .paper:last-of-type { border-bottom: 1px solid var(--color-ink-300); }
+  .paper h4 { margin-bottom: var(--space-2); color: var(--color-brand-800); }
+  .paper p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+</style>

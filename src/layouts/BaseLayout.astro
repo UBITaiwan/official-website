@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string;
+  /** 頁面專屬社群分享圖（站內路徑），未提供時使用全站預設圖 */
+  ogImage?: string;
+}
+
+const { title, description, current = '', ogImage = '/images/og-default.png' } = Astro.props;
+
+// og:image 必須是絕對網址，社群爬蟲才能解析
+const site = Astro.site ?? new URL('https://ubitaiwan.org');
+const pageUrl = new URL(Astro.url.pathname, site).href;
+const ogImageUrl = new URL(ogImage, site).href;
+
+// 組織結構化資料（JSON-LD）：協助搜尋引擎理解 NGO 身分
+const orgJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'NGO',
+  name: 'UBI Taiwan 台灣無條件基本收入協會',
+  alternateName: 'UBI Taiwan',
+  url: site.href,
+  logo: new URL('/images/ubi-logo-002-1-1-1024x559.webp', site).href,
+  email: 'contact@ubitaiwan.org',
+  foundingDate: '2017',
+  sameAs: [
+    'https://www.facebook.com/TaiwanUBI',
+    'https://www.instagram.com/ubitaiwan/',
+    'https://www.youtube.com/@ubitaiwan',
+  ],
+});
+---
+
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {/*
+      預設 noindex。要開放搜尋引擎收錄，必須在建置環境明確設定
+      SITE_INDEXABLE=true——預設值刻意設成保守的一邊：
+      忘記設定的後果是「沒被收錄」，而不是「意外公開」。
+      正式上線的步驟見 交接手冊.md 第七節。
+
+      註：這裡用 String() 包起來是必要的——Astro 會把環境變數的 "true"
+      轉成布林值 true，直接與字串 'true' 比較永遠不相等，旗標會失效。
+    */}
+    {String(import.meta.env.SITE_INDEXABLE) !== 'true' && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={orgJsonLd} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+    />
+  </head>
+  <body>
+    <Header current={current} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

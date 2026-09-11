@@ -1,0 +1,46 @@
+---
+// 舊網址轉址頁：GitHub Pages 無伺服器端轉址，只能用 meta refresh + canonical。
+// 正式站若部署於支援 301 的環境，應改以伺服器設定轉址並移除這些頁面。
+interface Props {
+  /** 新網址（站內絕對路徑，結尾帶斜線） */
+  to: string;
+  /** 目標頁面名稱，供使用者辨識 */
+  label: string;
+}
+
+const { to, label } = Astro.props;
+
+const site = Astro.site ?? new URL('https://ubitaiwan.org');
+const target = new URL(to, site).href;
+---
+
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>頁面已移動｜UBI Taiwan</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <link rel="canonical" href={target} />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        text-align: center;
+        font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+        color: #1a2430;
+        background: #f0f7fc;
+      }
+      a { color: #2b72a4; }
+    </style>
+  </head>
+  <body>
+    <p>此頁面已移至新網址。</p>
+    <p><a href={to}>前往「{label}」</a></p>
+  </body>
+</html>

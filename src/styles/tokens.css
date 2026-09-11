@@ -1,0 +1,113 @@
+/* ==========================================================================
+   UBI Taiwan Design Tokens
+   單一事實來源（Single Source of Truth）：所有頁面與元件僅能引用此處變數。
+   與 design-system/tokens.json、design-system/DESIGN-SYSTEM.md 同步維護。
+   ========================================================================== */
+
+:root {
+  /* ---- 色彩 Color ------------------------------------------------------ */
+  /* 品牌藍：源自 UBI Taiwan 簡報與識別的天空藍 */
+  --color-brand-50:  #F0F7FC;
+  --color-brand-100: #DCEDF8;
+  --color-brand-200: #B8DAF0;
+  --color-brand-300: #8FC3E4;
+  --color-brand-400: #62A9D4;
+  --color-brand-500: #3E8FC4;  /* 主色 */
+  --color-brand-600: #2B72A4;
+  --color-brand-700: #225A83;
+  --color-brand-800: #1C4867;
+  --color-brand-900: #163A54;
+
+  /* 輔助深藍：資訊圖表、強調數據 */
+  --color-accent-500: #1D5FD0;
+  --color-accent-700: #143F8C;
+
+  /* 暖色點綴：行動呼籲、捐款 */
+  --color-warm-500: #E8834A;
+  --color-warm-600: #CF6A31;
+
+  /* 中性色 */
+  --color-ink-900: #1A2430;   /* 主要文字 */
+  --color-ink-700: #3D4B5C;   /* 次要文字 */
+  --color-ink-500: #64748B;   /* 說明文字 */
+  --color-ink-300: #C3CDD9;   /* 邊線 */
+  --color-ink-100: #EEF2F6;   /* 淺背景 */
+  --color-white:   #FFFFFF;
+
+  /* 分類用色 Categorical
+     用於「同一組互斥類別」的區分（例如全球進程的三種案例類型）。
+     與 semantic 色分開：語意色表達狀態（成功／警告／錯誤），分類色只表達「不同類」。
+     新增分類時請往下加，不要借用 semantic 或 CTA 色。 */
+  --color-cat-policy:     #6B4E9B;  /* 紫：已實施的政策制度 */
+  --color-cat-advocacy:   #C2601F;  /* 橘：倡議行動（與 warm-500 的 CTA 橘刻意分開） */
+  --color-cat-experiment: #2E7D4F;  /* 綠：帶對照組的實驗 */
+
+  /* 語意色 */
+  --color-success: #2E7D4F;
+  --color-warning: #B45309;
+  --color-danger:  #B3261E;
+
+  /* 表面 */
+  --surface-page:    var(--color-white);
+  --surface-subtle:  var(--color-brand-50);
+  --surface-muted:   var(--color-ink-100);
+  --surface-inverse: var(--color-brand-900);
+
+  /* ---- 字體 Typography -------------------------------------------------- */
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+               system-ui, -apple-system, sans-serif;
+
+  /* 字級：1.25 比例階層 */
+  --text-xs:   0.8rem;    /* 12.8px 註解 */
+  --text-sm:   0.9rem;    /* 14.4px 輔助 */
+  --text-base: 1rem;      /* 16px 內文 */
+  --text-lg:   1.125rem;  /* 18px 導言 */
+  --text-xl:   1.4rem;    /* 22.4px H3 */
+  --text-2xl:  1.75rem;   /* 28px H2 */
+  --text-3xl:  2.2rem;    /* 35px H1 */
+  --text-4xl:  2.75rem;   /* 44px Hero */
+
+  --font-regular: 400;
+  --font-medium:  500;
+  --font-bold:    700;
+
+  --leading-tight:  1.25;
+  --leading-normal: 1.6;
+  --leading-loose:  1.85;
+
+  /* ---- 間距 Spacing（4px 基準）----------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ---- 圓角 Radius ------------------------------------------------------ */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ---- 陰影 Shadow ------------------------------------------------------ */
+  --shadow-sm: 0 1px 3px rgba(22, 58, 84, 0.08);
+  --shadow-md: 0 4px 16px rgba(22, 58, 84, 0.12);
+  --shadow-lg: 0 12px 32px rgba(22, 58, 84, 0.16);
+
+  /* ---- 版面 Layout ------------------------------------------------------ */
+  --container-max: 72rem;      /* 1152px */
+  --container-narrow: 46rem;   /* 736px 文章欄寬 */
+
+  /* ---- 動態 Motion ------------------------------------------------------ */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- 焦點 Focus（無障礙）--------------------------------------------- */
+  --focus-ring: 3px solid var(--color-accent-500);
+  --focus-offset: 2px;
+}

@@ -1,0 +1,654 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import pilot from '../../data/pilot-content.json';
+
+// 第一階段：單親家庭基本收入實驗（2023/09–2025/08）。
+// 依團隊規格改版為七個區塊（docs/content-specs/02-pilot-program.md），文案逐字採用。
+//
+// 區塊三的互動：規格要求「點開會翻頁的方塊，四個都點開的話于媽媽造型就會變化」。
+// 于媽媽的插畫素材尚未進 repo，因此改以「四張都翻開後才揭露總結」保留同樣的互動意圖
+// ——探索完四個面向才看得到結論。插畫到位後可掛在 .reveal 內取代／補強文字揭露。
+//
+// 區塊二的影片為 UBI Taiwan 官方頻道的《生活改寫計畫》前導短片
+// （youtube RLU_vB81oQI，2026-08 由團隊指定），即首映會播放的前導片。
+// 仍待公開：紀錄片完整版（公開後於區塊五補上觀看連結）。
+
+const {
+  heroLines, why, howLead, howAmounts, howTail, questions,
+  yuQuote, yuStory, cards, cardsSummary, voices,
+  doc, media, academic, partners, next,
+} = pilot;
+
+// 翻卡正面：四張各取自官方紀錄片《生活改寫計畫》(youtube RLU_vB81oQI) 的實際畫面，
+// 主角就是于媽媽本人——這正是規格原案要的東西（2026-08 協會指示可自影片擷取）。
+//   生活環境 00:11 搬家後獨自整理堆滿雜物的住處
+//   生活壓力 00:57 罹癌就醫期間獨自走在街上
+//   工作狀態 01:23 在廚房工作
+//   社交關係 01:08 受邀分享參與計畫的心得，與夥伴交談
+// 每張都避開燒錄字幕（擷取後再裁掉下緣 16%）。
+//
+// 遮罩是上淡下濃的漸層，不是均勻壓黑：照片區平均僅 0.12，文字帶漸濃到 0.96。
+// 逐像素實測四張文字帶最差對比 8.5:1。
+// （前一版用整片 0.72 均勻遮罩，協會回饋「看起來都沒有背景圖」——確實如此。）
+const cardArt = [
+  { src: '/images/pilot-cards/env.webp',    alt: '于媽媽獨自整理搬家後堆滿雜物的住處' },
+  { src: '/images/pilot-cards/stress.webp', alt: '于媽媽就醫期間獨自走在長牆邊的街道上' },
+  { src: '/images/pilot-cards/work.webp',   alt: '于媽媽在廚房工作' },
+  { src: '/images/pilot-cards/social.webp', alt: '于媽媽與兩位夥伴交談，分享參與計畫的心得' },
+];
+
+// 見證者頭像（2026-09 協會提供）。順序與 pilot-content.json 的 voices 一致，
+// 以索引對應；原檔為 16:9 訪談定格，已裁成 1:1，詳見 public/images/voices/README.txt。
+const voiceFaces = [
+  '/images/voices/ykk.webp',    // 超級歪
+  '/images/voices/wu.webp',     // 巫彥德
+  '/images/voices/chang.webp',  // 張祐綾
+  '/images/voices/ko.webp',     // 葛如鈞
+  '/images/voices/tyler.webp',  // 羅泰 Tyler
+];
+
+// 合作夥伴 logo（2026-09 協會提供）。名稱順序與 pilot-content.json 一致，
+// 以索引對應；三組原檔有 v1/v2，選用理由見 public/images/partners/README.txt。
+const partnerLogos = [
+  { src: '/images/partners/lucky-light.webp', w: 246 },
+  { src: '/images/partners/ascent.webp',      w: 863 },
+  { src: '/images/partners/amorfati.webp',    w: 240 },
+  { src: '/images/partners/peitou.webp',      w: 318 },
+  { src: '/images/partners/ark.webp',         w: 240 },
+  { src: '/images/partners/adventist.webp',   w: 240 },
+  { src: '/images/partners/bien.webp',        w: 633 },
+];
+
+// 媒體報導依刊名分組：同一媒體多則報導併為一格（BIEN 有三則），
+// 讀者掃的是「誰報導過」，重複的刊名只會拉長清單
+const mediaByOutlet: { outlet: string; titles: string[] }[] = [];
+for (const m of media) {
+  const g = mediaByOutlet.find((x) => x.outlet === m.outlet);
+  if (g) g.titles.push(m.title);
+  else mediaByOutlet.push({ outlet: m.outlet, titles: [m.title] });
+}
+---
+
+<BaseLayout
+  title="第一階段：單親家庭基本收入實驗｜UBI Taiwan"
+  description="台灣第一場基本收入實驗：2023 年 9 月起，為一個單親家庭連續兩年提供無條件現金。第一年每月 1 萬元、第二年每月 5 千元，並以影像與深度訪談記錄兩年之中的轉變。"
+  current="experiment-pilot"
+  ogImage="/images/紀錄片截圖-4.webp"
+>
+  <!-- ── 0. Hero ───────────────────────────────────────── -->
+  <section class="hero">
+    <img class="hero__bg" src="/images/紀錄片截圖-4.webp" alt="" aria-hidden="true" width="1600" height="900" />
+    <div class="hero__veil" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <p class="hero__kicker">第一階段 · 2023–2025 · 已完成</p>
+      <h1 class="hero__title">台灣第一場基本收入實驗</h1>
+      <p class="hero__sub">從一個家庭開始，重新想像我們的社會</p>
+      <div class="hero__lines">
+        {heroLines.map((l) => <p>{l}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 1. 這場行動的開始 ─────────────────────────────── -->
+  <section class="section" aria-labelledby="begin-title">
+    <div class="container">
+      <h2 id="begin-title" class="sec-title">這場行動的開始</h2>
+
+      <div class="begin">
+        <article class="begin__main">
+          <h3>為什麼台灣需要這個實驗？</h3>
+          <div class="begin__prose">
+            {why.map((l) => <p>{l}</p>)}
+          </div>
+        </article>
+
+        <div class="begin__side">
+          <article class="panel">
+            <h3>我們如何進行這次實驗？</h3>
+            {howLead.map((l) => <p>{l}</p>)}
+            <dl class="amounts">
+              {howAmounts.map((a) => {
+                const [term, value] = a.split('：');
+                return <div><dt>{term}</dt><dd>{value}</dd></div>;
+              })}
+            </dl>
+            {howTail.map((l) => <p>{l}</p>)}
+          </article>
+
+          <article class="panel panel--accent">
+            <h3>這個實驗想回答什麼？</h3>
+            <ul class="asks">
+              {questions.map((q) => <li>{q}</li>)}
+            </ul>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. 于媽媽的故事 ───────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="story-title">
+    <div class="container">
+      <h2 id="story-title" class="sec-title">受試者于媽媽的故事</h2>
+
+      <div class="story">
+        <div class="story__media">
+          <figure class="story__video">
+            <div class="video-frame">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/RLU_vB81oQI"
+                title="JUJI × UBI Taiwan《生活改寫計畫》前導短片"
+                loading="lazy"
+                allowfullscreen
+                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+              ></iframe>
+            </div>
+            <figcaption>
+              《生活改寫計畫》前導短片——首映會播放的版本。
+              <span class="story__pending">完整紀錄片公開後，會再補上觀看連結。</span>
+            </figcaption>
+          </figure>
+          <blockquote class="story__quote">
+            <p>{yuQuote.text}</p>
+            <cite>{yuQuote.by}</cite>
+          </blockquote>
+        </div>
+        <div class="story__text">
+          {yuStory.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. 實驗帶來的啟發（翻頁卡）────────────────────── -->
+  <section class="section" aria-labelledby="insight-title" data-flipdeck>
+    <div class="container">
+      <div class="insight__head">
+        <div>
+          <h2 id="insight-title" class="sec-title">實驗帶來的啟發</h2>
+          <p class="insight__hint">四個面向，<span class="hl">翻開卡片</span>看見改變。</p>
+        </div>
+        <p class="insight__count" data-count aria-live="polite">已翻開 0 / 4</p>
+      </div>
+
+      <ul class="deck">
+        {cards.map((c, i) => (
+          <li>
+            <button type="button" class="flip" aria-pressed="false">
+              <span class="flip__inner">
+                <span
+                  class="flip__face flip__face--front"
+                  role="img"
+                  aria-label={cardArt[i].alt}
+                  style={`background-image: linear-gradient(to bottom, rgba(22,58,84,.06) 0%, rgba(22,58,84,.20) 48%, rgba(22,58,84,.86) 70%, rgba(22,58,84,.96) 100%), url('${cardArt[i].src}')`}
+                >
+                  <span class="flip__title">{c.title}</span>
+                  <span class="flip__cue">
+                    <svg viewBox="0 0 16 16" width="15" height="15" fill="none"
+                         stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true">
+                      <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9" />
+                      <path d="M12 1.5v3h-3" />
+                    </svg>
+                    翻開看看
+                  </span>
+                </span>
+                <span class="flip__face flip__face--back">
+                  <span class="flip__q">{c.quote}</span>
+                  <span class="flip__points">
+                    {c.points.map((p) => <span class="flip__point">{p}</span>)}
+                  </span>
+                </span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div class="reveal" data-reveal hidden>
+        {cardsSummary.map((line, i) => (
+          <p class={i === cardsSummary.length - 1 ? 'reveal__punch' : 'reveal__line'}>{line}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. 專家與公眾人物 ─────────────────────────────── -->
+  <section class="section section--inverse" aria-labelledby="voices-title">
+    <div class="container">
+      <h2 id="voices-title" class="sec-title sec-title--light">專家與公眾人物怎麼看？</h2>
+      <ul class="voices">
+        {voices.map((v, i) => (
+          <li class="voice">
+            <p class="voice__q">{v.quote}</p>
+            <div class="voice__who">
+              <img
+                class="voice__face"
+                src={voiceFaces[i]}
+                alt={`紀錄片中受訪的${v.name}`}
+                width="520" height="520" loading="lazy"
+              />
+              <span>
+                <span class="voice__name">{v.name}</span>
+                <span class="voice__role">{v.role}</span>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 5. 紀錄片 ─────────────────────────────────────── -->
+  <section class="section section--muted" aria-labelledby="doc-title">
+    <div class="container">
+      <div class="doc">
+        <div>
+          <p class="eyebrow">2025 年 8 月首映</p>
+          <h2 id="doc-title">基本收入實驗紀錄片</h2>
+          {doc.map((p) => <p>{p}</p>)}
+          <p class="doc__pending">完整紀錄片公開後，此處會加上觀看連結。</p>
+        </div>
+        <ul class="doc__stats">
+          <li><b>140+</b><span>首映會出席人數</span></li>
+          <li><b>2</b><span>年的影像追蹤</span></li>
+          <li><b>7</b><span>則媒體報導</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. 影響力成果 ─────────────────────────────────── -->
+  <section class="section" aria-labelledby="impact-title">
+    <div class="container">
+      <h2 id="impact-title" class="sec-title">影響力成果</h2>
+
+      <div class="cols">
+        <div>
+          <h3 class="cols__h">媒體報導</h3>
+          <ul class="reports">
+            {mediaByOutlet.map((g) => (
+              <li>
+                <span class="reports__outlet">{g.outlet}</span>
+                <span class="reports__list">
+                  {g.titles.map((t) => <span class="reports__t">{t}</span>)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="cols__note"><a href="/about/press/">完整媒體報導請見媒體專區 →</a></p>
+        </div>
+
+        <div>
+          <h3 class="cols__h">學術發表</h3>
+          <ul class="acad">
+            {academic.map((a) => <li>{a}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="cols__h cols__h--wide">合作夥伴</h3>
+      <ul class="partners">
+        {partners.map((p, i) => (
+          <li class="partner">
+            <img
+              src={partnerLogos[i].src}
+              alt={p}
+              width={partnerLogos[i].w}
+              height="240"
+              loading="lazy"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 7. 下一步 ─────────────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="next-title">
+    <div class="container">
+      <p class="eyebrow">第二階段 · 2026–2027</p>
+      <h2 id="next-title">下一步：擴大實驗</h2>
+      <div class="nextblock">
+        {next.map((p) => <p>{p}</p>)}
+      </div>
+      <div class="nextblock__cta">
+        <a class="btn btn--primary" href="/life-freedom/">認識生活自由計畫</a>
+        <a class="btn btn--outline" href="/impact/policy/">青年基本收入政策方向</a>
+      </div>
+      <p class="nextblock__why">
+        實驗是方法，制度才是目的——我們最終想推動的，
+        是讓基本收入成為台灣可以認真討論的政策選項。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sec-title { font-size: var(--text-2xl); margin-bottom: var(--space-8); }
+  .sec-title--light { color: var(--color-white); }
+
+  /* ── Hero ── */
+  .hero { position: relative; isolation: isolate; min-height: 78vh; display: grid; align-items: end; }
+  .hero__bg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 30%; z-index: -2;
+  }
+  .hero__veil {
+    position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(22,58,84,.32) 0%, rgba(22,58,84,.55) 45%, rgba(22,58,84,.88) 100%);
+  }
+  .hero__inner { padding-block: var(--space-24) var(--space-16); color: var(--color-white); }
+  .hero__kicker {
+    font-size: var(--text-sm); font-weight: var(--font-bold);
+    letter-spacing: .14em; color: var(--color-brand-200); margin-bottom: var(--space-4);
+  }
+  .hero__title {
+    font-size: clamp(2rem, 5.4vw, var(--text-4xl));
+    color: var(--color-white); margin-bottom: var(--space-3); text-wrap: balance;
+  }
+  .hero__sub {
+    font-size: var(--text-xl); font-weight: var(--font-medium);
+    color: var(--color-brand-100); margin-bottom: var(--space-8);
+  }
+  .hero__lines {
+    max-width: var(--container-narrow); color: var(--color-brand-100);
+    line-height: var(--leading-loose);
+  }
+  .hero__lines p { margin-bottom: var(--space-2); }
+
+  /* ── 1. 開始 ── */
+  .begin { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-8); }
+  .begin__main h3 { font-size: var(--text-xl); margin-bottom: var(--space-6); }
+  .begin__prose { line-height: var(--leading-loose); color: var(--color-ink-700); }
+  .begin__prose p { margin-bottom: var(--space-2); }
+  .begin__side { display: grid; gap: var(--space-6); align-content: start; }
+  .panel {
+    padding: var(--space-6);
+    border: 1px solid var(--color-ink-300);
+    border-top: 3px solid var(--color-brand-600);
+    background: var(--color-white);
+  }
+  .panel--accent { border-top-color: var(--color-warm-500); }
+  .panel h3 { font-size: var(--text-lg); margin-bottom: var(--space-4); }
+  .panel p { color: var(--color-ink-700); margin-bottom: var(--space-3); }
+
+  .amounts { display: grid; gap: var(--space-2); margin: var(--space-4) 0; }
+  .amounts > div {
+    display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4);
+    padding: var(--space-2) 0; border-bottom: 1px dashed var(--color-ink-300);
+  }
+  .amounts dt { color: var(--color-ink-700); font-size: var(--text-sm); }
+  .amounts dd {
+    margin: 0; font-weight: var(--font-bold); font-variant-numeric: tabular-nums;
+    color: var(--color-brand-700);
+  }
+
+  .asks { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-4); }
+  .asks li {
+    position: relative; padding-left: var(--space-6);
+    color: var(--color-ink-700); line-height: var(--leading-normal);
+  }
+  .asks li::before {
+    content: '?'; position: absolute; left: 0; top: -1px;
+    font-weight: 900; color: var(--color-warm-500);
+  }
+
+  /* ── 2. 故事 ── */
+  .story { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-12); align-items: start; }
+  .story__video { margin: 0; }
+  .video-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-brand-900);
+  }
+  .video-frame iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; border: 0;
+  }
+  .story__video figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-ink-700);
+    line-height: var(--leading-normal);
+  }
+  .story__pending {
+    display: block; margin-top: var(--space-1);
+    font-size: var(--text-xs); color: var(--color-ink-500);
+  }
+  .story__quote {
+    margin: var(--space-6) 0 0; padding-left: var(--space-6);
+    border-left: 3px solid var(--color-warm-500);
+  }
+  .story__quote p {
+    font-size: var(--text-lg); font-weight: var(--font-bold);
+    color: var(--color-brand-800); line-height: var(--leading-normal); margin-bottom: var(--space-3);
+  }
+  .story__quote p::before { content: '「'; }
+  .story__quote p::after { content: '」'; }
+  .story__quote cite { font-style: normal; font-size: var(--text-sm); color: var(--color-ink-500); }
+  .story__text { line-height: var(--leading-loose); color: var(--color-ink-700); font-size: var(--text-lg); }
+
+  /* ── 3. 翻頁卡 ── */
+  .insight__head {
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-8);
+  }
+  .insight__head .sec-title { margin-bottom: var(--space-1); }
+  .insight__hint { margin: 0; color: var(--color-ink-700); font-size: var(--text-base); }
+  /* 「翻開卡片」用螢光筆式底線突顯，呼應下方翻卡的互動 */
+  .hl {
+    font-weight: var(--font-bold);
+    color: var(--color-ink-900);
+    background: linear-gradient(transparent 58%, color-mix(in srgb, var(--color-warm-500) 42%, transparent) 58%);
+    padding-inline: 2px;
+  }
+  .insight__count {
+    margin: 0; font-size: var(--text-sm); font-weight: var(--font-bold);
+    color: var(--color-brand-700); font-variant-numeric: tabular-nums;
+  }
+
+  .deck {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);
+  }
+  .flip {
+    display: block; width: 100%; padding: 0; border: 0; background: transparent;
+    cursor: pointer; perspective: 1400px; font-family: inherit; text-align: left;
+  }
+  .flip__inner {
+    display: grid; position: relative; min-height: 17rem;
+    transition: transform 620ms var(--ease-out); transform-style: preserve-3d;
+  }
+  .flip[aria-pressed='true'] .flip__inner { transform: rotateY(180deg); }
+  .flip__face {
+    grid-area: 1 / 1; display: flex; flex-direction: column;
+    padding: var(--space-8); border-radius: var(--radius-md);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  /* 正面底圖由 cardArt 以 inline style 逐卡指定；漸層上淡下濃，
+     照片區平均遮罩僅 0.12（照片看得清楚），文字帶漸濃到 0.96、實測對比 8.5:1。
+     內容靠下對齊，上半部完整留給畫面。 */
+  .flip__face--front {
+    justify-content: flex-end; align-items: flex-start;
+    gap: var(--space-4);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--color-brand-800);
+  }
+  .flip__title {
+    font-size: var(--text-2xl); font-weight: var(--font-bold);
+    color: var(--color-white); text-align: left;
+    text-shadow: 0 2px 12px rgba(11, 29, 42, 0.65);
+  }
+  /* 翻面提示：白底實心圓角鈕＋翻轉箭頭，取代對比不足的幽靈字樣；
+     hover 時箭頭轉半圈，預告「這會翻」 */
+  .flip__cue {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: var(--text-sm); font-weight: var(--font-bold);
+    color: var(--color-brand-800);
+    background: var(--color-white);
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-5);
+    box-shadow: 0 2px 10px rgba(11, 29, 42, 0.35);
+    transition: background var(--duration-base) var(--ease-out),
+                color var(--duration-base) var(--ease-out);
+  }
+  .flip:hover .flip__cue { background: var(--color-warm-500); color: var(--color-white); }
+  .flip__cue svg { transition: transform 380ms var(--ease-out); }
+  .flip:hover .flip__cue svg,
+  .flip:focus-visible .flip__cue svg { transform: rotate(180deg); }
+  .flip__face--back {
+    transform: rotateY(180deg);
+    background: var(--color-white); border: 1px solid var(--color-brand-600);
+    border-top: 3px solid var(--color-warm-500);
+    gap: var(--space-4);
+  }
+  .flip__q {
+    font-size: var(--text-lg); font-weight: var(--font-bold);
+    color: var(--color-brand-800); line-height: var(--leading-normal);
+  }
+  .flip__q::before { content: '「'; }
+  .flip__q::after { content: '」'; }
+  .flip__points { display: grid; gap: var(--space-2); }
+  .flip__point {
+    position: relative; padding-left: var(--space-4);
+    font-size: var(--text-sm); color: var(--color-ink-700); line-height: var(--leading-normal);
+  }
+  .flip__point::before {
+    content: ''; position: absolute; left: 0; top: .62em;
+    width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-brand-400);
+  }
+
+  .reveal {
+    margin-top: var(--space-12); padding: var(--space-12) var(--space-8);
+    text-align: center; border-top: 2px solid var(--color-warm-500);
+    animation: rise 700ms var(--ease-out) both;
+  }
+  .reveal__line { font-size: var(--text-lg); color: var(--color-ink-700); margin-bottom: var(--space-3); }
+  .reveal__punch {
+    font-size: clamp(1.75rem, 4.5vw, var(--text-4xl)); font-weight: 900;
+    color: var(--color-brand-700); margin: 0; text-wrap: balance;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flip__inner { transition: none; }
+    .reveal { animation: none; }
+  }
+
+  /* ── 4. 見證 ── */
+  .voices { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-8); }
+  .voice {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: var(--space-6); align-items: center;
+    padding-bottom: var(--space-8); border-bottom: 1px solid var(--color-brand-800);
+  }
+  .voice:last-child { border-bottom: 0; padding-bottom: 0; }
+  .voice__q {
+    margin: 0; font-size: var(--text-xl); font-weight: var(--font-bold);
+    color: var(--color-white); line-height: var(--leading-tight); text-wrap: balance;
+  }
+  .voice__q::before { content: '「'; }
+  .voice__q::after { content: '」'; }
+  /* 頭像放在名字旁而非引言旁：引言仍是主角，臉只是把說話的人補上 */
+  .voice__who {
+    display: flex; align-items: center; gap: var(--space-4); margin: 0;
+  }
+  .voice__face {
+    width: 4rem; height: 4rem; border-radius: 50%;
+    object-fit: cover; flex: none;
+    border: 2px solid var(--color-brand-700);
+  }
+  .voice__name { display: block; font-weight: var(--font-bold); color: var(--color-brand-100); }
+  .voice__role { display: block; margin-top: 2px; font-size: var(--text-sm); color: var(--color-brand-300); }
+
+  /* ── 5. 紀錄片 ── */
+  .doc { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--space-12); align-items: start; }
+  .doc p { color: var(--color-ink-700); line-height: var(--leading-loose); }
+  .doc__pending { font-size: var(--text-sm); color: var(--color-ink-500); }
+  .doc__stats { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); }
+  .doc__stats li { display: grid; gap: var(--space-1); border-left: 3px solid var(--color-brand-500); padding-left: var(--space-4); }
+  .doc__stats b { font-size: var(--text-3xl); line-height: 1; color: var(--color-brand-700); font-variant-numeric: tabular-nums; }
+  .doc__stats span { font-size: var(--text-sm); color: var(--color-ink-500); }
+
+  /* ── 6. 影響力 ── */
+  .cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-12); }
+  .cols__h {
+    font-size: var(--text-lg); padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-ink-900); margin-bottom: var(--space-4);
+  }
+  .cols__h--wide { margin-top: var(--space-16); }
+  .cols__note { margin-top: var(--space-4); font-size: var(--text-sm); }
+
+  .reports { list-style: none; margin: 0; padding: 0; display: grid; }
+  .reports li {
+    display: grid; grid-template-columns: 6rem 1fr; gap: var(--space-4);
+    padding: var(--space-4) 0; border-bottom: 1px solid var(--color-ink-100); align-items: start;
+  }
+  .reports__outlet { font-size: var(--text-sm); font-weight: var(--font-bold); color: var(--color-brand-700); }
+  .reports__list { display: grid; gap: var(--space-2); }
+  .reports__t { font-size: var(--text-sm); color: var(--color-ink-700); line-height: 1.6; }
+
+  .acad { margin: 0; padding-left: var(--space-6); display: grid; gap: var(--space-4); }
+  .acad li { color: var(--color-ink-700); font-size: var(--text-sm); line-height: var(--leading-normal); }
+
+  /* Logo 列：七組 logo 的長寬比差異很大（從 1:1 到 3.6:1），
+     因此固定高度、寬度自適應，用 gap 而非等寬格線來排。
+     名稱放在 alt，視覺上不重複標示。 */
+  .partners {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--space-8) var(--space-12);
+  }
+  .partner img {
+    height: 3.25rem; width: auto; display: block;
+    filter: grayscale(1); opacity: .72;
+    transition: filter var(--duration-base) var(--ease-out),
+                opacity var(--duration-base) var(--ease-out);
+  }
+  .partner img:hover { filter: none; opacity: 1; }
+
+  @media (max-width: 560px) {
+    .partners { gap: var(--space-6) var(--space-8); }
+    .partner img { height: 2.75rem; }
+  }
+
+  /* ── 7. 下一步 ── */
+  .nextblock { max-width: var(--container-narrow); color: var(--color-ink-700); line-height: var(--leading-loose); }
+  .nextblock__cta { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
+
+  @media (max-width: 960px) {
+    .begin, .story, .doc, .cols { grid-template-columns: 1fr; gap: var(--space-8); }
+    .voice { grid-template-columns: 1fr; gap: var(--space-3); }
+  }
+  @media (max-width: 640px) {
+    .deck { grid-template-columns: 1fr; }
+    .reports li { grid-template-columns: 1fr; gap: var(--space-1); }
+    .hero { min-height: 68vh; }
+  }
+</style>
+
+<script>
+  // 翻頁卡：四張都翻開後才揭露總結——探索完四個面向才看得到結論。
+  const deck = document.querySelector('[data-flipdeck]');
+  if (deck) {
+    const flips = Array.from(deck.querySelectorAll<HTMLButtonElement>('.flip'));
+    const counter = deck.querySelector<HTMLElement>('[data-count]');
+    const reveal = deck.querySelector<HTMLElement>('[data-reveal]');
+    const seen = new Set<number>();
+
+    flips.forEach((flip, i) => {
+      flip.addEventListener('click', () => {
+        const open = flip.getAttribute('aria-pressed') === 'true';
+        flip.setAttribute('aria-pressed', String(!open));
+        if (!open) seen.add(i);
+
+        if (counter) counter.textContent = `已翻開 ${seen.size} / ${flips.length}`;
+        if (reveal && seen.size === flips.length && reveal.hidden) reveal.hidden = false;
+      });
+    });
+  }
+</script>

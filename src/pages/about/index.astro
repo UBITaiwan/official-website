@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+// 關於我們：內容對應 ubitaiwan.org/zh/about/
+// 2026-08 調整：補充組織架構與志工招募區塊（資料來源：2025 年度報告書、行動里程碑頁），
+// 團隊頭像目前僅有理事長與公關組組長（取自協會對外簡報），其餘待協會提供正式照片。
+
+const team = [
+  { name: '羅泰 Tyler Prochazka', role: '創辦人 | 創會理事長' },
+  { name: '蘇嘉冠', role: '理事長 | 組織發展組組長', img: '/images/team-su-chia-kuan.webp' },
+  { name: '魏嘉佑', role: '特別助理 | 研究實驗組組長' },
+  { name: '吳至威', role: '議題倡議組組長' },
+  { name: '李品逸', role: '公關組組長', img: '/images/team-lee-pin-yi.webp' },
+  { name: '黃怡菁', role: '設計組組長' },
+];
+
+const groups = [
+  { name: '組織發展組', desc: '組織治理、志工招募與夥伴關係經營' },
+  { name: '研究實驗組', desc: '基本收入實驗設計、執行與研究報告' },
+  { name: '議題倡議組', desc: '政策研究、立法交流與議題論述' },
+  { name: '公關組', desc: '媒體聯繫、社群經營與對外溝通' },
+  { name: '設計組', desc: '品牌視覺、活動設計與內容製作' },
+];
+---
+
+<BaseLayout
+  title="關於我們｜UBI Taiwan"
+  description="UBI Taiwan 台灣無條件基本收入協會：願景與文化、組織團隊與工作組介紹，以及加入志工的方式。"
+  current="about-index"
+>
+  <PageHero
+    image="/images/DSCF3040.webp"
+    alt="UBI Taiwan 成員在室內聚會的合影，十多位夥伴或坐或站，面對鏡頭微笑"
+    eyebrow="UBI Taiwan"
+    title="願景與文化"
+    focus="center 40%"
+    width={1024} heightAttr={683}
+  />
+
+  <section class="section section--subtle">
+    <div class="container container--narrow">
+      <h2>我們重視每位夥伴的聲音</h2>
+      <p>
+        開放、參與、共治共決是我們的核心精神。社會改革並非一蹴而就，但我們相信，我們正在討論的社會制度與願景無比重要。
+      </p>
+      <blockquote class="about-quote">
+        <p>我們的願景是，讓每個人都能<strong>好好生活</strong>，不只是生存。</p>
+        <p>
+          多一份<strong>餘裕</strong>，讓人們選擇真正想過的生活；多一分<strong>韌性</strong>，
+          讓我們能帶著任性，去實現屬於自己的「本該如此」。
+        </p>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="team-title">
+    <div class="container">
+      <h2 id="team-title">組織團隊</h2>
+      <ul class="team" role="list">
+        {team.map((m) => (
+          <li class="team__member">
+            {m.img ? (
+              <img class="team__photo" src={m.img} alt={`${m.name} 個人照`} width="88" height="88" loading="lazy" />
+            ) : (
+              <span class="team__avatar" aria-hidden="true">{m.name.slice(0, 1)}</span>
+            )}
+            <h3>{m.name}</h3>
+            <p>{m.role}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="groups-title">
+    <div class="container">
+      <h2 id="groups-title">五個工作組，一起完成倡議</h2>
+      <p class="container--narrow" style="margin-inline: 0;">
+        UBI Taiwan 成員由志工與少數兼職夥伴組成。我們依照志工的興趣與擅長，分成五個工作組，
+        每一組都有自己的討論空間與行動節奏，在組長的帶領下完成不同面向的倡議工作；
+        每月的月會則讓所有成員聚在一起，交流進度、一起解決困難。
+      </p>
+      <ul class="groups" role="list">
+        {groups.map((g) => (
+          <li class="group">
+            <h3 class="groups__name">{g.name}</h3>
+            <p>{g.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--inverse" aria-labelledby="join-title">
+    <div class="container container--narrow">
+      <h2 id="join-title">找到一片屬於你的小角落</h2>
+      <p>
+        我們每年春季定期招募新志工，讓青年透過專案與分組合作，在實際任務中貢獻影響力。
+        不論你來自什麼背景，只要你也在思考未來社會的理想樣貌，都歡迎加入我們。
+      </p>
+      <div class="join-actions">
+        <a class="btn btn--outline join-actions__outline" href="mailto:contact@ubitaiwan.org?subject=我想加入 UBI Taiwan 志工">寫信加入志工</a>
+        <a class="btn btn--warm" href="/support/">捐款支持</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-quote {
+    margin: var(--space-8) 0 0;
+    padding: var(--space-6) var(--space-8);
+    background: var(--color-white);
+    border-inline-start: 4px solid var(--color-brand-500);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .about-quote p { margin-bottom: var(--space-2); }
+  .about-quote p:last-child { margin-bottom: 0; }
+  .about-quote strong { color: var(--color-brand-700); }
+
+  .team {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+  .team__member { text-align: center; }
+  .team__member h3 { font-size: var(--text-lg); margin-bottom: var(--space-1); }
+  .team__member p { color: var(--color-ink-500); margin: 0; }
+  .team__photo {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto var(--space-4);
+    border: 3px solid var(--color-brand-100);
+  }
+  .team__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    background: var(--color-brand-100);
+    color: var(--color-brand-700);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    margin-bottom: var(--space-4);
+  }
+  @media (max-width: 860px) {
+    .team { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .team { grid-template-columns: 1fr; }
+  }
+
+  .groups {
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+  }
+  .groups__name {
+    font-size: var(--text-base);
+    color: var(--color-brand-700);
+  }
+  .groups .card p { margin: 0; font-size: var(--text-sm); color: var(--color-ink-500); }
+  @media (max-width: 1000px) {
+    .groups { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .groups { grid-template-columns: 1fr; }
+  }
+
+  .join-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+  .join-actions__outline {
+    border-color: var(--color-brand-200);
+    color: var(--color-white);
+  }
+  .join-actions__outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-white);
+  }
+  /* 拿掉 .card 後補上各自的界定：成員用細框、工作組用上緣色線 */
+  .team__member {
+    background: var(--color-white);
+    border: 1px solid var(--color-ink-300);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+  .group {
+    border-top: 3px solid var(--color-brand-600);
+    padding-top: var(--space-4);
+  }
+  .group p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+</style>

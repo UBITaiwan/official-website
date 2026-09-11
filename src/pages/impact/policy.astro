@@ -1,0 +1,1215 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+// 青年基本收入：政策方向
+//
+// 2026-08 新增。這頁存在的理由：協會投入最多的政策工作，
+// 過去只散見於 2025 年度報告的一個段落，等於沒有可見度。
+//
+// 內容範圍：2026-08 協會回覆「最理想是整份簡報都可以放進去，
+// 拋磚引玉就是我們的最大補丁，錯了也沒關係」，因此完整政策設計已納入，
+// 並依協會建議採折疊呈現（前半段是論述，折疊區是完整設計）。
+//
+// 這解除了本頁最初「只講問題意識與政策方向」的限制——那是上線第一版的
+// 暫行範圍，現已由內容擁有者授權放寬。
+//
+// 所有數字均逐項核算過與簡報一致：八項財源合計正好 8,210 億；
+// 500 萬人 × 15,515 元 × 12 個月 = 9,309 億（簡報標示 9,310 億）；
+// 缺口 1,100 億、分級收回回收 1,150 億。
+//
+// 資料來源：docs/new-input/Youth UBI Policy Proposal Tailor-made for Taiwan_2026 BIEN Congress.pdf
+// 與 Indo-Pacific Basic Income Summit 2027 in Taiwan.pdf
+// （UBI Taiwan 於 2026 BIEN Congress Toronto 發表，2026/08/20）。
+//
+// 普發現金年份經協會 2026-08 確認為 2023 與 2025 兩次，領取率皆超過 99%。
+
+// 三個結構性挑戰。數字皆為政府公開統計，屬於「問題描述」，
+// 不涉及提案的財源主張。
+//
+// 圖表全部改為原生 SVG（協會 2026-08 要求「圖表樣式要像簡報那樣」）。
+// 數值一律取自 2026 BIEN 簡報（協會指正：先前誤用 2025 版），且只畫簡報中
+// 實際標示的數字——沒有逐年資料的部分不重畫曲線，改以倍數長條或
+// 指數化斜線呈現，避免捏造出我沒有的時間序列。
+//
+// 少子化預算與生育率單位不同，刻意不做雙軸，改為同以 2018 年為 100 的指數。
+//
+// 註：簡報第 17 頁把生育率 1.06→0.695 標為「▼18%」，與其自身數據不符
+// （實算 −34.4%），第 16 頁標的「▼35%」才正確。本頁採 35%，已回報協會。
+// en 欄位是協會簡報中自創的英文標題，保留作為出處標記。
+const challenges = [
+  {
+    key: 'ai',
+    n: '01',
+    en: 'AI & Robotics',
+    title: 'AI 正在抽掉年輕人的第一階',
+    sum: '入門白領職缺跨產業消失，多數年輕人的職涯階梯正在快速不見。',
+    lede: '被自動化取代的不再只是重複性勞動，而是年輕人賴以入行的那一階。',
+    body: [
+      'AI 對就業的衝擊，最先落在入門職缺上。Anthropic 執行長 Dario Amodei 公開警告，AI 可能在五年內取代半數的入門白領工作。對已經有資歷的人來說，那是工具；對剛要進入職場的人來說，那是消失的第一階。',
+      '台灣的位置讓這件事更直接：我們生產全球超過六成的半導體、約九成的先進邏輯與 AI 晶片。台灣站在 AI 革命的正中心。科技業與資本已經為那個未來做好準備，但社會的大多數人呢？',
+    ],
+    stat: { v: '50', unit: '%', l: '入門白領工作可能在五年內被 AI 取代' },
+    chart: null,
+  },
+  {
+    key: 'wage',
+    n: '02',
+    en: 'Gen-Hopeless',
+    title: '經濟成長了，薪水沒有',
+    sum: '實質薪資長期停滯，勞動階級看不到翻轉的希望。',
+    lede: '四十五年來，台灣的實質 GDP 成長了 8.3 倍，實質經常性薪資只成長 2.6 倍。',
+    body: [
+      '更嚴重的是，這條線在近二十多年幾乎是平的。把時間收斂到最近二十年來看，同一段期間裡房價漲了 4.1 倍、股市漲了 6.4 倍、人均實質 GDP 也有 2.3 倍。資產都在成長，只是不成長在薪水上。',
+      '這個落差對年輕世代最殘酷。依勞退基金統計，25 歲以下的勞工有 57% 領不到基本工資；30 歲以下是 36.8%，35 歲以下是 30.5%，都高於全年齡的 25%。越年輕，處境越差。',
+      '家庭財富的差距也在拉開：最富有的 20% 與最貧窮的 20%，資產差距從 1991 年的 16.8 倍擴大到 2021 年的 66.9 倍。',
+    ],
+    stat: { v: '57', unit: '%', l: '25 歲以下勞工領不到基本工資' },
+    chart: 'multiple',
+  },
+  {
+    key: 'birth',
+    n: '03',
+    en: 'Social Crisis',
+    title: '不是不想生，是不敢想',
+    sum: '連續 67 個月死亡多於出生，年輕人正在放棄婚姻與生育。',
+    lede: '2025 年台灣的生育率降到 0.695，是全世界最低，已經低於韓國。',
+    body: [
+      '台灣連續 67 個月死亡人數多於出生人數。新生兒數量從 2018 年到 2025 年減少超過四成，2026 年預計首次跌破十萬人。',
+      '政府不是沒有努力。少子化相關的年度預算在同一段期間成長了 4.9 倍，從 257 億元增加到超過 1,254 億元，但生育率仍然下降了 35%。這說明問題不在補助的多寡，而在年輕人對未來的整體信心。當生活本身沒有餘裕，生養下一代就不會進入選項。',
+    ],
+    stat: { v: '0.695', unit: '', l: '2025 年生育率，全球最低' },
+    chart: 'budget',
+  },
+];
+
+// 政策方向：為什麼從青年開始
+const directions = [
+  {
+    t: '職涯轉換的緩衝',
+    d: '當入門職缺正在消失，年輕人需要的不是更多競爭，而是一段能夠轉職、進修、甚至失敗的餘裕。基本收入提供的是承擔風險的本錢。',
+  },
+  {
+    t: '社會流動與世代公平',
+    d: '在資產快速集中的結構下，靠薪水已經很難翻身。無條件的基本給付，是把成長的果實重新分配一部分回到起步階段的人身上。',
+  },
+  {
+    t: '育兒的安全網',
+    d: '直接減輕養育的經濟壓力，也重建年輕世代對未來的信心。願不願意生養下一代，取決於對自己人生的預期，而不只是一次性的生育獎勵。',
+  },
+];
+
+// ── 完整政策設計（折疊區）──────────────────────────────
+// 依協會授權納入。這是提案，不是定案；協會自己的定位是「拋磚引玉」。
+
+// 財源：八項，合計 8,210 億元／年（2028 年度規劃）
+const funding = [
+  { l: '營業稅', v: 3700, now: '5%', to: '8%', who: '企業', why: '台灣長期停在 5%，低於多數亞洲鄰國' },
+  { l: '資本利得稅', v: 1280, now: '12%', to: '15%', who: '法人投資者', why: '最低稅負制稅率低於國際水準' },
+  { l: '地價稅', v: 1020, now: '公告地價為市價 19.6%', to: '提高至 40%', who: '土地所有人', why: '公告地價長期低估，形成實質稅負不均' },
+  { l: '主權基金', v: 600, now: '尚未設立', to: '3 兆規模、撥用 2% 報酬', who: '基金投資收益', why: '參考阿拉斯加模式，長期公共收益' },
+  { l: '碳稅', v: 600, now: '碳費制度', to: '每噸 300 元、擴大範圍', who: '排碳企業', why: '符合國際趨勢與污染者付費原則' },
+  { l: '當沖稅', v: 550, now: '0.15%', to: '0.30%', who: '當日沖銷交易者', why: '回歸市場常態，取消暫時性優惠' },
+  { l: '債券交易稅', v: 320, now: '0%', to: '0.10%', who: '法人投資者', why: '長期免稅缺乏正當性' },
+  { l: '土地增值稅', v: 140, now: '81.9% 的移轉免稅', to: '非農業使用納入課稅', who: '土地所有人', why: '嚴格審查農地免稅，落實租稅公平' },
+];
+
+// 分級稅收回機制：發放時人人有份，報稅季依所得級距回收
+const taxback = [
+  { tier: 'A', share: '60%', income: '50 萬元以下', back: '0%' },
+  { tier: 'B', share: '23%', income: '50–70 萬元', back: '20%' },
+  { tier: 'C', share: '14%', income: '70–100 萬元', back: '40%' },
+  { tier: 'D', share: '3%',  income: '100 萬元以上', back: '60%' },
+];
+---
+
+<BaseLayout
+  title="青年基本收入：政策方向｜UBI Taiwan"
+  description="UBI Taiwan 主張以 18–35 歲青年作為基本收入在台灣上路的起點。面對 AI 對入門職缺的衝擊、二十年的薪資停滯與全球最低的生育率，我們認為年輕世代最需要、也最能說服社會。"
+  current="impact-policy"
+  ogImage="/images/LINE_ALBUM_UBI-Taiwan-Panel_260131_41.webp"
+>
+  <PageHero
+    image="/images/LINE_ALBUM_UBI-Taiwan-Panel_260131_41.webp"
+    alt="2025 BIEN 全球大會現場，UBI Taiwan 成員發表台灣青年基本收入政策提案，投影幕顯示 Youth Basic Income Policy Proposal for Taiwan"
+    eyebrow="我們的行動"
+    title="青年基本收入：政策方向"
+    lead="實驗能證明基本收入對一個人有沒有用，但要讓它成為制度，得回答另一個問題：如果台灣要開始，該從哪裡開始？我們的答案是年輕世代。"
+    focus="center 40%"
+    width={1280} heightAttr={964}
+  />
+
+  <!-- ── 為什麼是現在 ─────────────────────────────────── -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="container container--narrow">
+      <h2 id="why-title" class="sec-title">為什麼我們開始談政策</h2>
+      <div class="prose">
+        <p>
+          UBI Taiwan 從 2017 年開始推動基本收入，做過遊行、擺攤、出版、國際串聯，
+          也完成了台灣第一場基本收入實驗。這些工作累積了理解與情感上的支持，
+          但要真正改變什麼，還缺一步：進入政策的對話場域。
+        </p>
+        <p>
+          我們必須有意識地從議題倡議走向政策影響。
+          在生成式 AI 爆發性成長、結構性失業與分配失衡同時發生的此刻，
+          「基本收入是否可行」第一次具備了被認真討論的社會條件。
+        </p>
+        <p class="lede">
+          所以我們決定踏出關鍵一步：為台灣量身打造一套青年基本收入的政策論述，
+          讓基本收入成為一個必須被回應的政策選項，而不只是一個理想。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 執行摘要（引用協會 2026 簡報的深色三欄版式）───── -->
+  <section class="summary" aria-labelledby="sum-title">
+    <div class="container">
+      <p class="summary__eyebrow">Problems &amp; Challenges — Executive Summary</p>
+      <h2 id="sum-title" class="summary__q">台灣社會正在面對什麼？為什麼要談基本收入？</h2>
+
+      <ol class="sum3">
+        {/* ① AI：環圈圖。單一比例值，用環圈最直接 */}
+        <li class="sum" style="background-image: linear-gradient(rgba(10,12,15,.87), rgba(10,12,15,.87)), url('/images/policy-bg/ai.webp')">
+          <p class="sum__en">AI &amp; Robotics</p>
+          <h3 class="sum__t"><span>AI 正在抽掉</span><span>年輕人的第一階</span></h3>
+          <p class="sum__d">入門白領職缺跨產業消失，多數年輕人的職涯階梯正在快速不見。</p>
+
+          <figure class="viz viz--donut">
+            <svg viewBox="0 0 150 150" role="img"
+                 aria-label="環圈圖：入門白領工作中，約 50% 可能在五年內被 AI 取代">
+              <circle class="viz__track" cx="75" cy="75" r="58" />
+              <circle class="viz__arc" cx="75" cy="75" r="58"
+                      stroke-dasharray="182.2 364.4" transform="rotate(-90 75 75)">
+                <title>50%</title>
+              </circle>
+              <text class="viz__big" x="75" y="82" text-anchor="middle">50%</text>
+            </svg>
+            <figcaption>入門白領工作可能在五年內被 AI 取代</figcaption>
+          </figure>
+        </li>
+
+        {/* ② 低薪：長條圖。四個年齡層的同一個指標，長條最好比 */}
+        <li class="sum" style="background-image: linear-gradient(rgba(10,12,15,.87), rgba(10,12,15,.87)), url('/images/policy-bg/wage.webp')">
+          <p class="sum__en">Gen-Hopeless</p>
+          <h3 class="sum__t"><span>經濟成長了，</span><span>薪水沒有</span></h3>
+          <p class="sum__d">實質薪資長期停滯，勞動階級看不到翻轉的希望。</p>
+
+          <figure class="viz">
+            <p class="viz__cap">領不到基本工資的比例</p>
+            <svg viewBox="0 0 260 150" role="img"
+                 aria-label="長條圖：領不到基本工資的勞工比例，25 歲以下 57.0%、30 歲以下 36.8%、35 歲以下 30.5%、全年齡 25.0%">
+              {[
+                { l: '≤25 歲', v: 57.0 },
+                { l: '≤30 歲', v: 36.8 },
+                { l: '≤35 歲', v: 30.5 },
+                { l: '全年齡', v: 25.0 },
+              ].map((d, i) => {
+                const x = 8 + i * 63;
+                const h = (d.v / 60) * 96;
+                return (
+                  <>
+                    <rect class="viz__bar" x={x} y={120 - h} width="34" height={h} rx="4">
+                      <title>{d.l}：{d.v}%</title>
+                    </rect>
+                    <text class="viz__val" x={x + 17} y={120 - h - 7} text-anchor="middle">{d.v}%</text>
+                    <text class="viz__lab" x={x + 17} y="138" text-anchor="middle">{d.l}</text>
+                  </>
+                );
+              })}
+              <line class="viz__base" x1="4" y1="120" x2="256" y2="120" />
+            </svg>
+            <figcaption>越年輕，領不到基本工資的比例越高</figcaption>
+          </figure>
+        </li>
+
+        {/* ③ 少子化：斜線圖。只有頭尾兩個實際數字，就只畫兩點 */}
+        <li class="sum" style="background-image: linear-gradient(rgba(10,12,15,.87), rgba(10,12,15,.87)), url('/images/policy-bg/birth.webp')">
+          <p class="sum__en">Social Crisis</p>
+          <h3 class="sum__t"><span>不是不想生，</span><span>是不敢想</span></h3>
+          <p class="sum__d">連續 67 個月死亡多於出生，年輕人正在放棄婚姻與生育。</p>
+
+          <figure class="viz">
+            <p class="viz__cap">新生兒數（千人）</p>
+            <svg viewBox="0 0 260 150" role="img"
+                 aria-label="斜線圖：新生兒數從 2018 年的 18 萬 1,600 人降至 2025 年的 10 萬 7,800 人，減少四成">
+              <line class="viz__base" x1="30" y1="122" x2="240" y2="122" />
+              <line class="viz__slope" x1="52" y1="30" x2="216" y2="98" />
+              <circle class="viz__dot" cx="52" cy="30" r="6"><title>2018 年 181.6 千人</title></circle>
+              <circle class="viz__dot" cx="216" cy="98" r="6"><title>2025 年 107.8 千人</title></circle>
+              <text class="viz__val" x="52" y="18" text-anchor="middle">181.6</text>
+              <text class="viz__val" x="216" y="88" text-anchor="middle">107.8</text>
+              <text class="viz__lab" x="52" y="140" text-anchor="middle">2018</text>
+              <text class="viz__lab" x="216" y="140" text-anchor="middle">2025</text>
+              <text class="viz__delta" x="134" y="76" text-anchor="middle">▼ 四成</text>
+            </svg>
+            <figcaption>2026 年預計首次跌破十萬人</figcaption>
+          </figure>
+        </li>
+      </ol>
+
+      <p class="summary__src">
+        資料來源：政府公開統計（勞動部、勞退基金、內政部、衛福部、國家發展委員會）
+      </p>
+    </div>
+  </section>
+
+  <!-- ── 三個問題的詳述 ───────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="challenge-title">
+    <div class="container">
+      <h2 id="challenge-title" class="sec-title">這三件事，其實是同一個結構</h2>
+      <p class="sec-lead">
+        它們各自都被討論過，但承受最重的是同一群人：剛進入職場、正在決定要不要成家的年輕世代。
+      </p>
+
+      <ol class="challenges">
+        {challenges.map((c) => (
+          <li class={`ch ch--${c.key}`}>
+            <div class="ch__head">
+              <span class="ch__n" aria-hidden="true">{c.n}</span>
+              <div>
+                <h3 class="ch__title">{c.title}</h3>
+                <p class="ch__lede">{c.lede}</p>
+              </div>
+            </div>
+            <div class="ch__body">
+              <div class="ch__prose">
+                {c.body.map((p) => <p>{p}</p>)}
+              </div>
+              <figure class={`mini mini--${c.key}`} data-anim>
+                {c.key === 'ai' && (
+                  <svg viewBox="0 0 150 150" role="img"
+                       aria-label="環圈圖：入門白領工作中，約 50% 可能在五年內被 AI 取代">
+                    <circle class="mini__track" cx="75" cy="75" r="58" />
+                    <circle class="mini__arc" cx="75" cy="75" r="58"
+                            stroke-dasharray="182.2 364.4" transform="rotate(-90 75 75)">
+                      <title>50%</title>
+                    </circle>
+                    <text class="mini__big" x="75" y="83" text-anchor="middle">50%</text>
+                  </svg>
+                )}
+
+                {c.key === 'wage' && (
+                  <svg viewBox="0 0 260 150" role="img"
+                       aria-label="長條圖：領不到基本工資的勞工比例，25 歲以下 57.0%、30 歲以下 36.8%、35 歲以下 30.5%、全年齡 25.0%">
+                    {[
+                      { l: '≤25 歲', v: 57.0 },
+                      { l: '≤30 歲', v: 36.8 },
+                      { l: '≤35 歲', v: 30.5 },
+                      { l: '全年齡', v: 25.0 },
+                    ].map((d, i) => {
+                      const x = 8 + i * 63;
+                      const h = (d.v / 60) * 96;
+                      return (
+                        <>
+                          <rect class="mini__bar" x={x} y={120 - h} width="34" height={h} rx="4"
+                                style={`--d:${i * 110}ms`}>
+                            <title>{d.l}：{d.v}%</title>
+                          </rect>
+                          <text class="mini__val" x={x + 17} y={120 - h - 7} text-anchor="middle"
+                                style={`--d:${i * 110 + 260}ms`}>{d.v}%</text>
+                          <text class="mini__lab" x={x + 17} y="138" text-anchor="middle">{d.l}</text>
+                        </>
+                      );
+                    })}
+                    <line class="mini__base" x1="4" y1="120" x2="256" y2="120" />
+                  </svg>
+                )}
+
+                {c.key === 'birth' && (
+                  <svg viewBox="0 0 260 150" role="img"
+                       aria-label="斜線圖：新生兒數從 2018 年的 18 萬 1,600 人降至 2025 年的 10 萬 7,800 人，減少四成">
+                    <line class="mini__base" x1="30" y1="122" x2="240" y2="122" />
+                    <line class="mini__slope" x1="52" y1="30" x2="216" y2="98" />
+                    <circle class="mini__dot" cx="52" cy="30" r="6" style="--d:0ms"><title>2018 年 181.6 千人</title></circle>
+                    <circle class="mini__dot" cx="216" cy="98" r="6" style="--d:700ms"><title>2025 年 107.8 千人</title></circle>
+                    <text class="mini__val" x="52" y="18" text-anchor="middle" style="--d:200ms">181.6</text>
+                    <text class="mini__val" x="216" y="88" text-anchor="middle" style="--d:820ms">107.8</text>
+                    <text class="mini__lab" x="52" y="140" text-anchor="middle">2018</text>
+                    <text class="mini__lab" x="216" y="140" text-anchor="middle">2025</text>
+                    <text class="mini__delta" x="134" y="76" text-anchor="middle" style="--d:980ms">▼ 四成</text>
+                  </svg>
+                )}
+
+                <figcaption class="mini__cap">
+                  <b>{c.stat.v}{c.stat.unit}</b>
+                  <span>{c.stat.l}</span>
+                </figcaption>
+              </figure>
+            </div>
+            {c.chart === 'multiple' && (
+              <figure class="bigviz">
+                <p class="bigviz__cap">近二十年（2003–2025）的成長倍數</p>
+                <svg viewBox="0 0 640 210" role="img"
+                     aria-label="長條圖：2003 至 2025 年間，台灣股市指數成長 6.4 倍、房價指數 4.1 倍、實質人均 GDP 2.3 倍，實質經常性薪資僅 1.02 倍、幾乎沒有成長">
+                  {[
+                    { l: '台灣股市指數', v: 6.4, note: null },
+                    { l: '房價指數', v: 4.1, note: null },
+                    { l: '實質人均 GDP', v: 2.3, note: null },
+                    { l: '實質經常性薪資', v: 1.02, note: '幾乎沒有成長' },
+                  ].map((d, i) => {
+                    const y = 14 + i * 48;
+                    const w = (d.v / 7) * 390;
+                    return (
+                      <>
+                        <text class="bigviz__lab" x="0" y={y + 21}>{d.l}</text>
+                        <rect class="bigviz__bar" x="152" y={y} width={w} height="30" rx="4">
+                          <title>{d.l}：{d.v} 倍</title>
+                        </rect>
+                        <text class="bigviz__val" x={152 + w + 12} y={y + 21}>{d.v} 倍</text>
+                        {d.note && (
+                          <text class="bigviz__note" x={152 + w + 84} y={y + 21}>{d.note}</text>
+                        )}
+                      </>
+                    );
+                  })}
+                </svg>
+                <figcaption>
+                  股市、房價、人均產值都在成長，只有薪水停在原地，二十年間僅成長 2.3%。
+                  <span class="chart__src">
+                    數據出自 UBI Taiwan 於 2026 年 BIEN 多倫多大會發表的青年基本收入政策提案。
+                  </span>
+                </figcaption>
+              </figure>
+            )}
+            {c.chart === 'budget' && (
+              <figure class="bigviz">
+                <p class="bigviz__cap">以 2018 年為 100 的指數變化</p>
+                <svg viewBox="0 0 640 232" role="img"
+                     aria-label="斜線圖：以 2018 年為基準 100，少子化年度預算到 2025 年上升到 488，同期生育率下降到 66">
+                  <line class="bigviz__base" x1="118" y1="198" x2="470" y2="198" />
+                  <text class="bigviz__lab" x="118" y="220" text-anchor="middle">2018</text>
+                  <text class="bigviz__lab" x="470" y="220" text-anchor="middle">2025</text>
+                  <text class="bigviz__lab" x="110" y="166" text-anchor="end">100</text>
+
+                  <line class="bigviz__line is-budget" x1="118" y1="162" x2="470" y2="28" />
+                  <circle class="bigviz__dot is-budget" cx="118" cy="162" r="7"><title>2018 年 指數 100</title></circle>
+                  <circle class="bigviz__dot is-budget" cx="470" cy="28" r="7"><title>2025 年 指數 488</title></circle>
+                  <text class="bigviz__series is-budget" x="484" y="26">少子化預算 488</text>
+                  <text class="bigviz__note" x="484" y="44">257 億 → 1,254 億元</text>
+
+                  <line class="bigviz__line is-birth" x1="118" y1="162" x2="470" y2="184" />
+                  <circle class="bigviz__dot is-birth" cx="470" cy="184" r="7"><title>2025 年 指數 66</title></circle>
+                  <text class="bigviz__series is-birth" x="484" y="182">生育率 66</text>
+                  <text class="bigviz__note" x="484" y="200">1.06 → 0.695</text>
+                </svg>
+                <figcaption>
+                  預算成長到將近五倍，生育率仍然下降三成五。問題不在補助的多寡。
+                  <span class="chart__src">
+                    兩個指標單位不同，因此同以 2018 年為 100 換算成指數並列，避免雙軸造成誤讀。
+                    數據出自 UBI Taiwan 2026 年 BIEN 大會提案簡報。
+                  </span>
+                </figcaption>
+              </figure>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 政策方向 ─────────────────────────────────────── -->
+  <section class="section" aria-labelledby="dir-title">
+    <div class="container">
+      <p class="eyebrow">政策方向</p>
+      <h2 id="dir-title" class="sec-title">為什麼從 18 到 35 歲開始</h2>
+
+      <div class="beach">
+        <div class="beach__text">
+          <p>
+            基本收入不可能一步到位。要讓它真的上路，需要一個最有說服力、
+            也最務實的起點。我們認為那個起點是年輕世代。
+          </p>
+          <p>
+            理由不是偏好，而是資料指向同一群人：
+            AI 衝擊最先打掉的是入門職缺，低薪比例最高的是 25 歲以下，
+            而 18 到 35 歲同時是決定要不要成家、生養、承擔風險的年紀。
+            三個問題在同一個年齡層交會。
+          </p>
+          <p class="beach__punch">
+            先從這裡開始，不是因為其他人不重要，
+            而是因為這是最能讓社會看見基本收入為什麼必要的地方。
+          </p>
+        </div>
+        <ul class="dirs">
+          {directions.map((d) => (
+            <li class="dir">
+              <h3 class="dir__t">{d.t}</h3>
+              <p class="dir__d">{d.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 台灣其實已經在路上 ───────────────────────────── -->
+  <section class="section section--muted" aria-labelledby="onpath-title">
+    <div class="container container--narrow">
+      <h2 id="onpath-title" class="sec-title">台灣其實已經走在路上</h2>
+      <div class="prose">
+        <p>
+          聽到「無條件發錢」，多數人的第一個反應是「做得到嗎」。
+          但如果看台灣自己做過的事，會發現答案已經寫在那裡了。
+        </p>
+        <p>
+          政府正在推動的 <strong>0 至 18 歲育兒津貼</strong>，
+          是定期、每月、以個人為單位、不審查用途地發放給所有未成年國民。這在制度設計上，已經是一種未成年版的基本收入。
+        </p>
+        <p>
+          而 2023 與 2025 兩次全民普發現金，<strong>領取率都超過 99%</strong>。
+          這證明台灣具備大規模、高效率、低門檻的發放能力，
+          而且民眾對這種形式並不陌生。
+        </p>
+        <p class="lede">
+          所以真正的問題不是「做不做得到」，
+          而是「要不要延伸到成年之後、最需要支撐的那段人生」。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 完整政策設計（折疊）──────────────────────────── -->
+  <section class="section" aria-labelledby="design-title">
+    <div class="container">
+      <p class="eyebrow">完整提案</p>
+      <h2 id="design-title" class="sec-title">如果真的要做，具體長什麼樣子</h2>
+      <p class="sec-lead">
+        以下是提案的完整設計，依五個問題展開：給誰、發多少、怎麼發、錢從哪裡來、
+        以及配套。這是我們提出來供討論的版本，不是定案。用協會自己的話說，
+        這是一塊拋出去的磚。點開各段可以看細節。
+      </p>
+
+      <div class="acc">
+        <details class="acc__i">
+          <summary>
+            <span class="acc__n">1</span>
+            <span class="acc__q">給誰？</span>
+            <span class="acc__a">18–35 歲，約 500 萬人</span>
+          </summary>
+          <div class="acc__body">
+            <p>
+              基本收入的最終目標是全民，但要讓它真的上路，需要一個能被說服、
+              也負擔得起的起點。我們主張<strong>分階段導入，第一階段涵蓋 18 至 35 歲的青年</strong>，
+              全台約 500 萬人。
+            </p>
+            <p>
+              選擇這個年齡層的理由在前一段已經說明：AI 衝擊最先打掉入門職缺、
+              低薪比例最高的是 25 歲以下、而這也正是決定成家與生育的年紀。
+              三個結構性問題在同一群人身上交會。
+            </p>
+          </div>
+        </details>
+
+        <details class="acc__i">
+          <summary>
+            <span class="acc__n">2</span>
+            <span class="acc__q">發多少？</span>
+            <span class="acc__a">每月 15,515 元</span>
+          </summary>
+          <div class="acc__body">
+            <p>
+              金額的基準有很多種選擇：貧窮線、最低生活費、所得稅免稅額，
+              甚至馬斯克說的「普遍高收入」。我們採用<strong>最低生活費</strong>作為基準，因為它是政府既有的官方標準，代表「維持基本生活所需」，最容易被檢驗。
+            </p>
+            <dl class="calc">
+              <div><dt>對象人數</dt><dd>約 500 萬人</dd></div>
+              <div><dt>每月金額</dt><dd>15,515 元</dd></div>
+              <div><dt>發放月數</dt><dd>12 個月</dd></div>
+              <div class="calc__sum"><dt>年度支出</dt><dd>約 9,310 億元</dd></div>
+            </dl>
+            <p class="acc__note">
+              這個數字很大，相當於中央政府年度總預算的三分之一左右。
+              下一段就是回答這筆錢從哪裡來。
+            </p>
+          </div>
+        </details>
+
+        <details class="acc__i">
+          <summary>
+            <span class="acc__n">3</span>
+            <span class="acc__q">怎麼發？</span>
+            <span class="acc__a">先用現金，數位貨幣是下一步</span>
+          </summary>
+          <div class="acc__body">
+            <p>
+              發放方式有兩種路線。我們主張<strong>第一步先用一般貨幣</strong>，
+              理由是台灣已經證明做得到，而且民眾熟悉，普發現金的領取率兩次都超過 99%。
+            </p>
+            <div class="vs">
+              <div class="vs__col">
+                <h4>一般貨幣（主張的第一步）</h4>
+                <ul>
+                  <li>政策效果看得見、感受得到</li>
+                  <li>政府已有大規模普發的實際經驗</li>
+                  <li>民眾不需要學新東西，阻力最小</li>
+                </ul>
+              </div>
+              <div class="vs__col vs__col--alt">
+                <h4>央行數位貨幣（CBDC）</h4>
+                <ul>
+                  <li>由央行直接發給人民，沒有貨幣乘數效應</li>
+                  <li>可程式化，能引導特定用途或行為</li>
+                  <li>資料可分析，政策成效能被實際衡量與微調</li>
+                </ul>
+              </div>
+            </div>
+            <p class="acc__note">
+              先用現金讓社會認識基本收入的好處，政府也比較敢跨出第一步；
+              數位貨幣的可能性留到制度站穩之後再談。
+            </p>
+          </div>
+        </details>
+
+        <details class="acc__i">
+          <summary>
+            <span class="acc__n">4</span>
+            <span class="acc__q">錢從哪裡來？</span>
+            <span class="acc__a">八項財源，年度 8,210 億元</span>
+          </summary>
+          <div class="acc__body">
+            <p>
+              這是整份提案最需要被檢驗的部分。我們的原則是：
+              <strong>不新增針對薪資所得的稅</strong>，而是調整長期偏低的資本與土地稅負，
+              並開闢符合國際趨勢的新財源。
+            </p>
+
+            <figure class="bigviz">
+              <p class="bigviz__cap">八項財源的規模（億元／年，2028 年度規劃）</p>
+              <svg viewBox="0 0 640 400" role="img"
+                   aria-label="長條圖：八項財源規模，營業稅 3,700 億、資本利得稅 1,280 億、地價稅 1,020 億、主權基金 600 億、碳稅 600 億、當沖稅 550 億、債券交易稅 320 億、土地增值稅 140 億，合計 8,210 億元">
+                {funding.map((d, i) => {
+                  const y = 10 + i * 46;
+                  const w = (d.v / 4000) * 380;
+                  return (
+                    <>
+                      <text class="bigviz__lab" x="0" y={y + 21}>{d.l}</text>
+                      <rect class="bigviz__bar" x="140" y={y} width={w} height="28" rx="4">
+                        <title>{d.l}：{d.v} 億元</title>
+                      </rect>
+                      <text class="bigviz__val" x={140 + w + 12} y={y + 21}>
+                        {d.v.toLocaleString()}
+                      </text>
+                    </>
+                  );
+                })}
+              </svg>
+              <figcaption>
+                合計 8,210 億元。最大一筆是營業稅由 5% 調升至 8%，占四成五。
+                <span class="chart__src">數據出自 UBI Taiwan 2026 年 BIEN 大會提案簡報。</span>
+              </figcaption>
+            </figure>
+
+            <div class="tablewrap">
+              <table class="ftab">
+                <caption class="visually-hidden">八項財源的現行制度、建議調整與負擔對象</caption>
+                <thead>
+                  <tr><th scope="col">項目</th><th scope="col">現行</th><th scope="col">建議調整</th><th scope="col">負擔對象</th><th scope="col">估計財源</th></tr>
+                </thead>
+                <tbody>
+                  {funding.map((d) => (
+                    <tr>
+                      <th scope="row">{d.l}</th>
+                      <td>{d.now}</td>
+                      <td>{d.to}</td>
+                      <td>{d.who}</td>
+                      <td class="ftab__v">{d.v.toLocaleString()} 億</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="acc__note">
+              每一項的理由都不只是「需要錢」：營業稅偏低於亞洲鄰國、資本利得稅低於國際水準、
+              公告地價僅為市價的兩成、逾八成土地移轉免徵增值稅、債券交易長期免稅。
+              這些調整本身就是租稅公平的議題。
+            </p>
+          </div>
+        </details>
+
+        <details class="acc__i">
+          <summary>
+            <span class="acc__n">5</span>
+            <span class="acc__q">配套措施</span>
+            <span class="acc__a">分級收回機制補上缺口</span>
+          </summary>
+          <div class="acc__body">
+            <p>
+              財源 8,210 億元，年度支出 9,310 億元，中間還差 <strong>1,100 億元</strong>。
+              補上這個缺口的方式不是減少發放，而是<strong>分級稅收回機制</strong>：發放時人人有份、不做資產調查，等到報稅季再依所得級距回收一部分。
+            </p>
+            <div class="tablewrap">
+              <table class="ftab ftab--tb">
+                <caption class="visually-hidden">分級稅收回機制的四個級距</caption>
+                <thead>
+                  <tr><th scope="col">級距</th><th scope="col">佔青年比例</th><th scope="col">年所得</th><th scope="col">收回比例</th></tr>
+                </thead>
+                <tbody>
+                  {taxback.map((t) => (
+                    <tr>
+                      <th scope="row">{t.tier}</th>
+                      <td>{t.share}</td>
+                      <td>{t.income}</td>
+                      <td class="ftab__v">{t.back}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p>
+              六成的青年年所得在 50 萬元以下，完全不需要回收；
+              所得越高回收越多。這樣既保留了無條件發放「不審查、不標籤」的精神，
+              又讓實際的財政負擔集中在真正需要的人身上。估計可回收約 1,150 億元，
+              剛好補上缺口。
+            </p>
+            <h4 class="acc__h">還在討論中的其他方向</h4>
+            <div class="more3">
+              <div>
+                <h5>其他可能財源</h5>
+                <p>機器人稅、資料稅、奢侈稅、遺產稅與贈與稅、菸酒健康捐</p>
+              </div>
+              <div>
+                <h5>互補制度</h5>
+                <p>安息年帳戶（Sabbatical Account）、負所得稅</p>
+              </div>
+              <div>
+                <h5>數位基礎建設</h5>
+                <p>新一代數位身分（eID）、數位錢包</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <p class="deck">
+        <a class="deck__link" href="/docs/UBI-Taiwan-青年基本收入政策提案-2026-BIEN.pdf">
+          <span class="deck__icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor"
+                 stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 1.5v9" /><path d="M4.5 7.5 8 11l3.5-3.5" /><path d="M2.5 13.5h11" />
+            </svg>
+          </span>
+          <span>
+            <b>下載完整提案簡報</b>
+            <span class="deck__meta">
+              2026 BIEN 多倫多大會發表版本．42 頁．PDF．英文
+            </span>
+          </span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── 接下來 ───────────────────────────────────────── -->
+  <section class="section section--inverse" aria-labelledby="next-title">
+    <div class="container">
+      <p class="eyebrow eyebrow--light">接下來</p>
+      <h2 id="next-title" class="sec-title sec-title--light">拋磚引玉</h2>
+      <div class="next">
+        <div class="next__text">
+          <p>
+            2027 年，印太基本收入高峰會將在台灣舉辦，這是 UBI Taiwan
+            在 2025 年巴西大會爭取到的主辦權，也是台灣把這場討論帶進國內公共視野的機會。
+          </p>
+          <p>
+            我們把這套政策論述提出來，不是因為它已經完美，
+            而是希望它能成為一塊磚，讓更多人願意把自己的玉拿出來，
+            讓基本收入從「有沒有道理」的爭論，變成「該怎麼設計」的討論。
+          </p>
+        </div>
+        <div class="next__links">
+          <a class="btn btn--warm" href="/support/">捐款支持</a>
+          <a class="btn btn--outline btn--onDark" href="/impact/international/">看國際交流的進展</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // 詳述區小圖：進入視窗時繪出，之後每 10 秒重播一次。
+  //
+  // 漸進增強：隱藏狀態（.is-armed）只由這段程式碼加上，所以 JS 失效時
+  // 圖表本來就是完成狀態，只是不會動——不影響閱讀。
+  // prefers-reduced-motion 時完全不武裝：直接顯示，也不重播。
+  //
+  // 用單一全域計時器輪播「目前在視窗內」的圖，而不是每張圖各自計時。
+  // 這樣即使 IntersectionObserver 沒有如期回報（headless、極端捲動時序），
+  // 保險機制也能把圖標記為可見並讓重播照常運作——先前把迴圈綁在 IO 的
+  // 回呼裡，IO 一旦沒觸發，圖雖然會顯示但永遠不會動。
+  const REPLAY_MS = 10000;
+  const figs = Array.from(document.querySelectorAll<HTMLElement>('.mini[data-anim]'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (figs.length && !reduce) {
+    const visible = new Set<HTMLElement>();
+
+    // 重播一次。分成兩個影格：先在「過渡已關閉」的狀態下瞬間歸零，
+    // 下一個影格才把過渡打開並設回終點，瀏覽器才會真的重跑動畫。
+    const play = (el: HTMLElement) => {
+      el.classList.add('is-reset');
+      el.classList.remove('is-in');
+      void el.getBoundingClientRect();        // 讓歸零立即生效
+      requestAnimationFrame(() => {
+        el.classList.remove('is-reset');
+        void el.getBoundingClientRect();      // 過渡恢復後再讀一次
+        el.classList.add('is-in');
+      });
+    };
+
+    figs.forEach((f) => f.classList.add('is-armed'));
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            const el = e.target as HTMLElement;
+            if (e.isIntersecting) {
+              if (!visible.has(el)) { visible.add(el); play(el); }
+            } else {
+              visible.delete(el);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      figs.forEach((f) => io.observe(f));
+    }
+
+    // 保險：2 秒後仍未被標記為可見的圖，一律顯示並納入重播，
+    // 不留下空白的圖，也不留下永遠不動的圖。
+    window.setTimeout(() => {
+      figs.forEach((f) => {
+        if (!visible.has(f)) { visible.add(f); f.classList.add('is-in'); }
+      });
+    }, 2000);
+
+    // 單一計時器：只重播看得到的圖；分頁在背景時整輪跳過。
+    window.setInterval(() => {
+      if (document.hidden) return;
+      visible.forEach((el) => play(el));
+    }, REPLAY_MS);
+  }
+</script>
+
+<style>
+  .sec-title { font-size: var(--text-2xl); margin-bottom: var(--space-6); }
+  .sec-title--light { color: var(--color-white); }
+  .sec-lead {
+    max-width: 46rem; color: var(--color-ink-700);
+    line-height: var(--leading-loose); margin-bottom: var(--space-12);
+  }
+  .eyebrow--light { color: var(--color-brand-200); }
+
+  .prose p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .prose .lede {
+    font-size: var(--text-lg); color: var(--color-ink-900);
+    font-weight: var(--font-medium); margin-top: var(--space-6);
+  }
+
+  /* ── 執行摘要：刻意引用協會 2026 簡報的深色版式（近黑底＋金黃字）。
+     這是全站唯一使用這組顏色的地方，因為它是「引述那份簡報」，
+     不是新增一套品牌色。 ── */
+  /* 摘要區刻意做到「像投影片」的強度。三個關鍵：
+     ① 底色要真的黑——先前用深藍 #12293C，相對亮度是近黑的 2.7 倍，
+        整片就軟掉了；
+     ② 標題要大——簡報的標題約為內文的 3.2 倍且字重 900，
+        先前用 --text-xl（1.25 倍）是差距最大的地方；
+     ③ 要有材質——每欄墊一張壓到 13% 的照片，給景深與人的存在感。
+     暗罩 0.87 經逐像素實測：琥珀 7.4:1、白 13.6:1、內文 10.0:1。 */
+  .summary {
+    --deck-ink: #0A0C0F;
+    --deck-gold: #F2B44C;
+    --deck-text: #D6DEE5;
+    --deck-dim: #8A949E;
+    background: var(--deck-ink);
+    padding-block: var(--space-24);
+  }
+  .summary__eyebrow {
+    font-size: var(--text-xs); letter-spacing: .14em;
+    color: var(--deck-dim); margin-bottom: var(--space-4);
+  }
+  .summary__q {
+    font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 700;
+    color: var(--color-white); margin-bottom: var(--space-12);
+    text-wrap: balance; line-height: 1.35;
+  }
+
+  .sum3 {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 3px;
+  }
+  .sum {
+    padding: var(--space-8) var(--space-6) var(--space-8);
+    background-size: cover;
+    background-position: center;
+  }
+  .sum__en {
+    font-size: var(--text-xs); letter-spacing: .1em;
+    color: var(--deck-dim); margin-bottom: var(--space-2);
+  }
+  .sum__t {
+    font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+    font-weight: 900; letter-spacing: -.01em;
+    color: var(--deck-gold); margin: 0 0 var(--space-5);
+    line-height: 1.2;
+  }
+  /* 中文沒有詞距，自動換行會在詞中間斷開（「年／輕人」「成長／了」）。
+     改用明確的兩行結構——但全站 h3 有 text-wrap: balance，
+     它會重新平衡兩行、蓋掉這裡的斷點，所以必須關掉。 */
+  .sum__t { text-wrap: wrap; }
+  .sum__t > span { display: block; }
+  .sum__d {
+    color: var(--deck-text); line-height: var(--leading-loose);
+    margin: 0 0 var(--space-8); font-size: var(--text-base);
+  }
+  .sum__stat { margin: 0; display: grid; gap: var(--space-2); }
+  .sum__stat b {
+    font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 900; line-height: 1;
+    color: var(--deck-gold); font-variant-numeric: tabular-nums;
+  }
+  .sum__stat i {
+    font-style: normal; font-size: var(--text-xl); font-weight: 700;
+    color: var(--deck-gold); margin-left: .1em;
+  }
+  .sum__stat b + i { margin-left: -.15em; }
+  .sum__stat span {
+    font-size: var(--text-sm); color: var(--deck-text); line-height: 1.6;
+  }
+  /* ── 摘要區的圖：深藍底上的琥珀，單一系列所以不涉分類色衝突。
+     琥珀 #F2B44C 對 #12293C 對比 8.1:1；每個值都直接標在圖上，
+     不依賴顏色傳達資訊。 ── */
+  .viz { margin: var(--space-8) 0 0; }
+  .viz svg { width: 100%; height: auto; overflow: visible; }
+  .viz__cap {
+    font-size: var(--text-xs); color: var(--deck-dim);
+    margin: 0 0 var(--space-3); letter-spacing: .04em;
+  }
+  .viz figcaption {
+    margin-top: var(--space-3); font-size: var(--text-sm);
+    color: var(--deck-text); line-height: 1.6;
+  }
+  .viz--donut svg { max-width: 11rem; }
+
+  .viz__track { fill: none; stroke: rgba(255,255,255,.16); stroke-width: 15; }
+  .viz__arc {
+    fill: none; stroke: var(--deck-gold); stroke-width: 15; stroke-linecap: round;
+  }
+  .viz__big {
+    fill: var(--deck-gold); font-size: 2.6rem; font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+  /* 同一個系列的四根長條用同一個顏色。先前把後三根做半透明，
+     結果變成偏橄欖的「另一種顏色」，對單一系列是誤導。
+     最高的那根本來就最長，不需要再加顏色強調。 */
+  .viz__bar { fill: var(--deck-gold); }
+  .viz__base { stroke: rgba(255,255,255,.28); stroke-width: 1.5; }
+  .viz__slope { stroke: var(--deck-gold); stroke-width: 3; stroke-linecap: round; }
+  .viz__dot { fill: var(--deck-gold); }
+  .viz__val {
+    fill: var(--color-white); font-size: .82rem; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .viz__lab { fill: var(--deck-dim); font-size: .78rem; }
+  .viz__delta { fill: var(--deck-gold); font-size: .95rem; font-weight: 700; }
+
+  /* ── 詳述區的大圖：與摘要區同一套深色系（依協會回饋，不加底圖）。
+     倍數圖是單一指標的四個項目，因此四根同色——薪資那根「短」本身就是
+     訊息，再用顏色區分等於重複編碼。改以文字註記標出。
+     斜線圖是唯一需要分類色的地方：琥珀 #F2B44C ＋ 藍 #4B93CE
+     經 validate_palette 檢查，CVD ΔE 25.2、一般視覺 ΔE 30.2（門檻 15）。
+     註：琥珀的 OKLCH L 為 0.809，超出深色模式建議帶（0.48–0.67）。
+     這是刻意的——全頁沿用同一支金色的一致性優先，且兩色的分離度是
+     門檻的兩倍，另有直接標籤作為次要編碼。 ── */
+  .bigviz {
+    --viz-ink: #0A0C0F;
+    --viz-gold: #F2B44C;
+    --viz-blue: #4B93CE;
+    --viz-text: #D6DEE5;
+    --viz-dim: #8A949E;
+    margin: var(--space-8) 0 0; padding: var(--space-8);
+    background: var(--viz-ink); border-radius: var(--radius-md);
+  }
+  .bigviz svg { width: 100%; height: auto; overflow: visible; }
+  .bigviz__cap {
+    font-size: var(--text-sm); font-weight: var(--font-bold);
+    color: var(--color-white); margin: 0 0 var(--space-6);
+  }
+  .bigviz figcaption {
+    margin-top: var(--space-6); font-size: var(--text-sm);
+    color: var(--viz-text); line-height: 1.7;
+  }
+  .bigviz .chart__src { color: var(--viz-dim); }
+  .bigviz__bar { fill: var(--viz-gold); }
+  .bigviz__lab { fill: var(--viz-text); font-size: .84rem; }
+  .bigviz__val {
+    fill: var(--viz-gold); font-size: .95rem; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .bigviz__base { stroke: rgba(255,255,255,.26); stroke-width: 1.5; }
+  .bigviz__line { stroke-width: 3; stroke-linecap: round; fill: none; }
+  .bigviz__line.is-budget { stroke: var(--viz-gold); }
+  .bigviz__line.is-birth { stroke: var(--viz-blue); }
+  .bigviz__dot.is-budget { fill: var(--viz-gold); }
+  .bigviz__dot.is-birth { fill: var(--viz-blue); }
+  .bigviz__series { font-size: .88rem; font-weight: 700; }
+  .bigviz__series.is-budget { fill: var(--viz-gold); }
+  .bigviz__series.is-birth { fill: var(--viz-blue); }
+  .bigviz__note { fill: var(--viz-dim); font-size: .78rem; }
+
+  .summary__src {
+    margin: var(--space-12) 0 0; font-size: var(--text-xs); color: var(--deck-dim);
+  }
+
+  /* ── 三個問題 ── */
+  .challenges { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-16); }
+  .ch { --cat: var(--color-brand-600); }
+  .ch--ai { --cat: var(--color-cat-policy); }
+  .ch--wage { --cat: var(--color-cat-advocacy); }
+  .ch--birth { --cat: var(--color-cat-experiment); }
+
+  .ch__head {
+    display: grid; grid-template-columns: auto minmax(0,1fr); gap: var(--space-6);
+    align-items: start; padding-bottom: var(--space-6);
+    border-bottom: 2px solid var(--cat);
+  }
+  .ch__n {
+    font-size: var(--text-3xl); font-weight: 900; line-height: 1;
+    color: var(--cat); font-variant-numeric: tabular-nums;
+  }
+  .ch__title { font-size: var(--text-xl); margin: 0 0 var(--space-2); text-wrap: balance; }
+  .ch__lede { margin: 0; color: var(--color-ink-700); line-height: var(--leading-normal); }
+
+  .ch__body {
+    display: grid; grid-template-columns: minmax(0,7fr) minmax(0,4fr);
+    gap: var(--space-8); margin-top: var(--space-6); align-items: start;
+  }
+  .ch__prose p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .ch__prose p:last-child { margin-bottom: 0; }
+  /* ── 詳述區右欄的小圖 ──
+     原本這裡只是重複上方摘要已出現過的數字，資訊量是零。
+     改為同一組圖表，並在捲動進入視窗時逐步繪出。
+     深色卡片，與 .bigviz 同一套視覺。 */
+  .mini {
+    --deck-gold: #F2B44C;
+    --deck-text: #D6DEE5;
+    --deck-dim: #8A949E;
+    margin: 0; padding: var(--space-6) var(--space-5);
+    background: #0A0C0F; border-radius: var(--radius-md);
+  }
+  /* 圖表尺寸刻意小於摘要區：這裡是配在文字旁的插圖，不是海報。
+     太大會讓 01 段（左欄文字較短）左右失衡。 */
+  .mini svg {
+    width: 100%; height: auto; overflow: visible; display: block;
+    max-width: 15rem; margin-inline: auto;
+  }
+  .mini--ai svg { max-width: 9.5rem; }
+  .mini__cap {
+    margin-top: var(--space-4); padding-top: var(--space-4);
+    border-top: 1px solid rgba(255,255,255,.14);
+    display: grid; gap: var(--space-1);
+  }
+  .mini__cap b {
+    font-size: var(--text-2xl); font-weight: 900; line-height: 1;
+    color: var(--deck-gold); font-variant-numeric: tabular-nums;
+  }
+  .mini__cap span { font-size: var(--text-sm); color: var(--deck-text); line-height: 1.6; }
+
+  .mini__track { fill: none; stroke: rgba(255,255,255,.16); stroke-width: 15; }
+  .mini__arc { fill: none; stroke: var(--deck-gold); stroke-width: 15; stroke-linecap: round; }
+  .mini__big {
+    fill: var(--deck-gold); font-size: 2.2rem; font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+  .mini__bar { fill: var(--deck-gold); }
+  .mini__base { stroke: rgba(255,255,255,.28); stroke-width: 1.5; }
+  .mini__slope { stroke: var(--deck-gold); stroke-width: 3; stroke-linecap: round; }
+  .mini__dot { fill: var(--deck-gold); }
+  .mini__val {
+    fill: var(--color-white); font-size: .82rem; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .mini__lab { fill: var(--deck-dim); font-size: .78rem; }
+  .mini__delta { fill: var(--deck-gold); font-size: .95rem; font-weight: 700; }
+
+  /* ── 動畫 ──
+     隱藏狀態只由 JS 加上 .is-armed 才生效，因此沒有 JS 時圖表直接是完成狀態。
+     .is-in 由 IntersectionObserver 加上，觸發繪製。 */
+  .mini.is-armed .mini__arc {
+    stroke-dashoffset: 182.2;
+    transition: stroke-dashoffset 1.15s var(--ease-out) .1s;
+  }
+  .mini.is-armed.is-in .mini__arc { stroke-dashoffset: 0; }
+
+  .mini.is-armed .mini__big,
+  .mini.is-armed .mini__val,
+  .mini.is-armed .mini__delta {
+    opacity: 0;
+    transition: opacity .5s var(--ease-out) var(--d, 0ms);
+  }
+  .mini.is-armed.is-in .mini__big,
+  .mini.is-armed.is-in .mini__val,
+  .mini.is-armed.is-in .mini__delta { opacity: 1; }
+
+  .mini.is-armed .mini__bar {
+    transform: scaleY(0); transform-box: fill-box; transform-origin: bottom;
+    transition: transform .8s var(--ease-out) var(--d, 0ms);
+  }
+  .mini.is-armed.is-in .mini__bar { transform: scaleY(1); }
+
+  .mini.is-armed .mini__slope {
+    stroke-dasharray: 200; stroke-dashoffset: 200;
+    transition: stroke-dashoffset 1s var(--ease-out) .1s;
+  }
+  .mini.is-armed.is-in .mini__slope { stroke-dashoffset: 0; }
+
+  .mini.is-armed .mini__dot {
+    opacity: 0; transition: opacity .4s var(--ease-out) var(--d, 0ms);
+  }
+  .mini.is-armed.is-in .mini__dot { opacity: 1; }
+
+  /* 重播時先把過渡整個關掉、瞬間歸零，隔一個影格再開回來。
+     只靠移除／加回 class 加一次 reflow 並不可靠——瀏覽器可能把兩次
+     變更合併成「沒有變化」，動畫就不會重跑（實機確認過）。 */
+  .mini.is-reset * { transition: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mini.is-armed * { transition: none !important; }
+  }
+
+  /* 圖表出處註記（.chart 系列的其餘規則隨圖片式圖表一起移除） */
+  .chart__src { display: block; margin-top: var(--space-1); }
+
+  /* ── 政策方向 ── */
+  .beach { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,6fr); gap: var(--space-12); align-items: start; }
+  .beach__text p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .beach__punch {
+    font-size: var(--text-lg); color: var(--color-ink-900);
+    font-weight: var(--font-medium); border-left: 3px solid var(--color-warm-500);
+    padding-left: var(--space-5); margin-top: var(--space-6);
+  }
+  .dirs { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); }
+  .dir { padding-left: var(--space-6); border-left: 2px solid var(--color-brand-200); }
+  .dir__t { font-size: var(--text-lg); margin: 0 0 var(--space-2); color: var(--color-brand-800); }
+  .dir__d { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  /* ── 完整政策設計（折疊）── */
+  .acc { display: grid; gap: var(--space-3); margin-top: var(--space-12); }
+  .acc__i {
+    border: 1px solid var(--color-ink-300);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    overflow: hidden;
+  }
+  .acc__i[open] { border-color: var(--color-brand-500); }
+  .acc__i summary {
+    cursor: pointer; list-style: none;
+    display: grid; grid-template-columns: 2.25rem minmax(0,1fr) auto;
+    gap: var(--space-4); align-items: baseline;
+    padding: var(--space-6);
+    transition: background var(--duration-base) var(--ease-out);
+  }
+  .acc__i summary::-webkit-details-marker { display: none; }
+  .acc__i summary:hover { background: var(--surface-subtle); }
+  .acc__n {
+    display: grid; place-content: center;
+    width: 2.25rem; height: 2.25rem; border-radius: 50%;
+    background: var(--color-brand-50); color: var(--color-brand-700);
+    font-weight: var(--font-bold); font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    align-self: center;
+  }
+  .acc__i[open] .acc__n { background: var(--color-brand-600); color: var(--color-white); }
+  .acc__q { font-size: var(--text-lg); font-weight: var(--font-bold); color: var(--color-ink-900); }
+  .acc__a { font-size: var(--text-sm); color: var(--color-ink-500); text-align: right; }
+  .acc__body {
+    padding: 0 var(--space-6) var(--space-8);
+    border-top: 1px solid var(--color-ink-100);
+    padding-top: var(--space-6);
+  }
+  .acc__body > p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .acc__note {
+    font-size: var(--text-sm); color: var(--color-ink-500);
+    border-left: 2px solid var(--color-ink-300); padding-left: var(--space-5);
+  }
+  .acc__h { font-size: var(--text-base); margin: var(--space-8) 0 var(--space-4); color: var(--color-ink-900); }
+
+  /* 發放金額試算 */
+  .calc {
+    display: grid; gap: var(--space-3); margin: var(--space-6) 0;
+    padding: var(--space-6); background: var(--surface-subtle); border-radius: var(--radius-md);
+  }
+  .calc > div { display: flex; justify-content: space-between; gap: var(--space-4); align-items: baseline; }
+  .calc dt { color: var(--color-ink-700); font-size: var(--text-sm); }
+  .calc dd { margin: 0; font-weight: var(--font-bold); font-variant-numeric: tabular-nums; color: var(--color-ink-900); }
+  .calc__sum { border-top: 1px solid var(--color-brand-200); padding-top: var(--space-3); }
+  .calc__sum dd { color: var(--color-brand-700); font-size: var(--text-lg); }
+
+  /* 兩種發放方式對照 */
+  .vs { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--space-4); margin: var(--space-6) 0; }
+  .vs__col { padding: var(--space-6); background: var(--surface-subtle); border-radius: var(--radius-md); border-top: 3px solid var(--color-brand-500); }
+  .vs__col--alt { border-top-color: var(--color-ink-300); }
+  .vs__col h4 { font-size: var(--text-base); margin: 0 0 var(--space-4); color: var(--color-ink-900); }
+  .vs__col ul { margin: 0; padding-left: 1.1rem; }
+  .vs__col li { color: var(--color-ink-700); font-size: var(--text-sm); line-height: 1.75; margin-bottom: var(--space-2); }
+
+  /* 財源表 */
+  .tablewrap { overflow-x: auto; margin: var(--space-6) 0; }
+  .ftab { width: 100%; border-collapse: collapse; font-size: var(--text-sm); min-width: 40rem; }
+  .ftab--tb { min-width: 28rem; }
+  .ftab caption { text-align: left; }
+  .ftab th, .ftab td { padding: var(--space-3) var(--space-4); text-align: left; vertical-align: top; }
+  .ftab thead th {
+    font-size: var(--text-xs); color: var(--color-ink-500); font-weight: var(--font-bold);
+    border-bottom: 2px solid var(--color-ink-300); white-space: nowrap;
+  }
+  .ftab tbody th { color: var(--color-ink-900); font-weight: var(--font-bold); white-space: nowrap; }
+  .ftab tbody td { color: var(--color-ink-700); }
+  .ftab tbody tr { border-bottom: 1px solid var(--color-ink-100); }
+  .ftab__v { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--color-brand-700) !important; font-weight: var(--font-bold); }
+
+  .more3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-6); }
+  .more3 h5 { font-size: var(--text-sm); margin: 0 0 var(--space-2); color: var(--color-brand-700); }
+  .more3 p { margin: 0; font-size: var(--text-sm); color: var(--color-ink-700); line-height: 1.7; }
+
+  /* 完整簡報下載 */
+  .deck { margin: var(--space-12) 0 0; }
+  .deck__link {
+    display: inline-flex; align-items: center; gap: var(--space-5);
+    padding: var(--space-6) var(--space-8);
+    background: var(--surface-subtle);
+    border: 1px solid var(--color-brand-200);
+    border-radius: var(--radius-md);
+    text-decoration: none; color: var(--color-ink-900);
+    transition: background var(--duration-base) var(--ease-out),
+                border-color var(--duration-base) var(--ease-out);
+  }
+  .deck__link:hover { background: var(--color-brand-50); border-color: var(--color-brand-500); }
+  .deck__icon {
+    display: grid; place-content: center;
+    width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    background: var(--color-brand-600); color: var(--color-white); flex: none;
+  }
+  .deck__link b { display: block; color: var(--color-brand-800); }
+  .deck__meta {
+    display: block; margin-top: var(--space-1);
+    font-size: var(--text-sm); color: var(--color-ink-500);
+  }
+
+  /* ── 接下來 ── */
+  .next { display: grid; grid-template-columns: minmax(0,8fr) minmax(0,4fr); gap: var(--space-8); align-items: center; }
+  .next__text p { color: var(--color-brand-100); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .next__links { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .btn--onDark { border-color: rgba(255,255,255,.7); color: var(--color-white); }
+  .btn--onDark:hover { background: rgba(255,255,255,.12); color: var(--color-white); }
+
+  @media (max-width: 860px) {
+    .sum3 { grid-template-columns: 1fr; gap: 3px; }
+    .ch__head { grid-template-columns: 1fr; gap: var(--space-3); }
+    .ch__body, .beach, .next { grid-template-columns: 1fr; gap: var(--space-6); }
+    .vs, .more3 { grid-template-columns: 1fr; }
+    .acc__i summary { grid-template-columns: 2.25rem minmax(0,1fr); }
+    .acc__a { grid-column: 2; text-align: left; }
+  }
+</style>

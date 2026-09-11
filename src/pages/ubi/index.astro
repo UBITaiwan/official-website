@@ -1,0 +1,677 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ubi from '../../data/ubi-content.json';
+
+// 認識基本收入的第一頁：定義、BIEN 五大條件、誰在支持。
+// 文案逐字取自團隊規格（docs/content-specs/01-what-is-ubi.md），本頁不改寫內容。
+// 五大條件依規格採「icon 橫排 + 下方顯示詳細說明」，以 tablist 讓說明可切換，
+// 避免五段長文一次攤開變成制式清單。
+
+const { intro, bienLead, criteria, supporters, taiwan } = ubi;
+
+// icon 對應五大條件，順序與 criteria 一致
+const icons = ['calendar', 'cash', 'people', 'person-check', 'clipboard-x'];
+---
+
+<BaseLayout
+  title="什麼是基本收入（UBI）｜UBI Taiwan"
+  description="基本收入（UBI）是定期、無條件發放給所有人的現金。認識 BIEN 定義的五大條件，以及祖克柏、馬斯克、辛頓、阿特曼、楊安澤、李在明等人為何支持。"
+  current="ubi-what"
+>
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero__eyebrow">認識基本收入</p>
+      <h1 class="hero__title">
+        <span class="hero__letters" aria-hidden="true">
+          <span class="hero__letter"><b>U</b><i>niversal</i><em>人人皆有</em></span>
+          <span class="hero__letter"><b>B</b><i>asic</i><em>基本生活</em></span>
+          <span class="hero__letter"><b>I</b><i>ncome</i><em>收入</em></span>
+        </span>
+        <span class="visually-hidden">Universal Basic Income．全民基本收入</span>
+        <span class="hero__zh">什麼是基本收入？</span>
+      </h1>
+      <div class="hero__lead">
+        {intro.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 五大條件 ──────────────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="criteria-title">
+    <div class="container">
+      <p class="eyebrow">BIEN 定義</p>
+      <h2 id="criteria-title">符合基本收入的五個條件</h2>
+      <p class="criteria__lead">{bienLead}</p>
+
+      <div class="criteria">
+        <div class="criteria__tabs" role="tablist" aria-label="基本收入的五個條件">
+          {criteria.map((c, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="crit"
+              id={`crit-tab-${i}`}
+              aria-controls={`crit-panel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              <span class="crit__icon" aria-hidden="true">
+                <span class="crit__blob"></span>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  {icons[i] === 'calendar' && (
+                    <>
+                      <rect x="8" y="12" width="32" height="28" rx="3" />
+                      <path d="M8 20h32M16 8v8M32 8v8" />
+                      <path d="M16 27h4M26 27h4M16 34h4M26 34h4" />
+                    </>
+                  )}
+                  {icons[i] === 'cash' && (
+                    <>
+                      <rect x="6" y="14" width="36" height="20" rx="3" />
+                      <circle cx="24" cy="24" r="5" />
+                      <path d="M12 20v8M36 20v8" />
+                    </>
+                  )}
+                  {icons[i] === 'people' && (
+                    <>
+                      <circle cx="24" cy="14" r="5" />
+                      <path d="M14 38c0-5.5 4.5-10 10-10s10 4.5 10 10" />
+                      <circle cx="10" cy="21" r="4" /><circle cx="38" cy="21" r="4" />
+                      <path d="M4 38c0-4 2.7-7 6-7M44 38c0-4-2.7-7-6-7" />
+                    </>
+                  )}
+                  {icons[i] === 'person-check' && (
+                    <>
+                      <circle cx="20" cy="16" r="6" />
+                      <path d="M8 38c0-6.6 5.4-12 12-12 2 0 3.9.5 5.5 1.4" />
+                      <path d="M28 32l4.5 4.5L42 27" />
+                    </>
+                  )}
+                  {icons[i] === 'clipboard-x' && (
+                    <>
+                      <rect x="11" y="10" width="26" height="30" rx="3" />
+                      <path d="M18 10V7h12v3" />
+                      <path d="M17 20h14M17 26h9" />
+                      <circle cx="34" cy="33" r="7" fill="var(--surface-subtle)" />
+                      <path d="M31 30l6 6M37 30l-6 6" />
+                    </>
+                  )}
+                </svg>
+              </span>
+              <span class="crit__zh">{c.zh}</span>
+              <span class="crit__en">{c.en}</span>
+            </button>
+          ))}
+        </div>
+
+        {criteria.map((c, i) => (
+          <div
+            class="criteria__panel"
+            role="tabpanel"
+            id={`crit-panel-${i}`}
+            aria-labelledby={`crit-tab-${i}`}
+            hidden={i !== 0}
+          >
+            <h3>{c.zh}<span class="criteria__panel-en">{c.en}</span></h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 誰在支持 ──────────────────────────────────────── -->
+  <section class="section" aria-labelledby="supporters-title">
+    <div class="container">
+      <p class="eyebrow">跨產業、跨國界</p>
+      <h2 id="supporters-title">哪些人支持基本收入？</h2>
+
+      <ol class="sup">
+        {supporters.map((s, i) => (
+          <li class="sup__item">
+            <div class="sup__speech">
+              <div class="sup__row">
+                <p class="sup__who">
+                  <span class="sup__name">{s.name}</span>
+                  <span class="sup__role">{s.role}</span>
+                </p>
+                <blockquote class="sup__bubble">
+                  <p>{s.quote}</p>
+                </blockquote>
+              </div>
+              <!--
+                這段是 UBI Taiwan 寫的第三人稱說明，不是本人說的話，
+                因此放在對話框「外面」，並以左側細線標示為註解。
+                放進框裡會變成假的引述。
+              -->
+              <p class="sup__desc">{s.desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <!--
+        規格建議搭配名人照片左右穿插；六張頭像尚未進 repo 且肖像授權未確認，
+        因此先以引言為主體的排版呈現。照片到位後可在 .sup__item 內加入圖片欄。
+      -->
+    </div>
+  </section>
+
+  <!-- ── 基本收入在台灣 ────────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="tw-title">
+    <div class="container">
+      <div class="tw">
+        <figure class="tw__figure">
+          <img
+            src="/images/LYT-3158-202012131607936493813-qt8a6hpk0snheyxhg3k3lifd161t4q3f02foah3a2g.webp"
+            alt="2020 年台灣第一次基本收入遊行，參與者高舉標語與「BASIC INCOME MARCH 走向共好」的布條沿街前進"
+            width="300" height="300" loading="lazy"
+          />
+          <figcaption>2020 年，台灣第一次基本收入遊行</figcaption>
+        </figure>
+        <div class="tw__body">
+          <p class="eyebrow">回到這座島</p>
+          <h2 id="tw-title">基本收入在台灣</h2>
+          {taiwan.map((p) => <p>{p}</p>)}
+          <p class="tw__link"><a href="/impact/">看 UBI Taiwan 的行動里程碑 →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 下一步 ────────────────────────────────────────── -->
+  <section class="section section--muted" aria-labelledby="next-title">
+    <div class="container">
+      <h2 id="next-title" class="next__title">接下來</h2>
+      <ul class="next">
+        <li>
+          <a href="/ubi/world/">
+            <span class="next__label">全球進程</span>
+            <span class="next__desc">13 個國家與組織的政策、倡議與實驗，基本收入在世界各地實際發生的樣子。</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ubi/faq/">
+            <span class="next__label">基本收入大哉問</span>
+            <span class="next__desc">會讓人不想工作嗎？錢從哪裡來？會通膨嗎？14 個最常被問到的問題。</span>
+          </a>
+        </li>
+        <li>
+          <a href="/experiment/">
+            <span class="next__label">台灣的實驗</span>
+            <span class="next__desc">UBI Taiwan 做了台灣第一場基本收入實驗，兩年，一個單親家庭。</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    padding-block: var(--space-24) var(--space-16);
+    background:
+      radial-gradient(ellipse 70% 120% at 85% 0%, var(--color-brand-50), transparent 70%),
+      var(--surface-page);
+  }
+  .hero__eyebrow {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.14em;
+    color: var(--color-brand-600);
+    margin-bottom: var(--space-6);
+  }
+  .hero__title { margin-bottom: var(--space-8); }
+  .hero__letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6) var(--space-12);
+    margin-bottom: var(--space-6);
+  }
+  .hero__letter {
+    display: grid;
+    grid-template-areas: 'big en' 'big zh';
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-3);
+    align-items: center;
+  }
+  .hero__letter b {
+    grid-area: big;
+    font-size: clamp(3.5rem, 9vw, 5.5rem);
+    line-height: 0.85;
+    font-weight: 900;
+    color: var(--color-brand-500);
+  }
+  .hero__letter i {
+    grid-area: en;
+    font-style: normal;
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    color: var(--color-ink-500);
+    align-self: end;
+  }
+  .hero__letter em {
+    grid-area: zh;
+    font-style: normal;
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--color-ink-900);
+    align-self: start;
+  }
+  .hero__zh {
+    display: block;
+    font-size: var(--text-3xl);
+    color: var(--color-ink-900);
+  }
+  .hero__lead {
+    max-width: var(--container-narrow);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-ink-700);
+  }
+
+  /* ── 五大條件 ── */
+  .criteria__lead {
+    max-width: var(--container-narrow);
+    color: var(--color-ink-700);
+    margin-bottom: var(--space-8);
+  }
+  .criteria__tabs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+  }
+  .crit {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-2);
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--color-ink-700);
+    transition: border-color var(--duration-base) var(--ease-out),
+                color var(--duration-base) var(--ease-out);
+  }
+  .crit__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    color: var(--color-ink-900);
+  }
+  .crit__blob {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-full);
+    background: var(--color-brand-200);
+    transition: transform var(--duration-base) var(--ease-out),
+                background var(--duration-base) var(--ease-out);
+  }
+  .crit svg { position: relative; width: 48px; height: 48px; }
+  .crit__zh { font-weight: var(--font-bold); font-size: var(--text-base); }
+  .crit__en { font-size: var(--text-xs); color: var(--color-ink-500); letter-spacing: 0.04em; }
+
+  .crit:hover .crit__blob { transform: scale(1.12); }
+  .crit[aria-selected='true'] {
+    border-bottom-color: var(--color-brand-600);
+    color: var(--color-brand-700);
+  }
+  .crit[aria-selected='true'] .crit__blob {
+    background: var(--color-warm-500);
+    transform: scale(1.15);
+  }
+
+  .criteria__panel {
+    margin-top: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    background: var(--color-white);
+    border-left: 3px solid var(--color-brand-600);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    max-width: var(--container-narrow);
+  }
+  .criteria__panel h3 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .criteria__panel-en {
+    font-size: var(--text-sm);
+    font-weight: var(--font-regular);
+    color: var(--color-ink-500);
+    letter-spacing: 0.04em;
+  }
+  .criteria__panel p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  /* ── 支持者 ── */
+  .sup { list-style: none; margin: var(--space-8) 0 0; padding: 0; }
+
+  /*
+    每個人自成一則對話：人名在旁、泡泡框從人名的方向「說」出來，
+    下方是 UBI Taiwan 的旁白註解。整組左右交錯往下排。
+    三層主從關係刻意拉開：
+      泡泡框（本人的話）＝ 最重，白底彩框、大字
+      人名（誰說的）    ＝ 次重，深色粗體
+      旁白（我們的說明）＝ 最輕，灰字小字、左側細線標示為註解
+  */
+  .sup__item {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    padding-block: var(--space-8);
+  }
+  .sup__speech { grid-column: 1 / span 9; }
+  .sup__item:nth-child(even) .sup__speech { grid-column: 4 / span 9; }
+
+  .sup__row {
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: end;
+  }
+  .sup__item:nth-child(even) .sup__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 13rem);
+  }
+  .sup__item:nth-child(even) .sup__who    { grid-column: 2; grid-row: 1; text-align: right; }
+  .sup__item:nth-child(even) .sup__bubble { grid-column: 1; grid-row: 1; }
+
+  /* 2 · 人名：次重 */
+  .sup__who { display: grid; gap: var(--space-1); margin: 0 0 var(--space-4); }
+  .sup__name {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--color-ink-900);
+    line-height: var(--leading-tight);
+  }
+  .sup__role { font-size: var(--text-xs); color: var(--color-ink-500); line-height: 1.5; }
+
+  /* 1 · 泡泡框：最重 */
+  .sup__bubble {
+    position: relative;
+    display: grid;
+    align-content: center;
+    margin: 0;
+    /* 框不要太長：限寬讓句子折成 2–3 行，上下留白撐出份量 */
+    max-width: 30rem;
+    min-height: 9.5rem;
+    padding: var(--space-8);
+    background: var(--color-white);
+    border: 2px solid var(--color-brand-500);
+    border-radius: var(--radius-lg);
+    /* 縮放的支點在尾巴那一角，泡泡從說話的人那端脹開 */
+    transform-origin: left bottom;
+    transition: transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+  }
+  .sup__item:nth-child(even) .sup__bubble {
+    transform-origin: right bottom;
+    justify-self: end;
+  }
+  .sup__bubble p {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-normal);
+    color: var(--color-brand-800);
+    text-wrap: balance;
+  }
+
+  /* 尾巴指向人名那一側：外層邊框色 + 內層底色疊出帶邊框的尖角 */
+  /* 尾巴貼在左下角（而非垂直置中），比較接近實際漫畫對話框的畫法 */
+  .sup__bubble::before,
+  .sup__bubble::after {
+    content: '';
+    position: absolute;
+    bottom: var(--space-6);
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+  .sup__bubble::before {
+    right: 100%;
+    border-width: 11px 20px 11px 0;
+    border-color: transparent var(--color-brand-500) transparent transparent;
+  }
+  .sup__bubble::after {
+    right: calc(100% - 3px);
+    border-width: 8px 16px 8px 0;
+    border-color: transparent var(--color-white) transparent transparent;
+    bottom: calc(var(--space-6) + 3px);
+  }
+  .sup__item:nth-child(even) .sup__bubble::before {
+    right: auto; left: 100%;
+    border-width: 11px 0 11px 20px;
+    border-color: transparent transparent transparent var(--color-brand-500);
+  }
+  .sup__item:nth-child(even) .sup__bubble::after {
+    right: auto; left: calc(100% - 3px);
+    border-width: 8px 0 8px 16px;
+    border-color: transparent transparent transparent var(--color-white);
+  }
+
+  /*
+    泡泡「冒出來」：hover／鍵盤聚焦時放大，transform-origin 設在尾巴側，
+    所以是從說話的人那一端脹開，而不是整體置中縮放。
+    觸控裝置沒有 hover，因此另外做捲動進場（.is-said），兩者用同一組變化。
+  */
+  .sup__bubble { will-change: transform; }
+  .sup__row:hover .sup__bubble,
+  .sup__row:focus-within .sup__bubble {
+    transform: scale(1.035);
+    box-shadow: var(--shadow-lg);
+  }
+  /*
+    預設「可見」。隱藏狀態只在 JS 掛上 .will-say 之後才生效——
+    若 JS 失敗或被停用，泡泡照樣顯示，內容不會消失。
+  */
+  .sup__speech.will-say .sup__bubble {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  .sup__speech.will-say.is-said .sup__bubble {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 460ms var(--ease-out), opacity 320ms var(--ease-out),
+                box-shadow 320ms var(--ease-out);
+  }
+  .sup__speech.will-say.is-said .sup__row:hover .sup__bubble,
+  .sup__speech.will-say.is-said .sup__row:focus-within .sup__bubble {
+    transform: scale(1.035);
+  }
+
+  /* 3 · 旁白：最輕，左側細線標示為註解 */
+  .sup__desc {
+    margin: var(--space-5) 0 0;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-ink-300);
+    color: var(--color-ink-500);
+    font-size: var(--text-sm);
+    line-height: var(--leading-loose);
+    max-width: 46rem;
+  }
+  .sup__item:nth-child(even) .sup__desc {
+    padding-left: 0;
+    padding-right: var(--space-4);
+    border-left: 0;
+    border-right: 2px solid var(--color-ink-300);
+    text-align: right;
+    margin-left: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sup__speech.will-say .sup__bubble { opacity: 1; transform: none; }
+    .sup__speech.will-say.is-said .sup__bubble,
+    .sup__row:hover .sup__bubble,
+    .sup__row:focus-within .sup__bubble { transform: none; transition: none; }
+  }
+
+  /* ── 基本收入在台灣 ── */
+  .tw {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-12);
+    align-items: center;
+  }
+  .tw__figure { margin: 0; }
+  .tw__figure img {
+    width: 100%;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    transform: rotate(-1.5deg);
+  }
+  .tw__figure figcaption {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-ink-500);
+  }
+  .tw__body p { color: var(--color-ink-700); line-height: var(--leading-loose); }
+  .tw__link { font-weight: var(--font-bold); margin-top: var(--space-6); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tw__figure img { transform: none; }
+  }
+
+  /* ── 下一步 ── */
+  .next__title { margin-bottom: var(--space-6); }
+  .next { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+  .next a {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--space-2) var(--space-8);
+    align-items: baseline;
+    padding: var(--space-6) var(--space-4) var(--space-6) 0;
+    border-top: 1px solid var(--color-ink-300);
+    text-decoration: none;
+    color: var(--color-ink-900);
+    transition: padding-left var(--duration-base) var(--ease-out),
+                background var(--duration-base) var(--ease-out);
+  }
+  .next li:last-child a { border-bottom: 1px solid var(--color-ink-300); }
+  .next a:hover { padding-left: var(--space-4); background: var(--color-white); }
+  .next__label { font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-brand-700); }
+  .next__label::after { content: ' →'; }
+  .next__desc { color: var(--color-ink-700); font-size: var(--text-base); }
+
+  @media (max-width: 860px) {
+    .tw { grid-template-columns: 1fr; gap: var(--space-6); }
+    .criteria__tabs { grid-template-columns: repeat(3, 1fr); }
+    .sup__item { grid-template-columns: 1fr; padding-block: var(--space-6); }
+    .sup__speech,
+    .sup__item:nth-child(even) .sup__speech { grid-column: 1; }
+    /* 窄螢幕放不下並排，改為人名在上、泡泡在下，尾巴轉向上方 */
+    .sup__row,
+    .sup__item:nth-child(even) .sup__row { grid-template-columns: 1fr; gap: var(--space-3); }
+    .sup__item:nth-child(even) .sup__who    { grid-column: 1; grid-row: 1; text-align: left; }
+    .sup__item:nth-child(even) .sup__bubble { grid-column: 1; grid-row: 2; }
+    .sup__bubble,
+    .sup__item:nth-child(even) .sup__bubble {
+      transform-origin: top left;
+      max-width: none;
+      min-height: 0;
+      justify-self: stretch;
+      padding: var(--space-6);
+    }
+    .sup__who, .sup__item:nth-child(even) .sup__who { margin-bottom: 0; }
+    .sup__bubble::before,
+    .sup__item:nth-child(even) .sup__bubble::before {
+      bottom: 100%; left: var(--space-8); right: auto;
+      border-width: 0 14px 16px 0;
+      border-color: transparent transparent var(--color-brand-500) transparent;
+    }
+    .sup__bubble::after,
+    .sup__item:nth-child(even) .sup__bubble::after {
+      bottom: calc(100% - 3px); left: calc(var(--space-8) + 3px); right: auto;
+      border-width: 0 10px 12px 0;
+      border-color: transparent transparent var(--color-white) transparent;
+    }
+    .sup__item:nth-child(even) .sup__desc {
+      padding-left: var(--space-4); padding-right: 0;
+      border-left: 2px solid var(--color-ink-300); border-right: 0;
+      text-align: left; margin-left: 0;
+    }
+    .sup__item:nth-child(even) .sup__bubble::before {
+      left: var(--space-8); right: auto;
+      border-width: 18px 16px 0 0;
+    }
+    .sup__item:nth-child(even) .sup__bubble::after {
+      left: calc(var(--space-8) + 3px); right: auto;
+      border-width: 14px 12px 0 0;
+    }
+    .next a { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .hero { padding-block: var(--space-16) var(--space-12); }
+    .criteria__tabs { grid-template-columns: repeat(2, 1fr); }
+    .criteria__panel { padding: var(--space-4) var(--space-6); }
+  }
+</style>
+
+<script>
+  /*
+    泡泡進場：捲到畫面內時才「說出來」。
+    做這個是因為 hover 在觸控裝置上根本不存在——若只靠 hover，
+    手機使用者永遠看不到泡泡冒出來的效果。兩者共用同一組變化。
+  */
+  const speeches = document.querySelectorAll<HTMLElement>('.sup__speech');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+    // 先隱藏再觀察，順序不能顛倒；不支援的環境就維持預設可見，不做進場
+    speeches.forEach((el) => el.classList.add('will-say'));
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-said');
+          io.unobserve(entry.target); // 只播一次，捲回去不重播
+        });
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.25 }
+    );
+    speeches.forEach((el) => io.observe(el));
+
+    // 保險：若觀察器因故未觸發（例如分頁長時間在背景），2 秒後一律顯示
+    window.setTimeout(() => {
+      speeches.forEach((el) => el.classList.add('is-said'));
+    }, 2000);
+  }
+
+  // 五大條件：tablist 鍵盤操作（左右鍵切換、Home/End 跳首尾）
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.crit'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('.criteria__panel'));
+
+  function select(index: number, focus = true) {
+    tabs.forEach((tab, i) => {
+      const on = i === index;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      panels[i].hidden = !on;
+    });
+    if (focus) tabs[index]?.focus();
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(i, false));
+    tab.addEventListener('keydown', (e) => {
+      const keys: Record<string, number> = {
+        ArrowRight: (i + 1) % tabs.length,
+        ArrowLeft: (i - 1 + tabs.length) % tabs.length,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      if (e.key in keys) {
+        e.preventDefault();
+        select(keys[e.key]);
+      }
+    });
+  });
+</script>

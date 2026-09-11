@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ubi from '../../data/ubi-content.json';
+
+// 延伸閱讀：四個主題的影片、書籍、Podcast 與資料庫。
+// 網址於 2026-09 由協會提供（官網內容改進：什麼是 UBI.docx），33 項全數到齊。
+// 規格原本希望「一張縮圖＋粗體標題＋一小段介紹」，縮圖素材仍未提供，
+// 因此維持以來源類型（影片／書籍／Podcast／資料庫）作為辨識標記。
+
+const reading = ubi.reading as Array<{
+  title: string;
+  groups: Array<{ label: string; desc: string; items: Array<{ t: string; url?: string }> }>;
+}>;
+
+/** 由項目標題推斷來源類型，供讀者快速辨識媒材 */
+function kindOf(item: string): { kind: string; source: string | null } {
+  const bracket = item.match(/^【\s*([^】]+?)\s*】/);
+  const source = bracket ? bracket[1] : null;
+
+  if (source && /志祺七七|寶博朋友說|街頭有派對|Podcast/i.test(source)) {
+    return { kind: /Podcast/i.test(item) ? 'Podcast' : '影片', source };
+  }
+  if (source && /TED/i.test(source)) return { kind: '演講', source };
+  if (source && /Kurzgesagt/i.test(source)) return { kind: '影片', source };
+  if (source && /民視|名家觀點|憲法未來派|荒野保護協會/.test(source)) return { kind: '節目', source };
+  if (/維基百科|資料庫|地圖|總覽|試辦計畫$/.test(item)) return { kind: '資料庫', source };
+  if (/｜/.test(item)) return { kind: '書籍', source };
+  return { kind: '文章', source };
+}
+
+const total = reading.reduce(
+  (n, t) => n + t.groups.reduce((m, g) => m + g.items.length, 0),
+  0
+);
+---
+
+<BaseLayout
+  title="延伸閱讀：翻轉社會框架的觀點｜UBI Taiwan"
+  description="從觀念啟蒙到理論根基，精選基本收入的影片、TED 演講、書籍、Podcast 與國際資料庫，依四個主題整理，適合不同深度的讀者。"
+  current="ubi-reading"
+>
+  <section class="head">
+    <div class="container">
+      <p class="eyebrow">認識基本收入</p>
+      <h1>延伸閱讀</h1>
+      <p class="head__lead">
+        翻轉社會框架的觀點。{total} 份影片、演講、書籍、Podcast 與資料庫，
+        依「從入門到深入」分成四個主題。不必照順序，挑你現在最想問的那一個開始。
+      </p>
+
+      <ol class="path" aria-label="四個主題">
+        {reading.map((t, i) => (
+          <li>
+            <a href={`#t${i + 1}`}>
+              <span class="path__n">{i + 1}</span>
+              <span class="path__t">{t.title}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {reading.map((t, i) => (
+    <section class="section" id={`t${i + 1}`} aria-labelledby={`t${i + 1}-title`}>
+      <div class="container">
+        <div class="theme">
+          <span class="theme__n" aria-hidden="true">{i + 1}</span>
+          <h2 id={`t${i + 1}-title`}>{t.title}</h2>
+        </div>
+
+        {t.groups.map((g) => (
+          <div class="grp">
+            <div class="grp__head">
+              <h3>{g.label}</h3>
+              {g.desc && <p>{g.desc}</p>}
+            </div>
+            <ul class="items">
+              {g.items.map((item) => {
+                const { kind } = kindOf(item.t);
+                return (
+                  <li class="item">
+                    <span class={`item__kind item__kind--${kind}`}>{kind}</span>
+                    {item.url ? (
+                      <a class="item__t item__t--link" href={item.url} rel="noopener">
+                        {item.t}
+                        <svg class="item__go" viewBox="0 0 12 12" width="11" height="11"
+                             aria-hidden="true" fill="none" stroke="currentColor"
+                             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3.5 8.5 8.5 3.5" /><path d="M4.5 3.5h4v4" />
+                        </svg>
+                      </a>
+                    ) : (
+                      <span class="item__t">{item.t}</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <section class="section section--muted">
+    <div class="container">
+      <p class="note">
+        以上皆為站外資源，連結會開啟原始出處。若有失效或想推薦其他資源，
+        歡迎來信 <a href="mailto:contact@ubitaiwan.org">contact@ubitaiwan.org</a>。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head { padding-block: var(--space-16) var(--space-12); background: var(--surface-subtle); }
+  .head__lead {
+    max-width: var(--container-narrow);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-ink-700);
+    margin-bottom: var(--space-8);
+  }
+
+  /* ── 四個主題的路徑 ── */
+  .path {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    counter-reset: none;
+  }
+  .path li { flex: 1 1 14rem; }
+  .path a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-4);
+    background: var(--color-white);
+    border-bottom: 3px solid var(--color-brand-300);
+    text-decoration: none;
+    color: var(--color-ink-900);
+    transition: border-color var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out);
+  }
+  .path a:hover { border-bottom-color: var(--color-warm-500); transform: translateY(-3px); }
+  .path__n {
+    flex: none;
+    font-size: var(--text-2xl);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-brand-300);
+    font-variant-numeric: tabular-nums;
+  }
+  .path__t { font-size: var(--text-sm); font-weight: var(--font-bold); line-height: 1.4; }
+
+  /* ── 主題標頭 ── */
+  .theme {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-ink-900);
+    margin-bottom: var(--space-8);
+  }
+  .theme__n {
+    font-size: var(--text-3xl);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-warm-500);
+    font-variant-numeric: tabular-nums;
+  }
+  .theme h2 { margin: 0; }
+
+  /* ── 分組 ── */
+  .grp {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--color-ink-300);
+  }
+  .grp:last-child { border-bottom: 0; }
+  .grp__head h3 { margin-bottom: var(--space-3); }
+  .grp__head p {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-700);
+    line-height: var(--leading-loose);
+  }
+
+  .items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+  .item {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-ink-100);
+  }
+  .item:first-child { border-top: 0; }
+  .item__kind {
+    justify-self: start;
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-ink-100);
+    color: var(--color-ink-700);
+    white-space: nowrap;
+  }
+  .item__kind--影片, .item__kind--節目 { background: var(--color-brand-100); color: var(--color-brand-800); }
+  .item__kind--演講 { background: #FBEAE0; color: var(--color-warm-600); }
+  .item__kind--書籍 { background: #E4EDFB; color: var(--color-accent-700); }
+  .item__kind--資料庫 { background: var(--color-ink-100); color: var(--color-ink-700); }
+  .item__t { font-size: var(--text-sm); line-height: 1.6; overflow-wrap: anywhere; }
+  .item__t--link {
+    color: var(--color-ink-900); text-decoration: none;
+    border-bottom: 1px solid var(--color-brand-200);
+    transition: color var(--duration-base) var(--ease-out),
+                border-color var(--duration-base) var(--ease-out);
+  }
+  .item__t--link:hover {
+    color: var(--color-brand-700); border-bottom-color: var(--color-brand-600);
+  }
+  /* 外連箭頭：全部都是站外資源，標示出來讀者才知道會離站 */
+  .item__go {
+    margin-left: .3em; vertical-align: -1px; color: var(--color-ink-500);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .item__t--link:hover .item__go { color: var(--color-brand-600); transform: translate(1px, -1px); }
+
+  .note {
+    margin: 0;
+    max-width: var(--container-narrow);
+    font-size: var(--text-sm);
+    color: var(--color-ink-700);
+  }
+
+  @media (max-width: 860px) {
+    .grp { grid-template-columns: 1fr; gap: var(--space-4); }
+    .item { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

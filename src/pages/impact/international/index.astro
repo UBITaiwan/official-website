@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+
+// 國際交流列表頁。
+// 這頁存在的理由是結構性的：改版前 2023／2024 各佔一個下拉選單位置，
+// 每多一場高峰會選單就長一項。有了列表頁之後，新增年份只需在下面的陣列加一筆，
+// 導覽維持不變。新增場次請加在這裡，不要再掛進 Header。
+
+const events = [
+  {
+    year: '2025',
+    place: '巴西 里約',
+    title: '2025 巴西 BIEN 高峰會',
+    href: '/impact/international/2025-brazil/',
+    image: '/images/bien-brazil/photo-suplicy-online.webp',
+    alt: 'BIEN 高峰會會場，全場起立向線上參與的 Eduardo Suplicy 致意',
+    lede: '發表台灣青年基本收入政策提案與四篇研究，成功爭取主辦 2027 印太高峰會，並發表台灣第一本基本收入小說《島嶼新日常》。',
+    tags: ['青年政策提案', '4 篇研究發表', '爭取 2027 主辦權', '小說發表'],
+  },
+  {
+    year: '2024',
+    place: '英國 巴斯',
+    title: '2024 英國巴斯 BIEN 高峰會',
+    href: '/impact/international/2024-bath/',
+    image: '/images/2024英國巴西國際大會-9-1024x683.webp',
+    alt: 'UBI Taiwan 團隊於 2024 年英國巴斯 BIEN 高峰會現場',
+    lede: '在國際學術場合分享台灣經驗，與各國研究者建立連結，讓台灣的基本收入實驗被世界看見。',
+    tags: ['學術發表', '國際連結'],
+  },
+  {
+    year: '2023',
+    place: '南韓',
+    title: '2023 韓國基本收入高峰會',
+    href: '/impact/international/2023-korea/',
+    // 封面用李在明合照（團隊指定）：1600x720 超寬幅，3:2 置中裁切已驗證
+    // 六張臉皆完整保留、李在明居中
+    image: '/images/korea-2023/lee-jae-myung.webp',
+    alt: 'UBI Taiwan 成員與時任共同民主黨黨主席李在明（現任韓國總統）及多位國際基本收入學者於 2023 韓國基本收入大會合影',
+    lede: '代表台灣參與，進行研究發表與國際青年論壇，並促成台韓從高層到民間的正式交流。',
+    tags: ['研究發表', '國際青年論壇', '台韓交流'],
+  },
+];
+---
+
+<BaseLayout
+  title="國際交流｜UBI Taiwan"
+  description="UBI Taiwan 歷年參與的基本收入國際高峰會：2025 巴西里約、2024 英國巴斯、2023 南韓。發表台灣經驗、建立國際連結，並爭取到 2027 印太高峰會主辦權。"
+  current="impact-intl"
+>
+  <PageHero
+    image="/images/PXL_20250827_121433240-scaled.webp"
+    alt="2025 BIEN 全球大會開幕現場，講台上一排與談人，台下坐滿來自各國的參與者，投影幕寫著 Conferência Global"
+    eyebrow="我們的行動"
+    title="國際交流"
+    lead="基本收入是一場跨國的運動。UBI Taiwan 連續參與 BIEN 全球高峰會，把台灣的實驗成果與政策想像帶到國際場合，也把世界的經驗帶回台灣。"
+    focus="center 45%"
+    width={1600} heightAttr={1205}
+  />
+
+  <section class="section">
+    <div class="container">
+      <ol class="list">
+        {events.map((e) => (
+          <li class="ev">
+            <a class="ev__link" href={e.href}>
+              <div class="ev__figure">
+                {e.image
+                  ? <img src={e.image} alt={e.alt} width="640" height="427" loading="lazy" />
+                  : (
+                    <div class="ev__cover" aria-hidden="true">
+                      <span class="ev__cover-year">{e.year}</span>
+                      <span class="ev__cover-place">{e.place}</span>
+                    </div>
+                  )}
+              </div>
+              <div class="ev__body">
+                <p class="ev__meta">
+                  <span class="ev__year">{e.year}</span>
+                  <span class="ev__place">{e.place}</span>
+                </p>
+                <h2 class="ev__title">{e.title}</h2>
+                <p class="ev__lede">{e.lede}</p>
+                <ul class="ev__tags">
+                  {e.tags.map((t) => <li>{t}</li>)}
+                </ul>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--subtle">
+    <div class="container">
+      <div class="ahead">
+        <div>
+          <p class="eyebrow">下一站</p>
+          <h2>2027 印太高峰會，在台灣</h2>
+          <p>
+            在 2025 年巴西大會的提案過程中，UBI Taiwan 成功爭取到 2027 印太區域高峰會的主辦權。
+            這也帶來 BIEN 主席 Sarath Davala 的支持，後續親自來台共同舉辦新書發表會，
+            並進入議會與台灣的立法者討論基本收入的潛力。
+          </p>
+        </div>
+        <p><a class="btn btn--outline" href="/impact/international/2025-brazil/">看巴西大會的完整紀錄</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head { padding-block: var(--space-16) var(--space-12); background: var(--surface-subtle); }
+  .head__lead {
+    max-width: var(--container-narrow); font-size: var(--text-lg);
+    line-height: var(--leading-loose); color: var(--color-ink-700); margin: 0;
+  }
+
+  .list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .ev { border-top: 1px solid var(--color-ink-300); }
+  .ev:last-child { border-bottom: 1px solid var(--color-ink-300); }
+
+  .ev__link {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: var(--space-8); align-items: center;
+    padding: var(--space-8) var(--space-4) var(--space-8) 0;
+    text-decoration: none; color: var(--color-ink-900);
+    transition: background var(--duration-base) var(--ease-out);
+  }
+  .ev__link:hover { background: var(--surface-subtle); }
+
+  .ev__figure { overflow: hidden; border-radius: var(--radius-md); }
+  .ev__figure img {
+    width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+    transition: transform 600ms var(--ease-out);
+  }
+  .ev__link:hover .ev__figure img { transform: scale(1.04); }
+
+  /* 無可確認照片時的排版式封面 */
+  .ev__cover {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-1);
+    aspect-ratio: 3 / 2;
+    background:
+      repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,.06) 14px 28px),
+      var(--color-brand-800);
+    color: var(--color-brand-100);
+  }
+  .ev__cover-year {
+    font-size: var(--text-3xl); font-weight: 900; line-height: 1;
+    font-variant-numeric: tabular-nums; color: var(--color-white);
+  }
+  .ev__cover-place { font-size: var(--text-sm); letter-spacing: .1em; }
+
+  .ev__meta { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-2); }
+  .ev__year {
+    font-size: var(--text-2xl); font-weight: 900; line-height: 1;
+    color: var(--color-brand-500); font-variant-numeric: tabular-nums;
+  }
+  .ev__place { font-size: var(--text-sm); color: var(--color-ink-500); }
+  .ev__title { font-size: var(--text-xl); margin-bottom: var(--space-2); text-wrap: balance; }
+  .ev__link:hover .ev__title { color: var(--color-brand-700); }
+  .ev__lede { color: var(--color-ink-700); margin-bottom: var(--space-4); line-height: var(--leading-normal); }
+
+  .ev__tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .ev__tags li {
+    font-size: var(--text-xs); color: var(--color-brand-700);
+    background: var(--color-brand-50); border: 1px solid var(--color-brand-200);
+    border-radius: var(--radius-full); padding: 2px var(--space-3);
+  }
+
+  .ahead { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 3fr); gap: var(--space-8); align-items: center; }
+  .ahead p { color: var(--color-ink-700); line-height: var(--leading-loose); max-width: 46rem; }
+  .ahead > p:last-child { margin: 0; }
+
+  @media (max-width: 860px) {
+    .ev__link { grid-template-columns: 1fr; gap: var(--space-4); }
+    .ahead { grid-template-columns: 1fr; }
+  }
+</style>

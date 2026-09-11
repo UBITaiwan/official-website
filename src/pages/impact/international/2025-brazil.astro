@@ -1,0 +1,350 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import bz from '../../../data/brazil-content.json';
+
+// 2025 巴西 BIEN Congress。
+// 文案逐字取自團隊規格（docs/content-specs/03-bien-brazil.md）。
+// 與 2023／2024 兩篇的報告體不同，這篇是第一人稱的遊記＋成果混合敘事，
+// 版面因此走長文編輯式，而非既有的「會議背景／亮點／連結」三段式。
+// 照片自 docx 內嵌抽出並轉為 webp；若需更高解析度須向團隊索取原檔。
+
+const { opening, action, youth, researchLead, research, wins, exchange, voices } = bz;
+const lead = wins.find((w) => (w as { lead?: boolean }).lead)!;
+const others = wins.filter((w) => w !== lead);
+---
+
+<BaseLayout
+  title="2025 巴西 BIEN 高峰會｜UBI Taiwan"
+  description="UBI Taiwan 於 2025 年 8 月參與里約 BIEN 全球高峰會：發表台灣青年基本收入政策提案與四篇研究、成功爭取主辦 2027 印太高峰會，並發表台灣第一本基本收入小說《島嶼新日常》。"
+  current="impact-intl"
+  ogImage="/images/bien-brazil/photo-suplicy-online.webp"
+>
+  <section class="head">
+    <div class="container">
+      <p class="eyebrow">國際交流 · 2025 年 8 月 · 巴西里約</p>
+      <h1>雨林外的洞天</h1>
+      <div class="head__lead">
+        {opening.before.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <figure class="strip">
+    <img
+      src="/images/bien-brazil/photo-strip-brazil-street.webp"
+      alt="巴西街景組圖：雨中的攤販、霧中的基督像、論壇上發言的講者、彩繪大樓、殖民時期巴洛克建築、黃昏海邊的身影"
+      width="1440" height="1024" loading="lazy"
+    />
+    <figcaption>巴西的街道上，巴洛克建築交錯著後現代風格，向過路的旅客訴說過往受歐陸殖民的特殊史觀。</figcaption>
+  </figure>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="prose">
+        {opening.after.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UBI Taiwan 的行動 ─────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="action-title">
+    <div class="container">
+      <h2 id="action-title">UBI Taiwan 的行動</h2>
+      <div class="prose prose--wide">
+        {action.lead.map((p) => <p>{p}</p>)}
+      </div>
+
+      <figure class="shot">
+        <img
+          src="/images/bien-brazil/photo-suplicy-online.webp"
+          alt="BIEN 高峰會會場，全場起立向線上參與的巴西工人黨創始人 Eduardo Suplicy 致意"
+          width="1200" height="900" loading="lazy"
+        />
+        <figcaption>
+          長年倡議基本收入的巴西政治家 Eduardo Suplicy 因身體狀況住院，仍持續透過線上參與大會。
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 成功爭取 2027 印太高峰會（本頁最重成果）──────── -->
+  <section class="section win" aria-labelledby="win-title">
+    <div class="container">
+      <p class="win__badge">最重要的收穫</p>
+      <h2 id="win-title" class="win__title">{lead.title}</h2>
+      <div class="prose prose--wide win__body">
+        {lead.paras.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 青年基本收入提案 ──────────────────────────────── -->
+  <section class="section" aria-labelledby="youth-title">
+    <div class="container">
+      <h2 id="youth-title">{youth.title}</h2>
+      <div class="youth">
+        <div class="prose">
+          {youth.paras.map((p) => <p>{p}</p>)}
+        </div>
+        <dl class="spec">
+          {youth.facts.map((f) => (
+            <div><dt>{f.k}</dt><dd>{f.v}</dd></div>
+          ))}
+        </dl>
+      </div>
+
+      <figure class="shot">
+        <img
+          src="/images/LINE_ALBUM_UBI-Taiwan-Panel_260131_41.webp"
+          alt="2025 BIEN Congress 現場，UBI Taiwan 成員發表「Youth Basic Income Policy Proposal for Taiwan」，投影幕顯示講者 Pin-I (Henry) Lee 與 Hung-Yi (Alex) Wang"
+          width="1280" height="960" loading="lazy"
+        />
+        <figcaption>2025.08.28，青年基本收入提案在里約的發表現場。</figcaption>
+      </figure>
+
+      <figure class="shot shot--chart">
+        <img
+          src="/images/bien-brazil/slide-youth-policy-salary-gap.webp"
+          alt="折線圖：1980 至 2024 年間，台灣名目人均 GDP 成長 12 倍以上、實質人均 GDP 成長 7.5 倍，實質經常性薪資僅成長 2.4 倍，且近 20 年停滯"
+          width="1560" height="800" loading="lazy"
+        />
+        <figcaption>
+          提案簡報的核心圖表：45 年間實質薪資成長 2.4 倍，遠遠落後 GDP 的 7.5 倍，且近 20 年幾乎停滯。
+          <span class="shot__src">出處：{youth.src}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 實驗組的研究發表 ──────────────────────────────── -->
+  <section class="section section--muted" aria-labelledby="research-title">
+    <div class="container">
+      <h2 id="research-title">實驗組的研究發表</h2>
+      <div class="prose prose--wide">
+        {researchLead.map((p) => <p>{p}</p>)}
+      </div>
+
+      <figure class="shot">
+        <img
+          src="/images/PXL_20250828_201532922.webp"
+          alt="2025 BIEN Congress 現場，發表「Public Narratives on UBI in Taiwan: Insights from YouTube Discussions」，投影幕顯示作者楊昀與蘇嘉冠"
+          width="1024" height="769" loading="lazy"
+        />
+        <figcaption>四篇研究在同一天發表。圖為第一篇「台灣公眾對於基本收入的敘事想像」的現場。</figcaption>
+      </figure>
+
+      <ol class="papers">
+        {research.map((r, i) => (
+          <li class="paper">
+            <span class="paper__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="paper__t">{r.title}</h3>
+              {r.en && <p class="paper__en">{r.en}</p>}
+              <div class="prose prose--sm">
+                {r.paras.map((p) => <p>{p}</p>)}
+              </div>
+              <p class="paper__src">{r.src}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 其他行動 ──────────────────────────────────────── -->
+  <section class="section" aria-labelledby="others-title">
+    <div class="container">
+      <h2 id="others-title" class="visually-hidden">其他行動</h2>
+      {others.map((w) => (
+        <article class="other">
+          <h3>{w.title}</h3>
+          <div class="prose prose--wide">
+            {w.paras.map((p) => <p>{p}</p>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── 島嶼新日常回台發表 ────────────────────────────── -->
+  <section class="section section--tight" aria-labelledby="book-title">
+    <div class="container">
+      <h2 id="book-title" class="visually-hidden">《島嶼新日常》回到台灣</h2>
+      <figure class="shot shot--first">
+        <img
+          src="/images/PXL_20251003_122641683.webp"
+          alt="台北 REEDS Bookstore 誠達店的《島嶼新日常》國際新書發表會現場，螢幕列出 BIEN 主席 Sarath Davala 等與談人"
+          width="1024" height="769" loading="lazy"
+        />
+        <figcaption>
+          巴西之後兩個月，BIEN 主席 Sarath Davala 親自來台，
+          與《島嶼新日常》的作者群在台北共同舉辦國際新書發表會（2025.10.03）。
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 持續交流的腳步 ────────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="exchange-title">
+    <div class="container">
+      <h2 id="exchange-title">{exchange.title}</h2>
+
+      <figure class="shot">
+        <img
+          src="/images/bien-brazil/photo-collage-exchange.webp"
+          alt="大會期間的交流照片拼貼：UBI Taiwan 成員與各國學者、倡議者的合影與會場紀錄"
+          width="1440" height="1024" loading="lazy"
+        />
+      </figure>
+
+      <div class="prose prose--wide">
+        {exchange.paras.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 同行夥伴的期許 ────────────────────────────────── -->
+  <section class="section" aria-labelledby="voices-title">
+    <div class="container">
+      <h2 id="voices-title">同行夥伴的期許</h2>
+      <ul class="voices">
+        {voices.map((v) => (
+          <li class="voice">
+            <p class="voice__name">{v.name}</p>
+            <p class="voice__text">{v.text}</p>
+          </li>
+        ))}
+      </ul>
+
+      <figure class="shot shot--last">
+        <img
+          src="/images/bien-brazil/photo-networking-night.webp"
+          alt="大會會外之夜，UBI Taiwan 成員與各國參與者合影"
+          width="1200" height="900" loading="lazy"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <nav class="section section--muted" aria-label="其他國際交流">
+    <div class="container">
+      <ul class="siblings">
+        <li><a href="/impact/international/2024-bath/">← 2024 英國巴斯 BIEN 高峰會</a></li>
+        <li><a href="/impact/international/">所有國際交流 →</a></li>
+      </ul>
+    </div>
+  </nav>
+</BaseLayout>
+
+<style>
+  .head { padding-block: var(--space-24) var(--space-12); }
+  .head h1 { font-size: clamp(2rem, 6vw, var(--text-4xl)); text-wrap: balance; }
+  .head__lead {
+    max-width: var(--container-narrow); font-size: var(--text-lg);
+    line-height: var(--leading-loose); color: var(--color-ink-700);
+  }
+
+  .prose { line-height: var(--leading-loose); color: var(--color-ink-700); max-width: var(--container-narrow); }
+  .prose--wide { max-width: 52rem; }
+  .prose--sm { font-size: var(--text-sm); }
+  .prose p:last-child { margin-bottom: 0; }
+
+  /* ── 圖 ── */
+  .strip img { width: 100%; }
+  .strip { margin: 0; }
+  .strip figcaption, .shot figcaption {
+    max-width: var(--container-narrow);
+    margin: var(--space-3) auto 0;
+    padding-inline: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-ink-500);
+    line-height: var(--leading-normal);
+  }
+  .shot { margin: var(--space-12) 0 0; }
+  .shot img { width: 100%; border-radius: var(--radius-md); }
+  .shot--chart img { background: var(--color-white); }
+  .shot--last { margin-top: var(--space-16); }
+  .shot--first { margin-top: 0; }
+  .section--tight { padding-top: 0; }
+  .shot__src { display: block; margin-top: var(--space-1); font-size: var(--text-xs); }
+
+  /* ── 最重成果 ── */
+  .win {
+    background: var(--surface-inverse);
+    color: var(--color-brand-100);
+  }
+  .win__badge {
+    display: inline-block; font-size: var(--text-xs); font-weight: var(--font-bold);
+    letter-spacing: .16em; color: var(--color-brand-900); background: var(--color-warm-500);
+    padding: var(--space-1) var(--space-4); border-radius: var(--radius-full);
+    margin-bottom: var(--space-4);
+  }
+  .win__title {
+    color: var(--color-white);
+    font-size: clamp(1.6rem, 4.4vw, var(--text-3xl));
+    text-wrap: balance;
+    margin-bottom: var(--space-6);
+  }
+  .win__body { color: var(--color-brand-100); }
+
+  /* ── 青年提案 ── */
+  .youth { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-12); align-items: start; }
+  .spec { margin: 0; display: grid; gap: 0; border-top: 2px solid var(--color-ink-900); }
+  .spec > div {
+    display: grid; grid-template-columns: 6rem 1fr; gap: var(--space-4);
+    padding: var(--space-4) 0; border-bottom: 1px solid var(--color-ink-300);
+  }
+  .spec dt { font-size: var(--text-sm); color: var(--color-ink-500); }
+  .spec dd {
+    margin: 0; font-size: var(--text-sm); font-weight: var(--font-bold);
+    color: var(--color-ink-900); line-height: var(--leading-normal);
+  }
+
+  /* ── 論文 ── */
+  .papers { list-style: none; margin: var(--space-12) 0 0; padding: 0; display: grid; gap: var(--space-8); }
+  .paper {
+    display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--space-4);
+    padding-top: var(--space-8); border-top: 1px solid var(--color-ink-300);
+  }
+  .paper__n {
+    font-size: var(--text-2xl); font-weight: 900; line-height: 1;
+    color: var(--color-brand-300); font-variant-numeric: tabular-nums;
+  }
+  .paper__t { font-size: var(--text-xl); margin-bottom: var(--space-1); text-wrap: balance; }
+  .paper__en {
+    font-size: var(--text-sm); color: var(--color-ink-500);
+    margin-bottom: var(--space-4); line-height: var(--leading-normal);
+  }
+  .paper__src { margin: var(--space-3) 0 0; font-size: var(--text-xs); color: var(--color-ink-500); }
+
+  /* ── 其他行動 ── */
+  .other { padding-top: var(--space-12); }
+  .other:first-of-type { padding-top: 0; }
+  .other h3 { font-size: var(--text-xl); margin-bottom: var(--space-4); }
+
+  /* ── 夥伴期許 ── */
+  .voices { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: grid; gap: var(--space-6); }
+  .voice {
+    display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: var(--space-6);
+    padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-ink-300);
+  }
+  .voice:last-child { border-bottom: 0; }
+  .voice__name {
+    margin: 0; font-weight: var(--font-bold); font-size: var(--text-lg);
+    color: var(--color-brand-700);
+  }
+  .voice__text { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  .siblings {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4);
+  }
+  .siblings a { font-weight: var(--font-bold); text-decoration: none; }
+  .siblings a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .youth { grid-template-columns: 1fr; gap: var(--space-8); }
+    .paper { grid-template-columns: 2.5rem 1fr; gap: var(--space-3); }
+    .voice { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+</style>

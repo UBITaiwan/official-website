@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// 捐款徵信：對應 ubitaiwan.org/zh/credit-donate/
+// 原站以嵌入表格呈現各月份明細，明細資料由協會後台維護，
+// 此處保留頁面結構並連回原站明細與聯絡窗口。
+---
+
+<BaseLayout
+  title="捐款徵信｜UBI Taiwan"
+  description="UBI Taiwan 定期公開捐款徵信，逐月列出捐款明細。社團法人台灣無條件基本收入協會（統編 74342501）依法辦理財務公開，讓每一筆支持都看得見去向。"
+  current="about-transparency"
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <h1>捐款徵信</h1>
+      <h2>各月份捐款明細</h2>
+      <p>
+        UBI Taiwan 定期辦理公開徵信，公布各月份捐款明細。最新明細請見
+        <a href="https://ubitaiwan.org/zh/credit-donate/" rel="noopener">官方捐款徵信頁面</a>，
+        或來信 <a href="mailto:contact@ubitaiwan.org">contact@ubitaiwan.org</a> 查詢。
+      </p>
+      <a class="btn btn--warm" href="/support/">捐款支持</a>
+    </div>
+  </section>
+</BaseLayout>

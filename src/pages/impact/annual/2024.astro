@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// 2024 年度報告書：內容對應 ubitaiwan.org/zh/2024report-impact/
+
+const stats = [
+  { img: '/images/fb追蹤突破24000-1024x1024.webp', text: '臉書追蹤突破 24,000 人' },
+  { img: '/images/自辦活動2場-1024x1024.webp', text: '自辦活動 2 場' },
+  { img: '/images/擺攤6場-1024x1024.webp', text: '擺攤 6 場' },
+  { img: '/images/訪談15位國際專家學者-1024x1024.webp', text: '訪談 15 位國際專家學者' },
+  { img: '/images/青年高度參與深獲國際關注-1024x1024.webp', text: '青年高度參與 深獲國際關注' },
+  { img: '/images/主講4場專題發表-1024x1024.webp', text: '主講 4 場專題發表' },
+];
+
+const papers = [
+  {
+    title: '台灣作為 UBI 實驗場：台灣政治場域的前導研究',
+    desc: '研究台灣政治場域中支持 UBI 的政治人物之論述與目前政黨政治的結構，以此解釋為何 UBI 因為民眾的誤解、政黨的相互制衡與過度依賴特定事件引發聲量等原因，在台灣仍尚未成為具有影響力的政治議題。該文指出 UBI Taiwan 應持續對民眾以及左派小黨進行長期的倡議路線。',
+  },
+  {
+    title: '從文化刺激政策到全民基本收入：以台灣的「成年文化禮金」為例',
+    desc: '分析成年文化禮金的發放背景、歷史、財源與反響，並將其視為一種以文化參與為優先的部分基本收入。作者認為成年文化禮金成功常態化並獲得廣泛民意支持，說明在台灣的特殊社會文化脈絡下，基本收入有依循該路線成功推行的可能性。',
+  },
+  {
+    title: '通往 UBI 之路：關於台灣未來的提案',
+    desc: '討論保育基本收入（CBI）如何可能作為台灣實行 UBI 的前線。作者指出，在 2050 淨零碳排與碳稅開徵等政策背景下，為台灣需要被保護的山林地帶居民發放基本收入，是一種兼具環境保護、消減城鄉差距的舉措，同時這些地點可以作為實行全國性 UBI 的實驗空間，供各方人士檢視。',
+  },
+  {
+    title: '台灣基本收入政策倡議策略',
+    desc: '本篇發表以 What Now（現況認知）、Why So（脈絡梳理）、How Next（執行提案）三大面向剖析展開，指出台灣財富分配和貧富差距正明顯加速往兩極化發展。在多數低收入族群難以受到社會福利的保障，卻又因為鼓勵勤奮勞動的社會人文，在思想和現實中拉扯的情況下，UBI 是一種對未來困境的可能解方。',
+  },
+];
+---
+
+<BaseLayout
+  title="2024年度報告書｜UBI Taiwan"
+  description="UBI Taiwan 2024 年年度報告書：英國巴斯 BIEN 高峰會、倡議擺攤、媒體露出與組織成果。"
+  current="impact-annual"
+>
+  <section class="section section--subtle">
+    <div class="container">
+      <h1>2024 年 年度報告書</h1>
+      <ul class="stats" role="list">
+        {stats.map((s) => (
+          <li class="stats__item">
+            <img src={s.img} alt="" loading="lazy" />
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bien-title">
+    <div class="container container--narrow">
+      <h2 id="bien-title">2024 英國巴斯 BIEN 高峰會</h2>
+      <p>
+        在八月的英國巴斯，我們於基本收入全球網絡（BIEN）的年度大會上舉辦了以台灣經驗為主體的論壇，向世界各地的學者與政治家分享我們的研究與倡議經驗。
+      </p>
+      <img src="/images/MIC_8854-1024x683.webp" alt="UBI Taiwan 於 BIEN 年度大會論壇" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-6);" />
+      <p>
+        在這場論壇中，我們不僅分享了台灣推動基本收入的實務經驗，也透過四篇深入的論文，從政治脈絡、文化實驗、環境政策到倡議策略，立體呈現出台灣在基本收入議題上的多元探索與潛在路徑。
+      </p>
+      <div class="papers">
+        {papers.map((p) => (
+          <div class="paper">
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+      <p style="margin-top: var(--space-6);">
+        我們也持續積極拓展國際連結，曾拜訪並接觸來自全球多國的學者，包括日本、南韓、印度、澳洲、挪威、芬蘭、英國、愛爾蘭、法國、奧地利與美國，建立深厚的跨國合作網絡。
+      </p>
+      <img src="/images/AC-WorldMap-V2.webp" alt="UBI Taiwan 國際連結地圖" loading="lazy" style="margin-top: var(--space-4);" />
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="booth-title">
+    <div class="container container--narrow">
+      <h2 id="booth-title">倡議活動：擺攤</h2>
+      <p>
+        2024 年我們橫跨台灣南北，觸及校園/教育、議題市集、音樂祭等主題，平均每 2 個月參與一場擺攤活動，與不同性質的人群進行交流與對話。
+      </p>
+      <div class="photo-row">
+        <img src="/images/20241005-06_浪人季_「生活本該如此」互動-scaled-r2uo2eds01212w0737i5ndsnjlbg90ru6w8r78fofk.webp" alt="浪人季「生活本該如此」互動" loading="lazy" />
+        <img src="/images/20240228_共生音樂節_解說-r2uo0xqtdb1z0q4nmkr1rr2ua0iw9yyvbnpkbqlq40.webp" alt="共生音樂節攤位解說" loading="lazy" />
+        <img src="/images/20240309_臺師大暖日永續節_擺攤特寫-r2uo2vavf1p6vvbmcetfw9iy8j023kn097zhu7qlbk.webp" alt="臺師大暖日永續節擺攤特寫" loading="lazy" />
+      </div>
+
+      <h3>夥伴心得</h3>
+      <blockquote class="voice">
+        <h4>立軒｜個人實驗組組員</h4>
+        <p style="margin: 0;">
+          以前參加各種人權市集、音樂祭時，總覺得那些在攤位上賣力解說的 NGO 工作人員真是一群帶著理想、閃閃發光的人們啊。在 UBI TAIWAN 這將近一年的時間，參與了好幾場擺攤之後，我變成以前自己眼中的樣子了嗎？我其實也不確定。但，每次當原本陌生的人們從攤位上離開，帶走我們的理念和想法時候，我確實覺得離我們這群人共同的夢想實現又更近了一點點。因為這樣，我想我會一直使盡全力的活躍在倡議第一線的。
+        </p>
+      </blockquote>
+      <blockquote class="voice">
+        <h4>依婷</h4>
+        <p style="margin: 0;">
+          印象中在攤位上，我常遇到聊著基本收入的定義、聊著對時事的看法，然後就聊起私事的狀況。常聊著就感覺說，果然，人的匱乏常常是連自己都不怎麼面對的，而當我們有機會去向人敞開，那些得以浮現的憂思和悸動，以及仍決定要與人分享的決斷，都真是十分動人。認識人需要空間，而基本收入就是關於確保人們生存之上的空間的。希望更多人一起為了更認識接觸到的彼此而敞開胸懷。
+        </p>
+      </blockquote>
+      <p style="margin-top: var(--space-6);">
+        我們相信，街頭是一個最接近民眾的地方，也是傳遞理念和建立對話的最佳方式。在 UBI Taiwan 的倡議行動中，我們不僅僅是尋求捐款支持，更希望透過與人們的真誠交流，分享我們對基本收入的願景，並在互動中加深彼此的理解。協會一些夥伴就是透過這樣的街頭倡議，從一位路人變成志工的一員。在與民眾的對話中，我們不僅傳遞了 UBI 的價值，同時也是練習傾聽的過程，甚至更要清楚自己的初衷和使命。相信每一次的交流，都能拉近彼此的距離，為推動社會變革奠定基石。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="media-title">
+    <div class="container container--narrow">
+      <h2 id="media-title">讓大家看見 UBI</h2>
+      <p>我們從地方到國際，媒體到自媒體，與不同組織串連對話。</p>
+      <div class="photo-grid">
+        <figure>
+          <img src="/images/45e68d6667d8fc4ce4bef148516409fc.webp" alt="" loading="lazy" />
+          <figcaption>受邀參加花蓮社會轉型論壇</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/IMG_764302.webp" alt="" loading="lazy" />
+          <figcaption>參加 BIEN 國際論壇</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/93613E3A-FAFA-462F-8C04-D91F5964F4F6_1_105_c.webp" alt="" loading="lazy" />
+          <figcaption>我們受邀到志祺七七討論 UBI 議題並累積 10 萬觀看；並舉辦記者會分享目前實驗進度</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/e2f8ec999a2ecdf01d9dd0c898e41692.webp" alt="" loading="lazy" />
+          <figcaption>記者會</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/IMG_5974-大.webp" alt="" loading="lazy" />
+          <figcaption>成果發表會</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/ba3083c2a6e0e58b6af52df40c7cc719.webp" alt="" loading="lazy" />
+          <figcaption>組織拜訪</figcaption>
+        </figure>
+      </div>
+      <p>
+        今年我們做了很多事從台北到花蓮，從台灣到英國，將台灣 UBI 在做的事情與不同人分享。我們在市集、音樂祭擺攤、舉辦記者會、上 YT 訪問、社群媒體的經營，透過不同的媒體與民眾分享 UBI 的信念。今年我們努力和公眾對話用不同方式讓大家看見 UBI 的議題。希望 UBI 的討論與推進促使大家思考我們期許怎樣的社會和人生。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stats {
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-4);
+    text-align: center;
+  }
+  .stats__item img { border-radius: var(--radius-md); margin-bottom: var(--space-2); }
+  .stats__item p { font-weight: var(--font-bold); font-size: var(--text-sm); }
+  @media (max-width: 860px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  .papers { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+  .photo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+  }
+  .photo-row img {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-block: var(--space-6);
+  }
+  .photo-grid figure { margin: 0; }
+  .photo-grid img {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+    margin-bottom: var(--space-2);
+  }
+  .photo-grid figcaption { font-size: var(--text-sm); color: var(--color-ink-500); }
+  @media (max-width: 560px) {
+    .photo-row, .photo-grid { grid-template-columns: 1fr; }
+  }
+  /* 拿掉 .card：論文改細線分隔，夥伴心得本來就是引言，改用 blockquote */
+  .paper { padding-block: var(--space-5); border-top: 1px solid var(--color-ink-300); }
+  .paper:last-of-type { border-bottom: 1px solid var(--color-ink-300); }
+  .paper h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .paper p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  .voice {
+    margin: 0 0 var(--space-6);
+    padding-left: var(--space-6);
+    border-left: 4px solid var(--color-warm-500);
+  }
+  .voice h4 { margin-bottom: var(--space-2); color: var(--color-brand-700); }
+  .voice p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+</style>

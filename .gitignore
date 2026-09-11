@@ -1,0 +1,19 @@
+# 相依與建置產物
+node_modules/
+dist/
+.astro/
+
+# 內部資料：不進入公開 repo
+references-info/
+# 錨定根目錄：先前寫成 docs/ 會連 public/docs/ 一起忽略，
+# 導致要公開的檔案（如政策提案簡報）不會進版控、CI 建置時缺檔。
+/docs/
+
+# 本機設定
+.claude/
+.DS_Store
+*.log
+
+# 協會提供的原始素材（zip／docx／簡報原檔）。
+# 與 docs/ 同慣例：只保留萃取後進 repo 的成品，原檔留在本機。
+new-input/

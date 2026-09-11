@@ -1,0 +1,478 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 第二階段：生活自由計畫（2026–2027）
+//
+// 2026-08 依協會回饋改版：原本是導流到 JUJI 報名的活動頁（獨立的 lf-* 視覺系統），
+// 報名於 2026/08/31 截止後，這頁的任務改為「從 UBI Taiwan 立場介紹計畫的
+// 源起、合作夥伴與實驗內容」，因此改用全站設計系統，結構比照第一階段。
+//
+// 內容來源：docs/new-input/Life Rewriting Program_UBI Taiwan × JUJI.pdf
+// （UBI Taiwan 於 2026 BIEN Congress Toronto 發表，2026/08/20），
+// 以及 references-info/生活自由計畫-網頁內容素材.md。
+//
+// 命名：協會簡報與記者會現場稱「生活改寫計畫」，網頁正式名稱依專案指示
+// 採用「生活自由計畫」（見 references-info/生活自由計畫-網頁內容素材.md 開頭註記）。
+//
+// 待確認：記者會合照中另有王道銀行（O-BANK）出席，但團隊素材未說明其角色，
+// 因此本頁只在圖說陳述「共同出席」，未描述其參與方式。
+
+// 實驗設計
+const design = [
+  { k: '參與者', v: '3', unit: '位', note: '從公開報名者中隨機抽出 15 位候選人，再經訪談評估選出' },
+  { k: '每月金額', v: '10,000', unit: '元', note: '無條件、不限用途，不需償還也沒有條件交換' },
+  { k: '期間', v: '12', unit: '個月', note: '2026 年 11 月至 2027 年 10 月，完整一年' },
+];
+
+// 四階段時程。用「已完成／進行中／尚未開始」的相對狀態，
+// 不寫死「報名中」這類會過期的字眼；跨越階段時只需調整 state 欄位。
+//
+// ⚠️ 這個陣列需要人工跟著時間推進，網站不會自己更新。
+//    下一個切換點：2026/11/01 計畫啟動 → 第 3 項改 done、第 4 項改 next。
+//    2026-09-08 更新至決選階段；第 2 項是依協會公告的時程標記為已完成，
+//    若實際公布日期有異動請一併修正。
+const phases = [
+  { n: '1', name: '公開報名', date: '2026/07/20 – 08/31', state: 'done',
+    desc: 'JUJI 會員於期間內在官方活動頁填寫報名問卷即符合資格。' },
+  { n: '2', name: '公布候選人', date: '2026/09/07', state: 'done',
+    desc: '從所有報名者中隨機抽出 15 位候選人並公布名單。' },
+  { n: '3', name: '訪談與決選', date: '2026/09/08 – 10/31', state: 'next',
+    desc: '15 位候選人受邀參與訪談，由 UBI Taiwan 以專業問卷與深度訪談完成評估，選出 3 位參與者。' },
+  { n: '4', name: '計畫啟動', date: '2026/11 – 2027/10', state: 'todo',
+    desc: '每月 10,000 元準時入帳，為期完整一年，同步進行追蹤研究。' },
+];
+
+// JUJI 用戶輪廓——這是這場合作的關鍵證據：
+// 借款人越來越年輕、經濟弱勢比例三年翻倍。數字出自協會簡報第 14、15 頁。
+const profile = [
+  { v: '70%', label: '用戶在 35 歲以下' },
+  { v: '55.2%', label: '用戶屬經濟弱勢（2025）' },
+  { v: '3 年', label: '弱勢比例從 32.4% 攀升至 55.2%' },
+];
+
+const outputs = [
+  { t: '階段性報告', d: '發放第 6 個月，公開初步觀察' },
+  { t: '影響力報告', d: '面向大眾，聚焦參與者的生命變化' },
+  { t: '研究報告書', d: '面向學術，完整研究設計與分析' },
+  { t: '實驗紀錄片', d: '5 至 8 分鐘影片，記錄真實的改變' },
+];
+
+const faqs = [
+  { q: '這是一筆借款嗎？之後需要還嗎？',
+    a: '不需要。這不是借款，也不是任何形式的條件交換。這是一筆無條件的基本收入，支持參與者按照自己的想法生活。' },
+  { q: '這筆錢可以用在哪些地方？',
+    a: '沒有任何使用限制。付房租、進修、照顧家人、償還債務、儲蓄，或單純讓生活喘一口氣，都由參與者自己決定。我們不審查、不過問、不評價。' },
+  { q: '為什麼只有 3 位參與者？',
+    a: '第二階段的重點不在規模，而在建立可複製的研究方法。第一階段是單一家庭的深度追蹤，第二階段擴大到 3 位不同背景的參與者，並首次納入對照組，為未來更大規模的實驗打好基礎。' },
+  { q: '為什麼是 JUJI 的會員？',
+    a: 'JUJI 是小額信貸服務，站在資金缺口的第一線。他們的用戶有七成在 35 歲以下，經濟弱勢比例三年間從三分之一攀升到超過一半，這正是基本收入最想回答的處境。從這個群體出發，實驗才問得到真正的問題。' },
+  { q: '參與者中途可以退出嗎？',
+    a: '可以。參與者隨時都可以選擇退出計畫，UBI Taiwan 全程陪伴，也會尊重每一個決定。' },
+  { q: '個人資料與這筆資金如何被管理？',
+    a: '計畫每月定期發放並進行財務稽核，確保資金流向透明。研究資料在去識別化後，才會用於公開的影響力報告與研究報告書。' },
+];
+---
+
+<BaseLayout
+  title="生活自由計畫｜第二階段實驗｜UBI Taiwan"
+  description="台灣第一場由企業贊助的基本收入實驗：UBI Taiwan 與 JUJI（Gogolook 旗下金融科技品牌）合作，為 3 位參與者提供每月 10,000 元、連續 12 個月的無條件基本收入，並進行完整的追蹤研究。"
+  current="life-freedom"
+  ogImage="/images/life-freedom/partners-four.webp"
+>
+  <!-- ── 0. Hero ───────────────────────────────────────── -->
+  <section class="hero">
+    <img class="hero__bg" src="/images/life-freedom/press-room.webp" alt="" aria-hidden="true"
+         width="1312" height="738" fetchpriority="high" decoding="async" />
+    <div class="hero__veil" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <p class="hero__kicker">第二階段 · 2026–2027</p>
+      <h1 class="hero__title">生活自由計畫</h1>
+      <p class="hero__sub">台灣第一場由企業贊助的基本收入實驗</p>
+      <div class="hero__lines">
+        <p>3 位參與者、每月 10,000 元、連續 12 個月，無條件且不限用途。</p>
+        <p>由金融科技品牌 JUJI 贊助，UBI Taiwan 規劃並執行研究。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 1. 這場實驗怎麼開始的 ─────────────────────────── -->
+  <section class="section" aria-labelledby="origin-title">
+    <div class="container">
+      <h2 id="origin-title" class="sec-title">這場實驗怎麼開始的</h2>
+
+      <div class="origin">
+        <div class="origin__text">
+          <p>
+            第一階段的單親家庭實驗結束後，我們一直在找下一個問題：
+            如果基本收入真的有效，它最該先給誰？
+          </p>
+          <p>
+            答案來自一個我們原本沒有想到的地方：一家放款公司。
+          </p>
+          <p>
+            JUJI 是小額信貸服務，每天處理的是台灣社會的資金缺口。
+            他們看見的不是統計數字，是一筆一筆的申請紀錄：
+            有人在凌晨三點提出申請，有人一個月回來借第二次。
+          </p>
+          <p>
+            於是他們開始問自己一個超出本業的問題：</p>
+        </div>
+
+        <blockquote class="pull">
+          <p>「他們撐著的，是什麼樣的生活？」</p>
+          <p class="pull__after">
+            如果有一筆錢，沒有任何附加條件，他們的人生會不會走上另一條路？
+          </p>
+          <cite>JUJI 團隊，《生活改寫計畫》緣起</cite>
+        </blockquote>
+      </div>
+
+      <p class="origin__close">
+        這個問題，正好就是 UBI Taiwan 八年來一直在問的問題。
+        兩邊在 2026 年展開合作，成為台灣第一場由企業贊助的基本收入實驗。
+      </p>
+    </div>
+  </section>
+
+  <!-- ── 2. 合作夥伴 ───────────────────────────────────── -->
+  <section class="section section--subtle" aria-labelledby="partner-title">
+    <div class="container">
+      <h2 id="partner-title" class="sec-title">合作夥伴：為什麼是 JUJI</h2>
+
+      <div class="who">
+        <div class="who__text">
+          <p>
+            JUJI 招財麻吉是 <strong>Gogolook</strong> 旗下的金融科技品牌。
+            Gogolook 這個名字可能陌生，但它的另一個產品幾乎人人手機裡都有：
+            <strong>Whoscall</strong>。
+          </p>
+          <p>
+            從防詐騙起家，Gogolook 的業務橫跨消費者防詐、企業防詐與金融科技三塊。
+            JUJI 屬於其中的金融科技，提供小額信貸，接受多元的收入證明，讓沒有信用紀錄的人也能借到錢。
+          </p>
+          <p>
+            正因為服務的是傳統金融看不到的人，JUJI 的用戶輪廓成了一份現場證據。
+          </p>
+        </div>
+
+        <figure class="who__figure">
+          <img src="/images/life-freedom/team-three.webp"
+               alt="JUJI 與 Gogolook 團隊成員三人合影，身穿印有品牌識別的服裝"
+               width="1191" height="670" loading="lazy" />
+        </figure>
+      </div>
+
+      <dl class="profile">
+        {profile.map((p) => (
+          <div class="profile__item">
+            <dt class="profile__v">{p.v}</dt>
+            <dd class="profile__l">{p.label}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="profile__note">
+        經濟弱勢的定義包含：月收入證明在 1 萬元以下、收入主要來自變動薪資或接案、
+        沒有任何信用卡紀錄、或以營業稅籍證明收入的微型創業者。
+        <span class="profile__src">資料來源：JUJI 用戶資料，統計至 2025 年底。</span>
+      </p>
+
+      <p class="who__close">
+        借錢的人越來越年輕，經濟弱勢的比例三年之間從三分之一攀升到超過一半。
+        對 JUJI 來說，這不只是一份 ESG 報告可以交代的事。它讓「無條件的錢能不能改變什麼」變成一個必須實際回答的問題。
+      </p>
+
+      <figure class="shot">
+        <img src="/images/life-freedom/partners-four.webp"
+             alt="生活改寫計畫合作啟動記者會，四位代表各持一面圓形看板，分別是 UBI Taiwan、JUJI、Gogolook 與王道銀行，背板寫著「生活改寫計劃 合作啟動記者會 每月一萬 改寫生活」"
+             width="1302" height="732" loading="lazy" />
+        <figcaption>
+          2026 年 7 月 23 日，合作啟動記者會。UBI Taiwan、JUJI、Gogolook 與王道銀行共同出席。
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 3. 實驗內容 ───────────────────────────────────── -->
+  <section class="section" aria-labelledby="design-title">
+    <div class="container">
+      <h2 id="design-title" class="sec-title">實驗內容</h2>
+
+      <dl class="design">
+        {design.map((d) => (
+          <div class="design__item">
+            <dt class="design__k">{d.k}</dt>
+            <dd class="design__v"><b>{d.v}</b><span>{d.unit}</span></dd>
+            <dd class="design__note">{d.note}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h3 class="sub-title">四個階段</h3>
+      <ol class="phases">
+        {phases.map((p) => (
+          <li class={`phase phase--${p.state}`}>
+            <span class="phase__n" aria-hidden="true">{p.n}</span>
+            <div class="phase__body">
+              <h4 class="phase__name">
+                {p.name}
+                {p.state === 'done' && <span class="phase__tag phase__tag--done">已完成</span>}
+                {p.state === 'next' && <span class="phase__tag phase__tag--next">接下來</span>}
+              </h4>
+              <p class="phase__date">{p.date}</p>
+              <p class="phase__desc">{p.desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 4. 研究設計 ───────────────────────────────────── -->
+  <section class="section section--muted" aria-labelledby="research-title">
+    <div class="container">
+      <h2 id="research-title" class="sec-title">不只是發錢，更是嚴謹的研究</h2>
+      <div class="research">
+        <div class="research__text">
+          <p>
+            一年之間，UBI Taiwan 將與 3 位參與者進行共 6 次深度訪談
+            （發放前 1 次、期間 4 次、發放後 1 次），
+            並針對未中選的候選人進行對照組問卷調查。這是台灣的基本收入實驗第一次納入對照組。
+          </p>
+          <p>所有資金每月定期稽核，流向完全透明。實驗結束後會產出四份公開成果：</p>
+        </div>
+        <ul class="outputs">
+          {outputs.map((o) => (
+            <li class="output">
+              <span class="output__t">{o.t}</span>
+              <span class="output__d">{o.d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. 承接：從實驗到政策 ─────────────────────────── -->
+  <section class="section section--inverse" aria-labelledby="policy-title">
+    <div class="container">
+      <p class="eyebrow eyebrow--light">實驗之後</p>
+      <h2 id="policy-title" class="sec-title sec-title--light">實驗是為了讓制度成為可能</h2>
+      <div class="toward">
+        <div class="toward__text">
+          <p>
+            第一階段回答了「一個家庭會怎麼改變」，
+            第二階段要回答「不同處境的人會怎麼改變，以及怎麼被嚴謹地測量」。
+          </p>
+          <p>
+            但實驗本身不是終點。UBI Taiwan 真正想推動的，
+            是讓基本收入成為台灣可以認真討論的政策選項。而我們認為，最該先被看見的是年輕世代。
+          </p>
+        </div>
+        <p class="toward__cta">
+          <a class="btn btn--warm" href="/impact/policy/">看青年基本收入政策方向</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. 常見問題 ───────────────────────────────────── -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <h2 id="faq-title" class="sec-title">常見問題</h2>
+      <div class="faq">
+        {faqs.map((f) => (
+          <details class="faq__item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <p class="more">
+        本計畫由 <strong>JUJI 招財麻吉</strong>（Gogolook 集團）贊助、
+        <strong>UBI Taiwan</strong> 規劃執行。
+        <a href="/about/">認識 UBI Taiwan</a> ·
+        <a href="https://juji.tw/juji-ubi-esg" rel="noopener">JUJI 官方活動頁</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sec-title { font-size: var(--text-2xl); margin-bottom: var(--space-8); }
+  .sec-title--light { color: var(--color-white); }
+  .sub-title {
+    font-size: var(--text-lg); margin: var(--space-16) 0 var(--space-6);
+    color: var(--color-ink-900);
+  }
+  .eyebrow--light { color: var(--color-brand-200); }
+
+  /* ── Hero ── */
+  /* 記者會現場照偏亮，遮罩比第一階段重：0.62 → 0.93。
+     逐像素實測文字帶最差對比 5.12:1，過 AA。 */
+  .hero { position: relative; isolation: isolate; min-height: 62vh; display: grid; align-items: end; }
+  .hero__bg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 35%; z-index: -2;
+  }
+  .hero__veil {
+    position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(22,58,84,.42) 0%, rgba(22,58,84,.62) 42%, rgba(22,58,84,.93) 100%);
+  }
+  .hero__inner { padding-block: var(--space-24) var(--space-16); color: var(--color-white); }
+  .hero__kicker {
+    font-size: var(--text-sm); font-weight: var(--font-bold);
+    letter-spacing: .14em; color: var(--color-brand-200); margin-bottom: var(--space-4);
+  }
+  .hero__title {
+    font-size: clamp(2rem, 5.4vw, var(--text-4xl));
+    color: var(--color-white); margin-bottom: var(--space-3);
+    text-shadow: 0 1px 14px rgba(11,29,42,.5);
+  }
+  .hero__sub {
+    font-size: var(--text-lg); color: var(--color-brand-100);
+    margin-bottom: var(--space-6); text-shadow: 0 1px 10px rgba(11,29,42,.45);
+  }
+  .hero__lines { max-width: 42rem; }
+  .hero__lines p {
+    color: var(--color-brand-100); line-height: var(--leading-loose);
+    margin-bottom: var(--space-2); text-shadow: 0 1px 10px rgba(11,29,42,.45);
+  }
+
+  /* ── 1. 源起 ── */
+  .origin { display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: var(--space-12); align-items: start; }
+  .origin__text p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .pull {
+    margin: 0; padding: var(--space-8);
+    background: var(--color-brand-50);
+    border-left: 4px solid var(--color-warm-500);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .pull > p:first-child {
+    font-size: var(--text-xl); font-weight: var(--font-bold);
+    color: var(--color-brand-800); line-height: 1.6; margin-bottom: var(--space-4);
+  }
+  .pull__after { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .pull cite { font-size: var(--text-sm); color: var(--color-ink-500); font-style: normal; }
+  .origin__close {
+    margin: var(--space-12) 0 0; max-width: 48rem;
+    font-size: var(--text-lg); line-height: var(--leading-loose); color: var(--color-ink-900);
+  }
+
+  /* ── 2. 合作夥伴 ── */
+  .who { display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: var(--space-12); align-items: center; }
+  .who__text p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .who__figure { margin: 0; border-radius: var(--radius-md); overflow: hidden; }
+  .who__figure img { width: 100%; height: auto; display: block; }
+
+  .profile {
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: var(--space-8); margin: var(--space-12) 0 var(--space-4);
+    padding-top: var(--space-8); border-top: 2px solid var(--color-brand-200);
+  }
+  .profile__item { margin: 0; }
+  .profile__v {
+    font-size: var(--text-3xl); font-weight: 900; line-height: 1;
+    color: var(--color-warm-600); font-variant-numeric: tabular-nums;
+  }
+  .profile__l { margin: var(--space-2) 0 0; color: var(--color-ink-700); font-size: var(--text-sm); line-height: 1.6; }
+  .profile__note { font-size: var(--text-sm); color: var(--color-ink-500); line-height: 1.7; max-width: 52rem; }
+  .profile__src { display: block; margin-top: var(--space-1); }
+  .who__close {
+    margin: var(--space-8) 0 0; max-width: 48rem;
+    font-size: var(--text-lg); line-height: var(--leading-loose); color: var(--color-ink-900);
+  }
+
+  .shot { margin: var(--space-12) 0 0; }
+  .shot img { width: 100%; height: auto; border-radius: var(--radius-md); display: block; }
+  .shot figcaption {
+    margin-top: var(--space-3); font-size: var(--text-sm);
+    color: var(--color-ink-500); line-height: 1.7;
+  }
+
+  /* ── 3. 實驗內容 ── */
+  .design { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-8); }
+  .design__item {
+    margin: 0; padding-top: var(--space-6);
+    border-top: 3px solid var(--color-brand-500);
+  }
+  .design__k { font-size: var(--text-sm); color: var(--color-ink-500); letter-spacing: .08em; }
+  .design__v { margin: var(--space-2) 0 var(--space-3); display: flex; align-items: baseline; gap: var(--space-2); }
+  .design__v b {
+    font-size: var(--text-3xl); font-weight: 900; line-height: 1;
+    color: var(--color-brand-800); font-variant-numeric: tabular-nums;
+  }
+  .design__v span { font-size: var(--text-base); color: var(--color-ink-700); }
+  .design__note { margin: 0; font-size: var(--text-sm); color: var(--color-ink-700); line-height: 1.7; }
+
+  .phases { list-style: none; margin: 0; padding: 0; display: grid; }
+  .phase {
+    display: grid; grid-template-columns: auto minmax(0,1fr); gap: var(--space-6);
+    padding: var(--space-6) 0; border-bottom: 1px solid var(--color-ink-100);
+  }
+  .phase:first-child { border-top: 1px solid var(--color-ink-100); }
+  .phase__n {
+    display: grid; place-content: center;
+    width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    font-weight: var(--font-bold); font-variant-numeric: tabular-nums;
+    background: var(--color-ink-100); color: var(--color-ink-500);
+  }
+  .phase--done .phase__n { background: var(--color-brand-600); color: var(--color-white); }
+  .phase--next .phase__n { background: var(--color-warm-500); color: var(--color-white); }
+  .phase__name {
+    font-size: var(--text-lg); margin: 0 0 var(--space-1);
+    display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+  }
+  .phase__tag {
+    font-size: var(--text-xs); font-weight: var(--font-bold);
+    border-radius: var(--radius-full); padding: 2px var(--space-3);
+  }
+  .phase__tag--done { background: var(--color-brand-50); color: var(--color-brand-700); }
+  .phase__tag--next { background: color-mix(in srgb, var(--color-warm-500) 16%, transparent); color: var(--color-warm-600); }
+  .phase__date { margin: 0 0 var(--space-2); font-size: var(--text-sm); color: var(--color-ink-500); font-variant-numeric: tabular-nums; }
+  .phase__desc { margin: 0; color: var(--color-ink-700); line-height: var(--leading-normal); }
+
+  /* ── 4. 研究 ── */
+  .research { display: grid; grid-template-columns: minmax(0,6fr) minmax(0,5fr); gap: var(--space-12); align-items: start; }
+  .research__text p { color: var(--color-ink-700); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .outputs { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+  .output {
+    display: grid; gap: var(--space-1);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-white); border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-brand-500);
+  }
+  .output__t { font-weight: var(--font-bold); color: var(--color-brand-800); }
+  .output__d { font-size: var(--text-sm); color: var(--color-ink-700); }
+
+  /* ── 5. 承接政策 ── */
+  .toward { display: grid; grid-template-columns: minmax(0,8fr) minmax(0,4fr); gap: var(--space-8); align-items: center; }
+  .toward__text p { color: var(--color-brand-100); line-height: var(--leading-loose); margin-bottom: var(--space-4); }
+  .toward__cta { margin: 0; }
+
+  /* ── 6. FAQ ── */
+  .faq { display: grid; gap: var(--space-3); }
+  .faq__item {
+    border: 1px solid var(--color-ink-300); border-radius: var(--radius-md);
+    background: var(--color-white);
+  }
+  .faq__item summary {
+    cursor: pointer; padding: var(--space-5) var(--space-6);
+    font-weight: var(--font-bold); color: var(--color-brand-800);
+  }
+  .faq__item[open] summary { border-bottom: 1px solid var(--color-ink-100); }
+  .faq__item p {
+    margin: 0; padding: var(--space-5) var(--space-6);
+    color: var(--color-ink-700); line-height: var(--leading-loose);
+  }
+  .more {
+    margin-top: var(--space-12); font-size: var(--text-sm);
+    color: var(--color-ink-700); line-height: 1.8;
+  }
+
+  @media (max-width: 860px) {
+    .origin, .who, .research, .toward { grid-template-columns: 1fr; gap: var(--space-8); }
+    .profile { grid-template-columns: 1fr; gap: var(--space-6); }
+    .design { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,135 @@
+---
+// 頁尾：結構與 ubitaiwan.org/zh 現有網站一致
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <!-- 頁尾底色為深藍，原 logo 的深灰文字對比只有 1.11:1（等於隱形）。
+             改用白字版本：白 11.9:1、標誌 8.1:1。 -->
+        <img
+          class="site-footer__logo"
+          src="/images/UBI-LOGO-footer.webp"
+          alt="UBI Taiwan"
+          width="220"
+          height="120"
+          loading="lazy"
+        />
+      </div>
+      <nav aria-label="頁尾導覽：了解更多">
+        <h2 class="site-footer__title">了解更多</h2>
+        <ul>
+          <li><a href="/ubi/">什麼是基本收入</a></li>
+          <li><a href="/ubi/faq/">基本收入大哉問</a></li>
+          <li><a href="/experiment/">台灣的實驗</a></li>
+          <li><a href="/impact/">行動里程碑</a></li>
+          <li><a href="/life-freedom/">生活自由計畫</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="頁尾導覽：捐款支持">
+        <h2 class="site-footer__title">捐款支持</h2>
+        <p class="site-footer__desc">
+          促進跨世代跨階級的對話，建立更平等自由的社會，讓全民不論貧富，皆得以實踐真正的生活，而不只是生存。
+        </p>
+        <ul>
+          <li><a href="/support/">捐款支持</a></li>
+          <li><a href="/about/transparency/">捐款徵信</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2 class="site-footer__title">聯絡我們</h2>
+        <ul>
+          <li><a href="mailto:contact@ubitaiwan.org">contact@ubitaiwan.org</a></li>
+        </ul>
+        <ul class="site-footer__social" aria-label="社群媒體連結">
+          <li><a href="https://www.facebook.com/TaiwanUBI" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.instagram.com/ubitaiwan/" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.youtube.com/@ubitaiwan" rel="noopener">YouTube</a></li>
+          <li><a href="/about/press/">媒體專區</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      <p class="site-footer__orgname">社團法人台灣無條件基本收入協會</p>
+      <dl class="site-footer__reg">
+        <div><dt>立案字號</dt><dd>台內團字第 1070077614 號</dd></div>
+        <div><dt>統一編號</dt><dd>74342501</dd></div>
+        <div><dt>主管機關</dt><dd>內政部</dd></div>
+      </dl>
+      <p class="site-footer__copyright">
+        Copyright © 2026 UBI Taiwan – All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer__logo { width: 220px; max-width: 100%; height: auto; }
+
+  .site-footer {
+    background: var(--surface-inverse);
+    color: var(--color-brand-100);
+    padding-block: var(--space-16) var(--space-8);
+    margin-top: var(--space-24);
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.4fr 1fr;
+    gap: var(--space-8);
+  }
+  .site-footer__title {
+    font-size: var(--text-base);
+    color: var(--color-white);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer__desc {
+    color: var(--color-brand-200);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .site-footer a { color: var(--color-brand-200); text-decoration: none; }
+  .site-footer a:hover { color: var(--color-white); text-decoration: underline; }
+  .site-footer__social { margin-top: var(--space-4); }
+  .site-footer__legal {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-brand-800);
+  }
+  .site-footer__orgname {
+    color: var(--color-white);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer__reg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-brand-300);
+  }
+  .site-footer__reg div { display: flex; gap: var(--space-2); }
+  .site-footer__reg dt { color: var(--color-brand-200); }
+  .site-footer__reg dt::after { content: '：'; }
+  .site-footer__reg dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .site-footer__copyright {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-brand-300);
+  }
+  @media (max-width: 860px) {
+    .site-footer__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .site-footer__grid { grid-template-columns: 1fr; }
+  }
+</style>

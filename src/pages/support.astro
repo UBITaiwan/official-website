@@ -1,0 +1,377 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 捐款支持：內容對應 ubitaiwan.org/support/（現有網站捐款頁）
+
+const visions = [
+  {
+    title: '1. 以基本收入倡議推動社會共融',
+    desc: '致力於與社會各界對話，讓更多人的處境被看見，並積極推動基本收入以強化社會韌性。',
+  },
+  {
+    title: '2. 以深度參與培育人才',
+    desc: '透過基本收入的議題研究與實際行動，培養具責任感並關懷社會的中堅人才。',
+  },
+  {
+    title: '3. 以在地經驗連結國際',
+    desc: '以符合台灣社會的方式推動基本收入，並與國際交流合作，展現台灣經驗對全球的啟發與價值。',
+  },
+  {
+    title: '4. 以透明與獨立性創造公共價值',
+    desc: '保持獨立與公開透明，並以公共利益為核心，持續推動社會變革。',
+  },
+];
+
+const projects = [
+  { title: '單親家庭實驗', desc: '2023年開始，為單親家庭的家長提供每月一萬元的現金，改善生活品質並重建家庭關係，以紀錄片的形式呈現給社會大眾。', href: '/pilot-program/' },
+  { title: '參與國際大會', desc: '代表台灣參與每年的國際大會（BIEN Congress），曾赴韓國、英國、印度、芬蘭、葡萄牙等，分享台灣的倡議行動成果。' },
+  { title: '政策研究發表', desc: '包含政策建議白皮書、公共政策提議書、緊急現金給付提案等，引起社會大眾與政治人物的關注，為倡議提供論述的基礎。' },
+  { title: '共好時代遊行', desc: '台灣首次基本收入遊行，吸引10多篇媒體報導，募資達成率115%，社會大眾、社團組織、政治人物與政黨共襄盛舉。' },
+  { title: '亞太國際高峰會', desc: '4場超過100人參與的亞太國際高峰會，邀請來自10多個國家的專家學者齊聚交流，促進台灣及亞太地區對基本收入的關注與討論。' },
+  { title: '全國雙語高中辯論賽', desc: '來自全國及國際的20多所高中報名參加，透過議題的深入思辨，讓基本收入的概念在青年學子中扎根。' },
+  { title: '舉辦記者會', desc: '與合作夥伴多次舉辦記者會，涵蓋主題如單親家庭實驗、碳稅、疫情現金普發等，讓新聞媒體和社會大眾了解基本收入的重要性。' },
+  { title: '媒體投書', desc: '積極投書新聞媒體，針對基本收入及相關時事議題發表文章，為讀者提供全新視角，激發對社會議題的深入思考。' },
+  { title: '媒體採訪報導', desc: '我們的行動吸引了新聞媒體和自媒體的關注，帶來數十次的採訪報導，將基本收入的概念帶入更廣泛的視野，突破了原有的同溫層。', href: 'https://www.youtube.com/watch?v=jLfbUGYkqZ4' },
+];
+
+const tiers = [
+  {
+    img: '/images/MacBook-Pro-16_-1.webp',
+    name: '黃肉地瓜',
+    tagline: '日常不可或缺',
+    monthly: '每月定額 200 元',
+    once: '單筆捐款 500 元',
+    desc: '支持日常倡議推廣等活動',
+    monthlyHref: 'https://ubitaiwan.neticrm.tw/civicrm/contribute/transact?reset=1&id=8&_grouping=recurring&&_amt=200',
+  },
+  {
+    img: '/images/MacBook-Pro-16_-2.webp',
+    name: '紅肉地瓜',
+    tagline: '提供基礎營養',
+    monthly: '每月定額 500 元',
+    once: '單筆捐款 1,000 元',
+    desc: '支持基本收入實驗，賦予基本生存權',
+    monthlyHref: 'https://ubitaiwan.neticrm.tw/civicrm/contribute/transact?reset=1&id=8&_grouping=recurring&&_amt=500',
+  },
+  {
+    img: '/images/MacBook-Pro-16_-3.webp',
+    name: '金香地瓜',
+    tagline: '臺灣特色代表',
+    monthly: '每月定額 1,000 元',
+    once: '單筆捐款 2,500 元',
+    desc: '支持國際交流，走出臺灣的路',
+    monthlyHref: 'https://ubitaiwan.neticrm.tw/civicrm/contribute/transact?reset=1&id=8&_grouping=recurring&&_amt=1000',
+  },
+  {
+    img: '/images/MacBook-Pro-16_-4.webp',
+    name: '紫心地瓜',
+    tagline: '健康明日之星',
+    monthly: '每月定額 2,000 元',
+    once: '單筆捐款 5,000 元',
+    desc: '支持政策實踐，創造健全共好社會',
+    monthlyHref: 'https://ubitaiwan.neticrm.tw/civicrm/contribute/transact?reset=1&id=8&_grouping=recurring&&_amt=2000',
+  },
+];
+
+const usage = [
+  { title: '培養議題人才', desc: '投入人員招募，舉辦課程教學、辯論比賽等培育訓練，致力於世代倡議與青年培育，培養具備深厚基本收入知識的人才。' },
+  { title: '擴展組織串聯', desc: '與其他社會團體合作，舉辦各類講座、工作坊、高峰會等倡議活動，連結各方資源，提升基本收入的社會關注度與影響力。' },
+  { title: '強化國際連結', desc: '積極參與基本收入世界網路（BIEN）等國際組織，分享台灣行動的成果，並與國際專家進行交流，將影響力拓展至全球。' },
+  { title: '推動實驗計畫', desc: '持續推動台灣在地的基本收入實驗，製作並發佈研究報告與紀錄片等，為未來政策提供依據，推動更具體的行動方案。' },
+];
+
+const faqs = [
+  { q: '1. 捐款是否有最低金額？', a: '單次捐款最低金額為新台幣 100 元，無論金額大小都對基本收入的推動有幫助，每一份支持都是非常寶貴的！' },
+  { q: '2. 我的捐款資料是否會被公開？', a: '我們會定期辦理公開徵信，你可在填寫徵信名稱時，選擇全名、部分名稱、自訂名稱（或匿名）。惟單筆捐款金額達新台幣 30 萬元或以上時，基於財務透明原則，會完整揭露你的名稱。我們不會公開徵信名稱與金額之外的任何資訊。' },
+  { q: '3. 是否可以每月定額捐款？', a: '是的，你可以選擇一次性捐款或每月定額捐款，但後者的支付方式僅支援信用卡。每月定額捐款為 UBI Taiwan 提供持續性的支持，來長期推動基本收入議題相關的工作。' },
+  { q: '4. 捐款的收據如何取得？', a: '捐款完成後，系統會自動透過電子郵件向你提供電子收據。如果你額外需要紙本收據，請來信至 contact@ubitaiwan.org 信箱，告知捐款者姓名、郵寄地址，將由專人為你處理。' },
+  { q: '5. 捐款贊助 UBI Taiwan 可以抵稅嗎？', a: '可以，不論使用電子或紙本收據，你都可以在下一年度綜所稅報稅時列舉扣除。' },
+  { q: '6. 每月定額捐款會在每月幾號進行扣款？', a: '完成定額捐款的當下，會立即進行第一次扣款，接下來會在每個月的同個日期扣款（除非遇到不存在的日期，例如 4/31，會改在 4/30 扣款。）' },
+  { q: '7. 除了捐款贊助之外，我還有什麼方法支持 UBI Taiwan？', a: '你還可以透過使用我們的發票捐贈愛心碼【10000】來支持 UBI Taiwan。在購物結帳時，你只需告訴店員你想使用愛心碼 10000，你的發票就會自動捐贈給我們。這是一種簡單而有意義的支持方式，讓你的日常消費也能為基本收入的推動貢獻一份心意！' },
+  { q: '8. 中途想更改贊助額度或暫停贊助，我應該怎麼處理？', a: '請來信至 contact@ubitaiwan.org 信箱，告知捐款者姓名、email，將由專人為你處理。' },
+  { q: '9. 如果我想更換其他信用卡贊助，該怎麼做？（含掛失、卡片過期）', a: '請來信至 contact@ubitaiwan.org 信箱，告知捐款者姓名、email，將由專人為你處理。' },
+  { q: '10. 如果我對捐款有其他問題，如何聯繫你們？', a: '請來信至 contact@ubitaiwan.org 信箱，我們非常願意回答任何相關問題。' },
+];
+---
+
+<BaseLayout
+  title="捐款支持｜UBI Taiwan"
+  description="支持 UBI Taiwan，讓基本收入成為改變社會的力量。你的捐款將投入基本收入實驗、政策研究與社會倡議。"
+  current="support"
+>
+  <section class="section section--subtle">
+    <div class="container">
+      <h1>支持 UBI Taiwan，讓基本收入成為改變社會的力量</h1>
+      <h2>UBI Taiwan 的社會願景與理念</h2>
+      <!-- 原本是四張等寬卡片；內容本來就有編號，改用大編號條列即可 -->
+      <ol class="creed">
+        {visions.map((v) => (
+          <li class="creed__item">
+            <h3>{v.title.replace(/^\d+\.\s*/, '')}</h3>
+            <p>{v.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="impact-title">
+    <div class="container">
+      <h2 id="impact-title">你的支持能為社會帶來變革</h2>
+      <p class="container--narrow" style="margin-inline: 0;">
+        基本收入不僅僅是理論上的探討，它對整個社會具有深遠的影響力。你的捐款將支持 UBI Taiwan 在台灣推動的一系列重要專案，讓更多人了解並參與這場具變革性的行動。
+      </p>
+      <!-- 原本是九張等寬卡片，九個方框排成三列非常制式；改為索引式條列 -->
+      <dl class="works">
+        {projects.map((p) => (
+          <div class="work">
+            <dt>
+              {p.title}
+              {p.href && (
+                <a class="work__link" href={p.href} rel={p.href.startsWith('http') ? 'noopener' : undefined}>
+                  {p.href.startsWith('http') ? '前往觀看 →' : '前往閱讀 →'}
+                </a>
+              )}
+            </dt>
+            <dd>{p.desc}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="tiers-title">
+    <div class="container">
+      <h2 id="tiers-title">成為基本收入地瓜，一起加入這場行動</h2>
+      <p class="container--narrow" style="margin-inline: 0;">
+        地瓜（蕃薯）象徵著台灣人即便在艱苦的環境中，依然展現不屈不撓的生命力。歡迎用適合你的方式（地瓜），一起打造更美好的台灣。
+      </p>
+      <!--
+        級距本來就是要並排比較的，所以保留橫排；但拿掉方框與陰影，
+        改以圖像和一條細線界定，避免又變成四個一模一樣的盒子。
+      -->
+      <ul class="tiers">
+        {tiers.map((t) => (
+          <li class="tier">
+            <img src={t.img} alt="" loading="lazy" class="tier__img" />
+            <h3 class="tier__name">{t.name}</h3>
+            <p class="tier__tagline">{t.tagline}</p>
+            <dl class="tier__amounts">
+              <div><dt>每月定額</dt><dd>{t.monthly.replace('每月定額 ', '')}</dd></div>
+              <div><dt>單筆捐款</dt><dd>{t.once.replace('單筆捐款 ', '')}</dd></div>
+            </dl>
+            <p class="tier__desc">{t.desc}</p>
+            <a class="btn btn--warm" href={t.monthlyHref} rel="noopener">贊助支持</a>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top: var(--space-8);">
+        <a
+          class="btn btn--outline"
+          href="https://ubitaiwan.neticrm.tw/civicrm/contribute/transact?reset=1&id=8"
+          rel="noopener"
+        >我想贊助其他金額</a>
+      </p>
+
+      <div class="lovecode">
+        <p class="lovecode__code" aria-hidden="true">10000</p>
+        <div>
+          <h3>不方便捐款？捐發票也是大力支持</h3>
+          <p>
+            結帳時告訴店員「愛心碼 <strong>10000</strong>」，發票就會自動捐給 UBI Taiwan——
+            讓日常消費也能為基本收入的推動貢獻一份心意。
+          </p>
+        </div>
+      </div>
+
+      <p class="credit-note">
+        我們定期辦理公開徵信：<a href="/about/transparency/">查看各月份捐款明細 →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="usage-title">
+    <div class="container">
+      <h2 id="usage-title">經費使用方向</h2>
+      <p class="container--narrow" style="margin-inline: 0;">
+        UBI Taiwan 將你的支持投入各項行動，從人才培育到組織串聯，從國際連結到實驗計畫，讓基本收入的理念在台灣扎根成長。
+      </p>
+      <!-- 原本是四張等寬卡片；改為以細線分隔的橫列 -->
+      <ol class="usage">
+        {usage.map((u) => (
+          <li class="usage__item">
+            <h3>{u.title}</h3>
+            <p>{u.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <h2 id="faq-title">常見問答</h2>
+      <div class="donate-faq">
+        {faqs.map((f) => (
+          <details class="donate-faq__item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── 願景理念（原四張等寬卡片）── */
+  .creed { list-style: none; margin: var(--space-8) 0 0; padding: 0; counter-reset: creed; }
+  .creed__item {
+    counter-increment: creed;
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--color-ink-300);
+    align-items: start;
+  }
+  .creed__item:last-child { border-bottom: 1px solid var(--color-ink-300); }
+  .creed__item::before {
+    content: counter(creed, decimal-leading-zero);
+    font-size: var(--text-2xl);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-brand-300);
+    font-variant-numeric: tabular-nums;
+  }
+  .creed__item h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .creed__item p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  /* ── 專案索引（原九張等寬卡片）── */
+  .works { margin: var(--space-8) 0 0; display: grid; }
+  .work {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-4) var(--space-8);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-ink-300);
+    align-items: baseline;
+  }
+  .work:last-child { border-bottom: 1px solid var(--color-ink-300); }
+  .work dt {
+    font-weight: var(--font-bold);
+    font-size: var(--text-lg);
+    color: var(--color-brand-800);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .work__link { font-size: var(--text-sm); font-weight: var(--font-regular); white-space: nowrap; }
+  .work dd { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  /* ── 地瓜級距（保留並排比較，去掉方框）── */
+  .tiers {
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+  .tier {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-top: var(--space-6);
+    border-top: 3px solid var(--color-warm-500);
+  }
+  .tier__img {
+    width: 100%; max-width: 11rem;
+    margin: 0 auto var(--space-4);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .tier:hover .tier__img { transform: translateY(-6px); }
+  .tier__name { margin-bottom: var(--space-1); }
+  .tier__tagline { color: var(--color-ink-500); font-size: var(--text-sm); margin-bottom: var(--space-4); }
+  .tier__amounts { margin: 0 0 var(--space-4); display: grid; gap: var(--space-2); }
+  .tier__amounts > div { display: grid; gap: 2px; }
+  .tier__amounts dt { font-size: var(--text-xs); color: var(--color-ink-500); }
+  .tier__amounts dd {
+    margin: 0;
+    font-weight: var(--font-bold);
+    color: var(--color-brand-800);
+    font-variant-numeric: tabular-nums;
+  }
+  .tier__desc { flex: 1; font-size: var(--text-sm); color: var(--color-ink-700); }
+  .tier .btn { align-self: center; }
+
+  /* ── 經費使用（原四張等寬卡片）── */
+  .usage { list-style: none; margin: var(--space-8) 0 0; padding: 0; }
+  .usage__item {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: var(--space-4) var(--space-8);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-ink-300);
+    align-items: baseline;
+  }
+  .usage__item:last-child { border-bottom: 1px solid var(--color-ink-300); }
+  .usage__item h3 { font-size: var(--text-lg); margin: 0; color: var(--color-brand-800); }
+  .usage__item p { margin: 0; color: var(--color-ink-700); line-height: var(--leading-loose); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tier:hover .tier__img { transform: none; }
+  }
+  @media (max-width: 900px) {
+    .tiers { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .creed__item { grid-template-columns: 1fr; gap: var(--space-2); }
+    .work, .usage__item { grid-template-columns: 1fr; gap: var(--space-2); }
+    .tiers { grid-template-columns: 1fr; }
+  }
+
+  .lovecode {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    background: var(--color-white);
+    border: 2px dashed var(--color-warm-500);
+    border-radius: var(--radius-md);
+    padding: var(--space-6) var(--space-8);
+    margin-top: var(--space-8);
+  }
+  .lovecode__code {
+    font-size: var(--text-4xl);
+    font-weight: 900;
+    color: var(--color-warm-600);
+    letter-spacing: 0.1em;
+    margin: 0;
+    flex: 0 0 auto;
+  }
+  .lovecode h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .lovecode p { margin: 0; }
+  @media (max-width: 660px) {
+    .lovecode { flex-direction: column; text-align: center; gap: var(--space-3); }
+  }
+  .credit-note { margin-top: var(--space-6); }
+
+  .donate-faq { display: grid; gap: var(--space-3); margin-top: var(--space-6); }
+  .donate-faq__item {
+    background: var(--color-white);
+    border: 1px solid var(--color-ink-300);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .donate-faq__item summary {
+    cursor: pointer;
+    padding: var(--space-3) var(--space-4);
+    font-weight: var(--font-bold);
+    color: var(--color-brand-800);
+    list-style-position: inside;
+  }
+  .donate-faq__item summary:hover { background: var(--color-brand-50); }
+  .donate-faq__item[open] summary { border-bottom: 1px solid var(--color-ink-100); }
+  .donate-faq__item p { padding: var(--space-3) var(--space-4); margin: 0; }
+</style>

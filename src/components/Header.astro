@@ -1,0 +1,307 @@
+---
+// 全站導覽列：結構與 ubitaiwan.org/zh 現有網站一致，
+// 僅新增「生活自由計畫」一項；以語意化 nav + aria 屬性確保無障礙。
+const { current = '' } = Astro.props;
+
+// 導覽原則：選單只放「類別」，單筆紀錄一律收進列表頁。
+// 新增年份（國際交流、年度報告）只進列表頁，不得再直接掛進選單，
+// 否則選單長度會隨年份線性成長——這正是改版前的結構問題。
+// 註：item.highlight 會在該項加上 NEW 徽章。2026-08 起無人使用——
+// 「生活自由計畫」報名將於 2026/08/31 截止，已從頂層收回「台灣的實驗」底下。
+// 機制保留供未來新頁上線時標示（例如 2027 印太高峰會）。
+const navItems = [
+  {
+    label: '認識基本收入',
+    key: 'ubi',
+    children: [
+      { href: '/ubi/', label: '什麼是基本收入', key: 'ubi-what' },
+      { href: '/ubi/world/', label: '全球進程', key: 'ubi-world' },
+      { href: '/ubi/faq/', label: '基本收入大哉問', key: 'ubi-faq' },
+      { href: '/ubi/reading/', label: '延伸閱讀', key: 'ubi-reading' },
+      { href: '/articles/', label: '基本收入二三事', key: 'articles' },
+    ],
+  },
+  {
+    label: '台灣的實驗',
+    key: 'experiment',
+    children: [
+      { href: '/experiment/', label: '實驗總覽', key: 'experiment-overview' },
+      { href: '/experiment/pilot/', label: '第一階段：單親家庭實驗', key: 'experiment-pilot' },
+      { href: '/life-freedom/', label: '第二階段：生活自由計畫', key: 'life-freedom' },
+    ],
+  },
+  {
+    label: '我們的行動',
+    key: 'impact',
+    children: [
+      { href: '/impact/', label: '行動里程碑', key: 'impact-milestones' },
+      { href: '/impact/policy/', label: '政策倡議', key: 'impact-policy' },
+      { href: '/impact/international/', label: '國際交流', key: 'impact-intl' },
+      { href: '/impact/annual/', label: '年度報告', key: 'impact-annual' },
+    ],
+  },
+  {
+    label: '關於我們',
+    key: 'about',
+    children: [
+      { href: '/about/', label: '願景與團隊', key: 'about-index' },
+      { href: '/about/press/', label: '媒體專區', key: 'about-press' },
+      { href: '/about/transparency/', label: '捐款徵信', key: 'about-transparency' },
+    ],
+  },
+];
+---
+
+<header class="site-header">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <div class="container site-header__inner">
+    <a href="/" class="site-logo" aria-label="UBI Taiwan 首頁">
+      <img src="/images/ubi-logo-002-1-1-1024x559.webp" alt="UBI Taiwan" width="120" height="66" />
+    </a>
+
+    <button
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="開啟選單"
+    >
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="主要導覽">
+      <ul>
+        {navItems.map((item) =>
+          item.children ? (
+            <li class="site-nav__item has-sub">
+              <button class="site-nav__link site-nav__sub-toggle" aria-expanded="false">
+                {item.label}
+                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+              <ul class="site-nav__sub">
+                {item.children.map((sub) => (
+                  <li>
+                    <a
+                      href={sub.href}
+                      class="site-nav__sub-link"
+                      aria-current={current === sub.key ? 'page' : undefined}
+                    >
+                      {sub.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li class="site-nav__item">
+              <a
+                href={item.href}
+                class:list={['site-nav__link', { 'site-nav__link--highlight': item.highlight }]}
+                aria-current={current === item.key ? 'page' : undefined}
+              >
+                {item.label}
+                {item.highlight && <span class="site-nav__badge">NEW</span>}
+              </a>
+            </li>
+          )
+        )}
+        <li class="site-nav__item">
+          <a
+            href="/support/"
+            class="site-nav__link site-nav__link--cta"
+            aria-current={current === 'support' ? 'page' : undefined}
+          >
+            捐款支持
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // 行動版選單開合 + 下拉子選單（點擊切換，支援鍵盤操作）
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('site-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute('aria-label', open ? '開啟選單' : '關閉選單');
+    nav?.classList.toggle('is-open', !open);
+  });
+
+  document.querySelectorAll('.site-nav__sub-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      // 先關閉其他子選單
+      document.querySelectorAll('.site-nav__sub-toggle').forEach((b) => {
+        b.setAttribute('aria-expanded', 'false');
+        b.parentElement?.classList.remove('is-open');
+      });
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.parentElement?.classList.toggle('is-open', !open);
+    });
+  });
+
+  // 點擊選單外側時關閉子選單
+  document.addEventListener('click', (e) => {
+    if (!(e.target instanceof Element) || e.target.closest('.site-nav, .nav-toggle')) return;
+    document.querySelectorAll('.site-nav__sub-toggle').forEach((b) => {
+      b.setAttribute('aria-expanded', 'false');
+      b.parentElement?.classList.remove('is-open');
+    });
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-ink-100);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 4.5rem;
+  }
+  .site-logo img { width: 120px; height: auto; }
+
+  .site-nav > ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+  }
+  .site-nav__item { position: relative; }
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    color: var(--color-ink-700);
+    text-decoration: none;
+    font-weight: var(--font-medium);
+    font-size: var(--text-base);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .site-nav__link:hover {
+    background: var(--color-brand-50);
+    color: var(--color-brand-700);
+  }
+  .site-nav__link[aria-current='page'] {
+    color: var(--color-brand-700);
+    background: var(--color-brand-100);
+  }
+  .site-nav__link--highlight { color: var(--color-brand-700); font-weight: var(--font-bold); }
+  .site-nav__badge {
+    font-size: 0.65rem;
+    font-weight: var(--font-bold);
+    background: var(--color-warm-500);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    padding: 0 var(--space-2);
+    line-height: 1.5;
+  }
+  .site-nav__link--cta {
+    background: var(--color-warm-500);
+    color: var(--color-white);
+    font-weight: var(--font-bold);
+  }
+  .site-nav__link--cta:hover { background: var(--color-warm-600); color: var(--color-white); }
+
+  /* 下拉子選單 */
+  .site-nav__sub {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-2);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 15rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-ink-100);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    display: none;
+    z-index: 60;
+  }
+  .has-sub.is-open > .site-nav__sub,
+  .has-sub:focus-within > .site-nav__sub { display: block; }
+  @media (hover: hover) and (min-width: 901px) {
+    .has-sub:hover > .site-nav__sub { display: block; }
+  }
+  .site-nav__sub-link {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--color-ink-700);
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+  .site-nav__sub-link:hover {
+    background: var(--color-brand-50);
+    color: var(--color-brand-700);
+  }
+  .site-nav__sub-link[aria-current='page'] {
+    background: var(--color-brand-100);
+    color: var(--color-brand-700);
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: 0;
+    padding: var(--space-2);
+    cursor: pointer;
+  }
+  .nav-toggle__bar {
+    width: 24px;
+    height: 2.5px;
+    background: var(--color-ink-900);
+    border-radius: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .nav-toggle { display: inline-flex; }
+    .site-nav {
+      display: none;
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-ink-100);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-4) var(--space-6) var(--space-6);
+      max-height: calc(100vh - 4.5rem);
+      overflow-y: auto;
+    }
+    .site-nav.is-open { display: block; }
+    .site-nav > ul { flex-direction: column; align-items: stretch; }
+    .site-nav__link { width: 100%; padding: var(--space-3) var(--space-4); }
+    .site-nav__sub {
+      position: static;
+      display: none;
+      box-shadow: none;
+      border: 0;
+      border-inline-start: 3px solid var(--color-brand-100);
+      border-radius: 0;
+      margin-inline-start: var(--space-4);
+    }
+  }
+</style>

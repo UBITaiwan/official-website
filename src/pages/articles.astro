@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 基本收入二三事：文章列表對應 ubitaiwan.org/zh/articles/
+// 文章本文仍在原站（WordPress 文章），卡片連回原站文章頁
+
+const articles = [
+  {
+    img: '/images/1_3-TTUTm-pYOzgbHHItj-JA-300x200.webp',
+    category: '基本收入專欄',
+    title: '基本收入關於稅的常見問答：台灣有對大企業加稅的本錢嗎？',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%e9%97%9c%e6%96%bc%e7%a8%85%e7%9a%84%e5%b8%b8%e8%a6%8b%e5%95%8f%e7%ad%94%ef%bc%9a%e5%8f%b0%e7%81%a3%e6%9c%89%e5%b0%8d%e5%a4%a7%e4%bc%81%e6%a5%ad%e5%8a%a0%e7%a8%85/',
+  },
+  {
+    img: '/images/0_-Kkrhn-zQ4CnGlgi-300x200.webp',
+    category: '基本收入遊行',
+    title: '台灣史上第一場基本收入遊行百人齊聚響應！帶領亞洲基本收入運動走向 2021 基本收入元年',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e5%8f%b0%e7%81%a3%e5%8f%b2%e4%b8%8a%e7%ac%ac%e4%b8%80%e5%a0%b4%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%e9%81%8a%e8%a1%8c%e7%99%be%e4%ba%ba%e9%bd%8a%e8%81%9a%e9%9f%bf%e6%87%89%ef%bc%81%e5%b8%b6%e9%a0%98/',
+  },
+  {
+    img: '/images/1_RmrG6n9o1NphS8fMsaR9Wg-300x200.webp',
+    category: '組織札記',
+    title: '從基本收入談工作與生活的平衡',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e5%be%9e%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%e8%ab%87%e5%b7%a5%e4%bd%9c%e8%88%87%e7%94%9f%e6%b4%bb%e7%9a%84%e5%b9%b3%e8%a1%a1/',
+  },
+  {
+    img: '/images/1_BTNnPNLCtyNNFSMcMcQrlw-300x188.webp',
+    category: '基本收入專欄',
+    title: '誰需要基本收入（一）：中生代的未來焦慮',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e8%aa%b0%e9%9c%80%e8%a6%81%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%ef%bc%88%e4%b8%80%ef%bc%89%ef%bc%9a%e4%b8%ad%e7%94%9f%e4%bb%a3%e7%9a%84%e6%9c%aa%e4%be%86%e7%84%a6%e6%85%ae/',
+  },
+  {
+    img: '/images/0_p6_JgQt1CVJ1aYRR-300x201.webp',
+    category: '實驗報導',
+    title: '疫情前就推無條件基本收入，能拯救數十萬被迫復工者的生命嗎？從芬蘭實驗說起',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e7%96%ab%e6%83%85%e5%89%8d%e5%b0%b1%e6%8e%a8%e7%84%a1%e6%a2%9d%e4%bb%b6%e5%9f%ba%e6%9c%ac%e6%94%b6%e5%85%a5%ef%bc%8c%e8%83%bd%e6%8b%af%e6%95%91%e6%95%b8%e5%8d%81%e8%90%ac%e8%a2%ab%e8%bf%ab%e5%be%a9/',
+  },
+  {
+    img: '/images/cw-image-resizer.cwg_-300x200.webp',
+    category: '實驗報導',
+    title: '【投書】如果每個月可以多領 15,000 元，你會怎麼花？一場無條件基本收入實驗讓我們看到結果',
+    href: 'https://ubitaiwan.org/zh/2024/08/28/%e3%80%90%e6%8a%95%e6%9b%b8%e3%80%91%e5%a6%82%e6%9e%9c%e6%af%8f%e5%80%8b%e6%9c%88%e5%8f%af%e4%bb%a5%e5%a4%9a%e9%a0%9815000%e5%85%83%ef%bc%8c%e4%bd%a0%e6%9c%83%e6%80%8e%e9%ba%bc%e8%8a%b1%ef%bc%9f/',
+  },
+];
+---
+
+<BaseLayout
+  title="基本收入二三事｜UBI Taiwan"
+  description="UBI Taiwan 的文章專欄：基本收入的觀念釐清、各國實驗報導、台灣遊行紀實與組織札記，從稅制財源到勞動未來，帶你從不同角度理解基本收入。"
+  current="articles"
+>
+  <section class="section">
+    <div class="container">
+      <h1>基本收入二三事</h1>
+      <p class="container--narrow" style="margin-inline: 0;">
+        關於基本收入的觀念釐清、實驗報導、遊行紀實與組織札記。
+      </p>
+      <!-- 原本是三欄等寬卡片；改為圖文並列的長列，標題可讀性更高 -->
+      <ul class="posts">
+        {articles.map((a) => (
+          <li class="post">
+            <a class="post__link" href={a.href} rel="noopener">
+              <img class="post__img" src={a.img} alt="" loading="lazy" />
+              <span class="post__body">
+                <span class="post__cat">{a.category}</span>
+                <span class="post__title">{a.title}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="articles-more">
+        更多文章持續發布於
+        <a href="https://medium.com/@taiwanbasicincome" rel="noopener">UBI Taiwan 的 Medium 專欄 →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .article-card__img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
+  }
+  .article-card {
+    transition: box-shadow var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out);
+  }
+  .article-card:hover,
+  .article-card:focus-within {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+  .article-card__title { font-size: var(--text-lg); line-height: var(--leading-normal); }
+  .article-card__title a { color: var(--color-ink-900); text-decoration: none; }
+  .article-card__title a:hover { color: var(--color-brand-700); text-decoration: underline; }
+  .articles-more { margin-top: var(--space-8); font-weight: var(--font-bold); }
+  /* ── 文章列表（原三欄等寬卡片）── */
+  .posts { list-style: none; margin: var(--space-8) 0 0; padding: 0; }
+  .post { border-top: 1px solid var(--color-ink-300); }
+  .post:last-child { border-bottom: 1px solid var(--color-ink-300); }
+  .post__link {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-5) var(--space-4) var(--space-5) 0;
+    text-decoration: none;
+    color: var(--color-ink-900);
+    transition: background var(--duration-base) var(--ease-out);
+  }
+  .post__link:hover { background: var(--surface-subtle); }
+  .post__img {
+    width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+  .post__body { display: grid; gap: var(--space-2); }
+  .post__cat {
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: .1em;
+    color: var(--color-brand-600);
+  }
+  .post__title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-normal);
+    text-wrap: balance;
+  }
+  .post__link:hover .post__title { color: var(--color-brand-700); }
+  @media (max-width: 640px) {
+    .post__link { grid-template-columns: 1fr; gap: var(--space-3); }
+    .post__img { max-width: 20rem; }
+  }
+</style>
