@@ -681,22 +681,6 @@ const taxback = [
         </details>
       </div>
 
-      <p class="deck">
-        <a class="deck__link" href="/docs/UBI-Taiwan-青年基本收入政策提案-2026-BIEN.pdf">
-          <span class="deck__icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor"
-                 stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 1.5v9" /><path d="M4.5 7.5 8 11l3.5-3.5" /><path d="M2.5 13.5h11" />
-            </svg>
-          </span>
-          <span>
-            <b>下載完整提案簡報</b>
-            <span class="deck__meta">
-              2026 BIEN 多倫多大會發表版本．42 頁．PDF．英文
-            </span>
-          </span>
-        </a>
-      </p>
     </div>
   </section>
 
@@ -1177,30 +1161,6 @@ const taxback = [
   .more3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-6); }
   .more3 h5 { font-size: var(--text-sm); margin: 0 0 var(--space-2); color: var(--color-brand-700); }
   .more3 p { margin: 0; font-size: var(--text-sm); color: var(--color-ink-700); line-height: 1.7; }
-
-  /* 完整簡報下載 */
-  .deck { margin: var(--space-12) 0 0; }
-  .deck__link {
-    display: inline-flex; align-items: center; gap: var(--space-5);
-    padding: var(--space-6) var(--space-8);
-    background: var(--surface-subtle);
-    border: 1px solid var(--color-brand-200);
-    border-radius: var(--radius-md);
-    text-decoration: none; color: var(--color-ink-900);
-    transition: background var(--duration-base) var(--ease-out),
-                border-color var(--duration-base) var(--ease-out);
-  }
-  .deck__link:hover { background: var(--color-brand-50); border-color: var(--color-brand-500); }
-  .deck__icon {
-    display: grid; place-content: center;
-    width: 2.5rem; height: 2.5rem; border-radius: 50%;
-    background: var(--color-brand-600); color: var(--color-white); flex: none;
-  }
-  .deck__link b { display: block; color: var(--color-brand-800); }
-  .deck__meta {
-    display: block; margin-top: var(--space-1);
-    font-size: var(--text-sm); color: var(--color-ink-500);
-  }
 
   /* ── 接下來 ── */
   .next { display: grid; grid-template-columns: minmax(0,8fr) minmax(0,4fr); gap: var(--space-8); align-items: center; }
