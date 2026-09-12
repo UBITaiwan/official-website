@@ -484,7 +484,7 @@ const taxback = [
         <details class="acc__i">
           <summary>
             <span class="acc__n">1</span>
-            <span class="acc__q">給誰？</span>
+            <h3 class="acc__q">給誰？</h3>
             <span class="acc__a">18–35 歲，約 500 萬人</span>
           </summary>
           <div class="acc__body">
@@ -504,7 +504,7 @@ const taxback = [
         <details class="acc__i">
           <summary>
             <span class="acc__n">2</span>
-            <span class="acc__q">發多少？</span>
+            <h3 class="acc__q">發多少？</h3>
             <span class="acc__a">每月 15,515 元</span>
           </summary>
           <div class="acc__body">
@@ -528,7 +528,7 @@ const taxback = [
         <details class="acc__i">
           <summary>
             <span class="acc__n">3</span>
-            <span class="acc__q">怎麼發？</span>
+            <h3 class="acc__q">怎麼發？</h3>
             <span class="acc__a">先用現金，數位貨幣是下一步</span>
           </summary>
           <div class="acc__body">
@@ -564,7 +564,7 @@ const taxback = [
         <details class="acc__i">
           <summary>
             <span class="acc__n">4</span>
-            <span class="acc__q">錢從哪裡來？</span>
+            <h3 class="acc__q">錢從哪裡來？</h3>
             <span class="acc__a">八項財源，年度 8,210 億元</span>
           </summary>
           <div class="acc__body">
@@ -630,7 +630,7 @@ const taxback = [
         <details class="acc__i">
           <summary>
             <span class="acc__n">5</span>
-            <span class="acc__q">配套措施</span>
+            <h3 class="acc__q">配套措施</h3>
             <span class="acc__a">分級收回機制補上缺口</span>
           </summary>
           <div class="acc__body">
@@ -1121,7 +1121,12 @@ const taxback = [
     align-self: center;
   }
   .acc__i[open] .acc__n { background: var(--color-brand-600); color: var(--color-white); }
-  .acc__q { font-size: var(--text-lg); font-weight: var(--font-bold); color: var(--color-ink-900); }
+  /* 折疊標題用 h3：它們本來就是章節標題，
+     螢幕閱讀器可以用標題清單直接跳到各段。需要重置 h3 的預設邊距。 */
+  .acc__q {
+    font-size: var(--text-lg); font-weight: var(--font-bold);
+    color: var(--color-ink-900); margin: 0;
+  }
   .acc__a { font-size: var(--text-sm); color: var(--color-ink-500); text-align: right; }
   .acc__body {
     padding: 0 var(--space-6) var(--space-8);
