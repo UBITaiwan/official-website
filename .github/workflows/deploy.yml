@@ -1,0 +1,54 @@
+# dev 環境：合併到 main 後自動部署到 GitHub Pages。
+#
+# 站台位於子路徑 /official-website/，因此建置後需要把站內的絕對路徑
+# 加上前綴（見 scripts/ghpages-postbuild.mjs）。正式環境部署於網域根目錄，
+# 不需要這一步——這是兩個環境唯一的結構差異。
+#
+# 產出一律為 noindex：build 步驟不設 SITE_INDEXABLE，預設即為保守的一邊。
+name: Deploy to GitHub Pages (dev)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # 不設定 SITE_INDEXABLE，因此建置結果預設就是 noindex 且不產生 sitemap。
+      # 這是刻意的：dev 環境不該被搜尋引擎收錄，而「什麼都不設」就是安全的。
+      - name: Build
+        run: npm run build
+      - name: Rewrite paths for project subpath
+        run: node scripts/ghpages-postbuild.mjs
+        env:
+          PAGES_BASE: /${{ github.event.repository.name }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

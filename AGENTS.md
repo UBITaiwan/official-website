@@ -85,6 +85,21 @@ npm run build
 
 **視覺上的改動要實際看過。**跑 `npm run dev` 截圖，不要只說「改好了」。
 
+### 子路徑檢查（dev 環境會用到）
+
+dev 站部署在 GitHub Pages 的子路徑 `/official-website/` 下，
+站內的絕對路徑需要加上前綴。這一步由 CI 自動執行，但你可以在本機先驗：
+
+```bash
+PAGES_BASE=/official-website node scripts/ghpages-postbuild.mjs
+```
+
+這支腳本在改寫後會**自我檢查**，掃到任何沒加前綴的站內路徑就直接失敗。
+這是刻意的——曾經有一批 inline style 的底圖靜靜上線 404。
+**如果它報錯，代表你新增了某種它不認得的路徑寫法，要去補規則，不要繞過。**
+
+> 注意：這支腳本會就地改寫 `dist/`，本機驗完請重新 `npm run build` 再繼續開發。
+
 ---
 
 ## 搜尋引擎收錄：預設關閉
@@ -117,10 +132,12 @@ Astro 把 `"true"` 轉成布林值 `true`，所以 `import.meta.env.X === 'true'
 要用 `String(import.meta.env.X) === 'true'`。`astro.config.mjs` 用的是 `process.env`，
 那邊一律是字串，不受影響——同一個旗標在兩個檔案裡寫法不同是有原因的。
 
-**如果之後部署到子路徑，要重新處理站內絕對路徑。**
-本專案曾部署在 GitHub Pages 的子路徑下，需要一支腳本把 `href`／`src`／`url()`
-全部加上前綴。該腳本已隨部署設定一併移除。若未來又要部署到子路徑，
-記得 inline style 的 `url()` 也要處理——只改 `href`／`src` 不夠，曾經因此上線一批 404 的底圖。
+**兩個環境的路徑處理不同。**
+dev（GitHub Pages）在子路徑 `/official-website/` 下，需要前綴；
+正式環境（網域根目錄）不需要。原始碼一律用根路徑撰寫，前綴只在 dev 部署時加。
+新增任何非 `href`／`src`／`url()` 的路徑寫法時，要去確認
+`scripts/ghpages-postbuild.mjs` 有涵蓋——inline style 的 `url()` 就曾經被漏掉，
+在 dev 站上線後才發現一批 404 的底圖。
 
 **`.gitignore` 的規則要錨定根目錄。**
 曾經寫成 `docs/`，結果連 `public/docs/` 一起忽略，要公開的 PDF 不會進版控，
@@ -177,6 +194,7 @@ scope id 是路徑雜湊、改內容不會變，瀏覽器認不出要更新。
 | 內容資料 | `src/data/*.json` —— 長文與清單抽出來放這裡 |
 | 設計規範 | `design-system/DESIGN-SYSTEM.md` ＋ `tokens.json` |
 | 樣式 | `src/styles/tokens.css`（變數）、`global.css`（共用類別） |
+| 部署 | `.github/workflows/deploy.yml`（dev）、`scripts/ghpages-postbuild.mjs`（子路徑前綴） |
 | 待辦與交接 | [交接手冊.md](交接手冊.md) |
 
 程式碼裡有 400 多條說明「為什麼」的註解。**動一段程式前先讀它的註解。**

@@ -140,8 +140,22 @@ references-info/
 
 ## 部署
 
-本專案交付時**不含任何部署設定**（無 GitHub Pages、無 GitHub Actions）。
-`npm run build` 產出的 `dist/` 可直接部署到任何靜態主機。
+### dev 環境（現行）
+
+合併到 `main` 後由 GitHub Actions 自動部署至 GitHub Pages：
+
+- 網址：https://ubitaiwan.github.io/official-website/
+- 流程見 `.github/workflows/deploy.yml`
+- 站台位於子路徑，建置後由 `scripts/ghpages-postbuild.mjs` 加上路徑前綴
+- **一律 noindex**：workflow 不設 `SITE_INDEXABLE`，預設即為保守的一邊
+
+一個 repo 只能有一個 Pages 站，因此 PR 階段沒有獨立預覽網址——
+合併之後才會反映在 dev 站上。
+
+### 正式環境（規劃中）
+
+規劃以 Cloudflare 部署至網域根目錄 `ubitaiwan.org`。
+根目錄部署不需要路徑前綴，`npm run build` 的產出可直接使用。
 
 ### 搜尋引擎收錄：預設關閉
 
