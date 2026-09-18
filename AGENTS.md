@@ -34,6 +34,7 @@ npm run build    # 產出 dist/
 |---|---|
 | **任何改動** | [flows/修改流程.md](flows/修改流程.md) —— 每一次都要走 |
 | **第一次在這台電腦工作** | [flows/本機預覽與環境檢查.md](flows/本機預覽與環境檢查.md) —— 先確認跑不跑得動 |
+| **改壞了、dev 站怪怪的** | [flows/出錯回復.md](flows/出錯回復.md) —— 先判斷壞在哪一層，不要急著修 |
 | 其他特定情況 | 見 [flows/README.md](flows/README.md) 的對照表 |
 
 ### 收到「我要改 XXX」時的第一個動作
