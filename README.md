@@ -184,6 +184,9 @@ grep -l 'content="noindex' dist/index.html      # 應無輸出（首頁不再有
 ls dist/sitemap*                                # 應有輸出
 ```
 
+> 上面的 `grep`／`ls` 是 macOS／Linux 寫法。Windows 請在 Git Bash 執行，
+> 或改用 PowerShell 的 `Select-String`。`npm run` 系列指令兩個平台相同。
+
 ### 正式上線檢查表
 
 正式站部署於網域根目錄（ubitaiwan.org）時，原始碼皆以根路徑撰寫，

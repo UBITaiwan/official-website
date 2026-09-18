@@ -33,6 +33,7 @@ npm run build    # 產出 dist/
 | 情況 | 流程 |
 |---|---|
 | **任何改動** | [flows/修改流程.md](flows/修改流程.md) —— 每一次都要走 |
+| **第一次在這台電腦工作** | [flows/本機預覽.md](flows/本機預覽.md) —— 先確認 Node／Git 裝了沒 |
 | 其他特定情況 | 見 [flows/README.md](flows/README.md) 的對照表 |
 
 ### 收到「我要改 XXX」時的第一個動作
@@ -147,6 +148,13 @@ dev 站部署在 GitHub Pages 的子路徑 `/official-website/` 下，
 
 ```bash
 PAGES_BASE=/official-website node scripts/ghpages-postbuild.mjs
+```
+
+上面是 macOS／Linux 的寫法。**Windows 的 PowerShell 不吃指令前綴的環境變數**，
+要改成兩行（這是唯一一條需要分平台的指令，`npm run` 系列都一樣）：
+
+```powershell
+$env:PAGES_BASE = "/official-website"; node scripts/ghpages-postbuild.mjs
 ```
 
 這支腳本在改寫後會**自我檢查**，掃到任何沒加前綴的站內路徑就直接失敗。
