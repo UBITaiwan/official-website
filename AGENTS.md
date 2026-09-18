@@ -226,6 +226,12 @@ CI 建置時缺檔、連結上線即 404。現在是 `/docs/`。
 曾用 MutationObserver 確認 class 有切換就宣稱正常，實機卻不動。
 要取樣 computed style 的實際值。
 
+**截圖回傳空白時，先確認是不是預覽面板被收起來了。**
+預覽面板隱藏時 `document.visibilityState` 是 `hidden`，此時截圖會是一片白、
+CSS 過渡會凍結在中途、lazy 載入的圖不會載入。
+**不要據此判斷網站壞了。**改用 DOM 驗證（`read_page`、`find`、實際點擊看落點），
+那些不受面板可見性影響。
+
 **Astro dev server 的樣式表可能是舊的。**
 scope id 是路徑雜湊、改內容不會變，瀏覽器認不出要更新。
 判斷「壞掉」之前先硬重新整理，或直接驗 `dist/`。
