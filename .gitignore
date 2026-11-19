@@ -10,7 +10,8 @@ references-info/
 /docs/
 
 # 本機設定
-.claude/
+.claude/*
+!/.claude/settings.json
 .DS_Store
 *.log
 
