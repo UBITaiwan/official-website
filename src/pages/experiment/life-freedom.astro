@@ -75,7 +75,7 @@ const faqs = [
 
 <BaseLayout
   title="生活自由計畫｜第二階段實驗｜UBI Taiwan"
-  description="台灣第一場由企業贊助的基本收入實驗：UBI Taiwan 與 JUJI（Gogolook 旗下金融科技品牌）合作，為 3 位參與者提供每月 10,000 元、連續 12 個月的無條件基本收入，並進行完整的追蹤研究。"
+  description="台灣第一場由企業贊助的基本收入實驗：UBI Taiwan 與 JUJI（Gogolook 旗下金融科技品牌）合作，為 3 位參與者提供每月 10,000 元、連續 12 個月的基本收入，並進行完整的追蹤研究。"
   current="experiment-life-freedom"
   ogImage="/images/life-freedom/partners-four.webp"
 >
@@ -201,7 +201,7 @@ const faqs = [
         {design.map((d) => (
           <div class="design__item">
             <dt class="design__k">{d.k}</dt>
-            <dd class="design__v"><b>{d.v}</b><span>{d.unit}</span></dd>
+            <dd class="design__v"><b>{d.v}</b>{" "}<span>{d.unit}</span></dd>
             <dd class="design__note">{d.note}</dd>
           </div>
         ))}

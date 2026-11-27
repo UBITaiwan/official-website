@@ -126,7 +126,7 @@ const years = [
         type: '新聞',
         title: '台灣青年走向世界，8 青年代表參加全球基本收入年會',
         href: 'https://www.ctee.com.tw/news/20230907701023-431401',
-        summary: 'UBI Taiwan 首次以正式代表團身份參與韓國首爾 BIEN 全球高峰會的報導。',
+        summary: 'UBI Taiwan 首次以正式代表團身份參與韓國首爾 BIEN 全球大會的報導。',
       },
       {
         date: '2023',
@@ -183,12 +183,12 @@ const columns = [
   {
     title: '天下獨立評論投書',
     href: 'https://opinion.cw.com.tw/blog/profile/52/article/13781',
-    desc: '「如果每個月可以多領 15,000 元，你會怎麼花？」——以實驗結果回應大眾疑問。',
+    desc: '以實驗結果回應大眾疑問：「如果每個月可以多領 15,000 元，你會怎麼花？」',
   },
   {
     title: '關鍵評論網投書',
     href: 'https://www.thenewslens.com/article/183758',
-    desc: '「普發現金會導致亂花錢嗎？」——用數據說明現金發放的實際使用行為。',
+    desc: '用數據說明現金發放的實際使用行為，回應「普發現金會導致亂花錢嗎？」的疑問。',
   },
 ];
 ---
@@ -232,7 +232,7 @@ const columns = [
                   <span class="press-item__type">{it.type}</span>
                 </div>
                 <h4 class="press-item__title">
-                  <a href={it.href} rel="noopener">{it.title}</a>
+                  <a href={it.href} rel="noopener"><cite>{it.title}</cite></a>
                 </h4>
                 <p class="press-item__summary">{it.summary}</p>
               </li>
@@ -250,13 +250,13 @@ const columns = [
     <div class="container">
       <h2 id="columns-title">專欄與投稿</h2>
       <p class="container--narrow" style="margin-inline: 0;">
-        除了接受報導，我們也主動寫作——在媒體平台上持續發表政策評論與實驗觀察。
+        除了接受報導，我們也主動寫作，在媒體平台上持續發表政策評論與實驗觀察。
       </p>
       <!-- 原本是兩欄卡片；投稿本來就是一份清單，用細線分隔即可 -->
       <ul class="cols">
         {columns.map((c) => (
           <li class="col">
-            <h3><a href={c.href} rel="noopener">{c.title}</a></h3>
+            <h3><a href={c.href} rel="noopener"><cite>{c.title}</cite></a></h3>
             <p>{c.desc}</p>
           </li>
         ))}
@@ -300,7 +300,7 @@ const columns = [
           <h4>組織簡介（可直接引用）</h4>
           <p style="margin: 0;">
             UBI Taiwan（台灣無條件基本收入協會）成立於 2017 年，是 BIEN（基本收入全球網絡）的台灣代表組織，
-            致力於以實驗、研究與倡議推動無條件基本收入。2023–2025 年完成台灣第一個基本收入實驗，
+            致力於以實驗、研究與倡議推動基本收入。2023–2025 年完成台灣第一個基本收入實驗，
             並將於 2027 年主辦 BIEN 印太高峰會。
           </p>
         </div>

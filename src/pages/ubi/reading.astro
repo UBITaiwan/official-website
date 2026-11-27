@@ -83,7 +83,7 @@ const total = reading.reduce(
                     <span class={`item__kind item__kind--${kind}`}>{kind}</span>
                     {item.url ? (
                       <a class="item__t item__t--link" href={item.url} rel="noopener">
-                        {item.t}
+                        <cite>{item.t}</cite>
                         <svg class="item__go" viewBox="0 0 12 12" width="11" height="11"
                              aria-hidden="true" fill="none" stroke="currentColor"
                              stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -91,7 +91,7 @@ const total = reading.reduce(
                         </svg>
                       </a>
                     ) : (
-                      <span class="item__t">{item.t}</span>
+                      <span class="item__t"><cite>{item.t}</cite></span>
                     )}
                   </li>
                 );
