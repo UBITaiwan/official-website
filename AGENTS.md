@@ -114,9 +114,13 @@ npm run build    # 產出 dist/
 
 ### 4. 不要更動這幾個網址
 
-- `/life-freedom/` —— 生活自由計畫，刻意不搬到 `/experiment/` 底下
 - 九個舊網址轉址頁（八個在 `src/pages/` 根層、一個在 `ubi-taiwan/` 底下），
   共用 `src/layouts/RedirectStub.astro`，是舊網址的相容層
+
+> 生活自由計畫曾列在這裡（「刻意不搬到 `/experiment/` 底下」），理由是招募期間可能有外部連結。
+> 2026-11 已移到 `/experiment/life-freedom/`：報名已於 2026/08/31 截止，
+> 正式站上從未有過 `/life-freedom/`，協會也確認沒有在文宣或外部網站寫過這個網址，因此沒有留轉址頁。
+> **不要把它搬回根層。**
 
 ### 5. 政策頁的內容範圍已由協會授權放寬
 
