@@ -23,7 +23,7 @@ const papers = [
   },
   {
     title: '通往 UBI 之路：關於台灣未來的提案',
-    desc: '討論保育基本收入（CBI）如何可能作為台灣實行 UBI 的前線。作者指出，在 2050 淨零碳排與碳稅開徵等政策背景下，為台灣需要被保護的山林地帶居民發放基本收入，是一種兼具環境保護、消減城鄉差距的舉措，同時這些地點可以作為實行全國性 UBI 的實驗空間，供各方人士檢視。',
+    desc: '討論保育基本收入（CBI）如何可能作為台灣實行 UBI 的前線。作者指出，在 2050 淨零碳排與碳稅開徵等政策背景下，為台灣需要被保護的山林地帶居民發放基本收入，是一種兼具環境保護、消減城鄉差距的措施，同時這些地點可以作為實行全國性 UBI 的實驗空間，供各方人士檢視。',
   },
   {
     title: '台灣基本收入政策倡議策略',
@@ -34,7 +34,7 @@ const papers = [
 
 <BaseLayout
   title="2024 影響力報告書｜UBI Taiwan"
-  description="UBI Taiwan 2024 影響力報告書：英國巴斯 BIEN 高峰會、倡議擺攤、媒體露出與組織成果。"
+  description="UBI Taiwan 2024 影響力報告書：英國巴斯 BIEN 全球大會、倡議擺攤、媒體露出與組織成果。"
   current="impact-reports"
 >
   <section class="section section--subtle">
@@ -53,18 +53,18 @@ const papers = [
 
   <section class="section" aria-labelledby="bien-title">
     <div class="container container--narrow">
-      <h2 id="bien-title">2024 英國巴斯 BIEN 高峰會</h2>
+      <h2 id="bien-title">2024 英國巴斯 BIEN 全球大會</h2>
       <p>
-        在八月的英國巴斯，我們於基本收入全球網絡（BIEN）的年度大會上舉辦了以台灣經驗為主體的論壇，向世界各地的學者與政治家分享我們的研究與倡議經驗。
+        在八月的英國巴斯，我們於基本收入全球網絡（BIEN）的全球大會（BIEN Congress）上舉辦了以台灣經驗為主體的論壇，向世界各地的學者與政治家分享我們的研究與倡議經驗。
       </p>
-      <img src="/images/MIC_8854-1024x683.webp" alt="UBI Taiwan 於 BIEN 年度大會論壇" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-6);" />
+      <img src="/images/MIC_8854-1024x683.webp" alt="UBI Taiwan 於 BIEN 全球大會論壇" loading="lazy" style="border-radius: var(--radius-md); margin-block: var(--space-6);" />
       <p>
         在這場論壇中，我們不僅分享了台灣推動基本收入的實務經驗，也透過四篇深入的論文，從政治脈絡、文化實驗、環境政策到倡議策略，立體呈現出台灣在基本收入議題上的多元探索與潛在路徑。
       </p>
       <div class="papers">
         {papers.map((p) => (
           <div class="paper">
-            <h3>{p.title}</h3>
+            <h3><cite>{p.title}</cite></h3>
             <p>{p.desc}</p>
           </div>
         ))}

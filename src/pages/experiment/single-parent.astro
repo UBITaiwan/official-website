@@ -144,7 +144,7 @@ for (const m of media) {
               ></iframe>
             </div>
             <figcaption>
-              《生活改寫計畫》前導短片——首映會播放的版本。
+              《生活改寫計畫》前導短片，也是首映會播放的版本。
               <span class="story__pending">完整紀錄片公開後，會再補上觀看連結。</span>
             </figcaption>
           </figure>
@@ -250,9 +250,9 @@ for (const m of media) {
           <p class="doc__pending">完整紀錄片公開後，此處會加上觀看連結。</p>
         </div>
         <ul class="doc__stats">
-          <li><b>140+</b><span>首映會出席人數</span></li>
-          <li><b>2</b><span>年的影像追蹤</span></li>
-          <li><b>7</b><span>則媒體報導</span></li>
+          <li><b>140+</b> <span>首映會出席人數</span></li>
+          <li><b>2</b> <span>年的影像追蹤</span></li>
+          <li><b>7</b> <span>則媒體報導</span></li>
         </ul>
       </div>
     </div>
@@ -271,7 +271,7 @@ for (const m of media) {
               <li>
                 <span class="reports__outlet">{g.outlet}</span>
                 <span class="reports__list">
-                  {g.titles.map((t) => <span class="reports__t">{t}</span>)}
+                  {g.titles.map((t) => <cite class="reports__t">{t}</cite>)}
                 </span>
               </li>
             ))}
@@ -282,7 +282,8 @@ for (const m of media) {
         <div>
           <h3 class="cols__h">學術發表</h3>
           <ul class="acad">
-            {academic.map((a) => <li>{a}</li>)}
+            {/* 「」裡是論文與論壇的正式名稱，照原文呈現，見 寫作規範.md */}
+            {academic.map((a) => <li>{a.split(/(「[^」]*」)/).map((s) => s.startsWith('「') ? <cite>{s}</cite> : s)}</li>)}
           </ul>
         </div>
       </div>
@@ -317,7 +318,7 @@ for (const m of media) {
         <a class="btn btn--outline" href="/policy/">青年基本收入政策方向</a>
       </div>
       <p class="nextblock__why">
-        實驗是方法，制度才是目的——我們最終想推動的，
+        實驗是方法，制度才是目的。我們最終想推動的，
         是讓基本收入成為台灣可以認真討論的政策選項。
       </p>
     </div>

@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import bz from '../../../data/brazil-content.json';
 
-// 2025 巴西 BIEN Congress。
+// 2025 巴西 BIEN 全球大會（BIEN Congress）。
 // 文案逐字取自團隊規格（docs/content-specs/03-bien-brazil.md）。
 // 與 2023／2024 兩篇的報告體不同，這篇是第一人稱的遊記＋成果混合敘事，
 // 版面因此走長文編輯式，而非既有的「會議背景／亮點／連結」三段式。
@@ -14,8 +14,8 @@ const others = wins.filter((w) => w !== lead);
 ---
 
 <BaseLayout
-  title="2025 巴西 BIEN 高峰會｜UBI Taiwan"
-  description="UBI Taiwan 於 2025 年 8 月參與里約 BIEN 全球高峰會：發表台灣青年基本收入政策提案與四篇研究、成功爭取主辦 2027 印太高峰會，並發表台灣第一本基本收入小說《島嶼新日常》。"
+  title="2025 巴西 BIEN 全球大會｜UBI Taiwan"
+  description="UBI Taiwan 於 2025 年 8 月參與里約 BIEN 全球大會：發表台灣青年基本收入政策提案與四篇研究、成功爭取主辦 2027 BIEN 印太高峰會，並發表台灣第一本基本收入小說《島嶼新日常》。"
   current="impact-intl"
   ogImage="/images/bien-brazil/photo-suplicy-online.webp"
 >
@@ -57,7 +57,7 @@ const others = wins.filter((w) => w !== lead);
       <figure class="shot">
         <img
           src="/images/bien-brazil/photo-suplicy-online.webp"
-          alt="BIEN 高峰會會場，全場起立向線上參與的巴西工人黨創始人 Eduardo Suplicy 致意"
+          alt="BIEN 全球大會會場，全場起立向線上參與的巴西工人黨創始人 Eduardo Suplicy 致意"
           width="1200" height="900" loading="lazy"
         />
         <figcaption>
@@ -138,12 +138,12 @@ const others = wins.filter((w) => w !== lead);
           <li class="paper">
             <span class="paper__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <div>
-              <h3 class="paper__t">{r.title}</h3>
-              {r.en && <p class="paper__en">{r.en}</p>}
+              <h3 class="paper__t"><cite>{r.title}</cite></h3>
+              {r.en && <p class="paper__en"><cite>{r.en}</cite></p>}
               <div class="prose prose--sm">
                 {r.paras.map((p) => <p>{p}</p>)}
               </div>
-              <p class="paper__src">{r.src}</p>
+              <p class="paper__src"><cite>{r.src}</cite></p>
             </div>
           </li>
         ))}
@@ -229,7 +229,7 @@ const others = wins.filter((w) => w !== lead);
   <nav class="section section--muted" aria-label="其他國際交流">
     <div class="container">
       <ul class="siblings">
-        <li><a href="/impact/international/2024-bath/">← 2024 英國巴斯 BIEN 高峰會</a></li>
+        <li><a href="/impact/international/2024-bath/">← 2024 英國巴斯 BIEN 全球大會</a></li>
         <li><a href="/impact/international/">所有國際交流 →</a></li>
       </ul>
     </div>

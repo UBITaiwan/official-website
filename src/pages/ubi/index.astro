@@ -24,9 +24,9 @@ const icons = ['calendar', 'cash', 'people', 'person-check', 'clipboard-x'];
       <p class="hero__eyebrow">認識基本收入</p>
       <h1 class="hero__title">
         <span class="hero__letters" aria-hidden="true">
-          <span class="hero__letter"><b>U</b><i>niversal</i><em>人人皆有</em></span>
-          <span class="hero__letter"><b>B</b><i>asic</i><em>基本生活</em></span>
-          <span class="hero__letter"><b>I</b><i>ncome</i><em>收入</em></span>
+          <span class="hero__letter"><b>U</b><i>niversal</i>{" "}<em>人人皆有</em></span>
+          <span class="hero__letter"><b>B</b><i>asic</i>{" "}<em>基本生活</em></span>
+          <span class="hero__letter"><b>I</b><i>ncome</i>{" "}<em>收入</em></span>
         </span>
         <span class="visually-hidden">Universal Basic Income．全民基本收入</span>
         <span class="hero__zh">什麼是基本收入？</span>
@@ -100,7 +100,7 @@ const icons = ['calendar', 'cash', 'people', 'person-check', 'clipboard-x'];
                   )}
                 </svg>
               </span>
-              <span class="crit__zh">{c.zh}</span>
+              <span class="crit__zh">{c.zh}</span>{" "}
               <span class="crit__en">{c.en}</span>
             </button>
           ))}
@@ -114,7 +114,7 @@ const icons = ['calendar', 'cash', 'people', 'person-check', 'clipboard-x'];
             aria-labelledby={`crit-tab-${i}`}
             hidden={i !== 0}
           >
-            <h3>{c.zh}<span class="criteria__panel-en">{c.en}</span></h3>
+            <h3>{c.zh}{" "}<span class="criteria__panel-en">{c.en}</span></h3>
             <p>{c.desc}</p>
           </div>
         ))}
