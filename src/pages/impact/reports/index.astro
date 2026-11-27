@@ -1,15 +1,15 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 
-// 年度報告列表頁。
+// 影響力報告書列表頁。
 // 與國際交流列表同樣的結構理由：新增年度只需在下面的陣列加一筆，
 // 導覽維持不變。請不要再把個別年度掛進 Header。
 
 const reports = [
   {
     year: '2025',
-    href: '/impact/annual/2025/',
-    title: '2025 年度報告書',
+    href: '/impact/reports/2025/',
+    title: '2025 影響力報告書',
     tagline: '生活，本該如此安心',
     lede: '完成台灣第一場基本收入實驗並產出紀錄片、代表台灣參與巴西 BIEN 全球大會、向立法院提出青年基本收入政策提案。',
     highlights: ['實驗完成與紀錄片首映', '巴西 BIEN 全球大會', '青年政策提案與立委拜訪', '在地推廣與組織經營'],
@@ -18,8 +18,8 @@ const reports = [
   },
   {
     year: '2024',
-    href: '/impact/annual/2024/',
-    title: '2024 年度報告書',
+    href: '/impact/reports/2024/',
+    title: '2024 影響力報告書',
     tagline: '讓大家看見 UBI',
     lede: '參與英國巴斯 BIEN 高峰會，並透過音樂節、校園永續節、浪人季等場合擺攤，把基本收入帶進人群。',
     highlights: ['英國巴斯 BIEN 高峰會', '倡議擺攤', '公眾溝通'],
@@ -30,14 +30,14 @@ const reports = [
 ---
 
 <BaseLayout
-  title="年度報告｜UBI Taiwan"
-  description="UBI Taiwan 歷年年度報告書：2025 年完成台灣第一場基本收入實驗與紀錄片、參與巴西 BIEN 大會；2024 年參與英國巴斯高峰會並展開街頭倡議。"
-  current="impact-annual"
+  title="影響力報告書｜UBI Taiwan"
+  description="UBI Taiwan 歷年影響力報告書：2025 年完成台灣第一場基本收入實驗與紀錄片、參與巴西 BIEN 大會；2024 年參與英國巴斯高峰會並展開街頭倡議。"
+  current="impact-reports"
 >
   <section class="head">
     <div class="container">
       <p class="eyebrow">我們的行動</p>
-      <h1>年度報告</h1>
+      <h1>影響力報告書</h1>
       <p class="head__lead">
         每一年，我們把做過的事整理成一份報告：實驗進度、國際串聯、政策倡議、在地推廣與組織經營。
         這是我們對支持者、也對自己的交代。

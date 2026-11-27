@@ -27,13 +27,14 @@ src/
     index.astro                       # 首頁
     articles.astro                    # 認識基本收入 → 基本收入二三事
     life-freedom.astro                # 生活自由計畫（第二階段實驗；網址刻意不搬）
+    policy.astro                      # 實驗與政策 → 青年基本收入政策
     support.astro                     # 捐款支持
     ubi/                              # 認識基本收入
       index.astro                     #   什麼是基本收入（定義、五大條件、誰在支持）
       world.astro                     #   全球進程（13 個案例）
       faq.astro                       #   基本收入大哉問（14 題）
       reading.astro                   #   延伸閱讀
-    experiment/                       # 台灣的實驗
+    experiment/                       # 實驗與政策 → 基本收入實驗
       index.astro                     #   實驗總覽（兩階段時間軸）
       pilot.astro                     #   第一階段：單親家庭實驗
     impact/                           # 我們的行動
@@ -42,12 +43,13 @@ src/
       international/2025-brazil.astro
       international/2024-bath.astro
       international/2023-korea.astro
-      annual/index.astro              #   年度報告列表 ← 新增年度加在這裡
-      annual/2025.astro, 2024.astro
+      reports/index.astro             #   影響力報告書列表 ← 新增年度加在這裡
+      reports/2025.astro, 2024.astro
     about/                            # 關於我們
       index.astro                     #   願景與團隊
       press.astro                     #   媒體專區（媒體報導清單的正本）
-      transparency.astro              #   捐款徵信
+      transparency.astro              #   捐款徵信（不在頁首選單，從頁尾與捐款頁進入）
+      join.astro                      #   加入我們（目前只有標題，內容待補）
     （根目錄另有 9 個舊網址的轉址頁，見「網址變更」一節）
   data/                               # 頁面文案（自團隊 docx 逐字轉出，非人工轉錄）
     ubi-content.json                  #   五大條件、支持者、13 案例、14 問答、延伸閱讀
@@ -79,7 +81,7 @@ references-info/
   避免 LCP 被延後、也避免圖載入時版面跳動。這些照片帶有資訊（遊行、首映會、團隊），
   不是純裝飾，因此給實質 alt 而非 `alt=""`。
 - 遮罩由上而下加深。**換照片時請重算對比**——白字壓在照片上，最差像素也必須 ≥4.5:1。
-  現行四張皆已實測：首頁 4.59、國際交流 4.98、關於我們 5.09、台灣的實驗 6.04。
+  現行四張皆已實測：首頁 4.59、國際交流 4.98、關於我們 5.09、基本收入實驗 6.04。
   文字另加柔和陰影作為保險，比把遮罩加深好——不會犧牲照片本身的可見度。
 
 **已知限制**：現有照片多為 1024px 寬，在 1920px 螢幕上會放大到 1.88 倍、2560px 上 2.5 倍，
@@ -89,20 +91,28 @@ references-info/
 
 2026-08 改版重排。核心原則：**導覽只放「類別」，單筆紀錄一律收進列表頁。**
 
-改版前每一筆紀錄（各年度報告、各場國際交流）都直接掛進下拉選單，
+改版前每一筆紀錄（各年度報告書、各場國際交流）都直接掛進下拉選單，
 選單長度隨年份線性成長——「我們在做什麼」已有 6 項，每年還會再增加 2～3 項。
-現在「國際交流」與「年度報告」各有一個列表頁，**新增年份請加進列表頁的陣列，不要再掛進 `Header.astro`**。
+現在「國際交流」與「影響力報告書」各有一個列表頁，**新增年份請加進列表頁的陣列，不要再掛進 `Header.astro`**。
 
 頂層 4 項 + 捐款 CTA。
 （「生活自由計畫」原為招募期間的頂層獨立入口，報名 2026/08/31 截止在即，
 已於 2026-08 收回「台灣的實驗」底下；網址 `/life-freedom/` 維持不變。）
 
+2026-11 再調整一次：「台灣的實驗」改為「實驗與政策」，兩條主線各放一個入口，
+實驗的兩個階段改從實驗總覽頁進入；政策頁從「我們的行動」移過來。
+實驗總覽頁的頁名也改為「基本收入實驗」（分頁標題、頁尾、其他頁的導流連結）。
+「年度報告」改名「影響力報告書」，「捐款徵信」移出頁首（頁尾仍有），
+新增「加入我們」。網址也趁正式上線前一併調整（當時新網址只在 dev 站，沒有對外連結，
+因此沒有留轉址頁）：政策頁 `/impact/policy/` → `/policy/`、
+報告書 `/impact/annual/` → `/impact/reports/`。
+
 | 導覽 | 路徑 | 內容 |
 |---|---|---|
 | 認識基本收入 | `/ubi/` | 什麼是基本收入、全球進程、大哉問、延伸閱讀、二三事 |
-| 台灣的實驗 | `/experiment/` | 實驗總覽、第一階段、第二階段 |
-| 我們的行動 | `/impact/` | 行動里程碑、國際交流、年度報告 |
-| 關於我們 | `/about/` | 願景與團隊、媒體專區、捐款徵信 |
+| 實驗與政策 | `/experiment/`、`/policy/` | 基本收入實驗（實驗總覽）、青年基本收入政策 |
+| 我們的行動 | `/impact/` | 行動里程碑、國際交流、影響力報告書 |
+| 關於我們 | `/about/` | 願景與團隊、媒體專區、加入我們 |
 | 捐款支持 | `/support/` | 頂層 CTA |
 
 ## 網址變更
@@ -121,8 +131,8 @@ references-info/
 | `/impacts/` | `/impact/` |
 | `/press/` | `/about/press/` |
 | `/credit-donate/` | `/about/transparency/` |
-| `/2024report-impact/` | `/impact/annual/2024/` |
-| `/ubi-taiwan/2025report-impact/` | `/impact/annual/2025/` |
+| `/2024report-impact/` | `/impact/reports/2024/` |
+| `/ubi-taiwan/2025report-impact/` | `/impact/reports/2025/` |
 | `/2023-korea-basic-income-summit/` | `/impact/international/2023-korea/` |
 | `/國際交流-2024英國巴斯bien高峰會/` | `/impact/international/2024-bath/` |
 

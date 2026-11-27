@@ -134,7 +134,7 @@
 | 三兩則長敘事 | 左右交錯的圖文長列 | `index.astro` `.asks` |
 | 並列的短概念 | 高低錯開、以細線相連的橫列 | `index.astro` `.forces` |
 | 需要並排比較的選項 | 保留橫排，但以圖像與上緣色線界定，不加方框 | `support.astro` `.tiers` |
-| 引述某個人說的話 | `blockquote` + 左側色邊 | `impact/annual/2024.astro` `.voice` |
+| 引述某個人說的話 | `blockquote` + 左側色邊 | `impact/reports/2024.astro` `.voice` |
 | 時間序的紀錄 | 時間軸（左側軌道 + 節點） | `experiment/index.astro` `.ph` |
 | 真實照片與手寫內容 | 大小不一、帶輕微傾斜的照片牆 | `index.astro` `.wall` |
 
