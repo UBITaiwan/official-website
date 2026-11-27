@@ -4,10 +4,11 @@
 const { current = '' } = Astro.props;
 
 // 導覽原則：選單只放「類別」，單筆紀錄一律收進列表頁。
-// 新增年份（國際交流、年度報告）只進列表頁，不得再直接掛進選單，
+// 新增年份（國際交流、影響力報告書）只進列表頁，不得再直接掛進選單，
 // 否則選單長度會隨年份線性成長——這正是改版前的結構問題。
 // 註：item.highlight 會在該項加上 NEW 徽章。2026-08 起無人使用——
-// 「生活自由計畫」報名將於 2026/08/31 截止，已從頂層收回「台灣的實驗」底下。
+// 「生活自由計畫」報名將於 2026/08/31 截止，已從頂層收回實驗底下。
+// (2026-11: now reached via the experiment overview page only.)
 // 機制保留供未來新頁上線時標示（例如 2027 印太高峰會）。
 const navItems = [
   {
@@ -22,12 +23,15 @@ const navItems = [
     ],
   },
   {
-    label: '台灣的實驗',
+    // The association's two main tracks: experiments build evidence, the policy
+    // proposal is the next step. Since 2026-11 each side has a single entry.
+    // Experiment phases live on the overview page; add future phases there,
+    // not here (same "categories only" rule as above).
+    label: '實驗與政策',
     key: 'experiment',
     children: [
-      { href: '/experiment/', label: '實驗總覽', key: 'experiment-overview' },
-      { href: '/experiment/pilot/', label: '第一階段：單親家庭實驗', key: 'experiment-pilot' },
-      { href: '/life-freedom/', label: '第二階段：生活自由計畫', key: 'life-freedom' },
+      { href: '/experiment/', label: '基本收入實驗', key: 'experiment-overview' },
+      { href: '/policy/', label: '青年基本收入政策', key: 'policy' },
     ],
   },
   {
@@ -35,9 +39,8 @@ const navItems = [
     key: 'impact',
     children: [
       { href: '/impact/', label: '行動里程碑', key: 'impact-milestones' },
-      { href: '/impact/policy/', label: '政策倡議', key: 'impact-policy' },
       { href: '/impact/international/', label: '國際交流', key: 'impact-intl' },
-      { href: '/impact/annual/', label: '年度報告', key: 'impact-annual' },
+      { href: '/impact/reports/', label: '影響力報告書', key: 'impact-reports' },
     ],
   },
   {
@@ -46,7 +49,9 @@ const navItems = [
     children: [
       { href: '/about/', label: '願景與團隊', key: 'about-index' },
       { href: '/about/press/', label: '媒體專區', key: 'about-press' },
-      { href: '/about/transparency/', label: '捐款徵信', key: 'about-transparency' },
+      // "捐款徵信" was removed from the header in 2026-11: it is not a main need
+      // for visitors. The footer and the /support/ page still link to it.
+      { href: '/about/join/', label: '加入我們', key: 'about-join' },
     ],
   },
 ];

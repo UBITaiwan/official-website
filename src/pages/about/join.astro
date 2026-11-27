@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Join us: added to the "關於我們" menu in 2026-11.
+// Intentionally a title-only shell for now. The association will supply the
+// recruitment content later; until then the page only needs to exist so the
+// menu link does not 404. Header style mirrors the report list page
+// (src/pages/impact/reports/index.astro) since there is no photo yet.
+---
+
+<BaseLayout
+  title="加入我們｜UBI Taiwan"
+  description="加入 UBI Taiwan，一起推動台灣的無條件基本收入。"
+  current="about-join"
+>
+  <section class="head">
+    <div class="container">
+      <p class="eyebrow">關於我們</p>
+      <h1>加入我們</h1>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head { padding-block: var(--space-16) var(--space-12); background: var(--surface-subtle); }
+  .head h1 { margin: 0; }
+</style>
