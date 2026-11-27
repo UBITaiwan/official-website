@@ -20,3 +20,40 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run check
+
+  # Several page owners edit the site in parallel. Files below affect more
+  # than one page, so a change made "for my page" can break someone else's.
+  # This job only flags them for the reviewer; it never fails the PR.
+  # Keep the list in sync with AGENTS.md「不可以做的事」第 6 項.
+  shared-files:
+    name: Shared files notice
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Flag changes to shared files
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          shared='^(src/styles/|src/components/|src/layouts/|design-system/|scripts/|\.github/|astro\.config\.mjs$|package(-lock)?\.json$|AGENTS\.md$|CLAUDE\.md$|寫作規範\.md$|flows/)'
+          hits=$(git -c core.quotePath=false diff --name-only --diff-filter=d "$BASE"...HEAD | grep -E "$shared" || true)
+
+          if [ -z "$hits" ]; then
+            echo "✓ 沒有動到共用檔案。" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          {
+            echo "### ⚠️ 這個 PR 動到了共用檔案"
+            echo
+            echo "下面這些檔案會影響不只一頁。審查時請確認 PR 說明有寫清楚影響範圍，"
+            echo "受影響的頁面也看過了（見 AGENTS.md「不可以做的事」第 6 項）。"
+            echo
+            while IFS= read -r f; do echo "- \`$f\`"; done <<< "$hits"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Annotations show up next to each file in the "Files changed" tab.
+          while IFS= read -r f; do
+            echo "::warning file=$f,line=1,title=共用檔案::這個檔案會影響不只一頁，請確認影響範圍。"
+          done <<< "$hits"
