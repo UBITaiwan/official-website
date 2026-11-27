@@ -47,6 +47,11 @@ a {
 }
 a:hover { color: var(--color-brand-700); }
 
+/* 引用的外部作品標題（新聞、書名、影片、論文）一律包在 <cite> 裡。
+   照原文呈現，不套用寫作規範，npm run check 的文字檢查也會略過。
+   瀏覽器預設是斜體，中文斜體是硬拉變形，所以關掉。見 寫作規範.md。 */
+cite { font-style: normal; }
+
 /* 無障礙：鍵盤焦點一律清楚可見 */
 :focus-visible {
   outline: var(--focus-ring);
