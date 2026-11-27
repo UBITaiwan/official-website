@@ -26,9 +26,9 @@ src/
   pages/                              # 網站地圖見「資訊架構」一節
     index.astro                       # 首頁
     articles.astro                    # 認識基本收入 → 基本收入二三事
-    life-freedom.astro                # 生活自由計畫（第二階段實驗；網址刻意不搬）
     policy.astro                      # 實驗與政策 → 青年基本收入政策
     support.astro                     # 捐款支持
+    support/transparency.astro        # 捐款徵信（不在頁首選單，從頁尾與捐款頁進入）
     ubi/                              # 認識基本收入
       index.astro                     #   什麼是基本收入（定義、五大條件、誰在支持）
       world.astro                     #   全球進程（13 個案例）
@@ -36,7 +36,8 @@ src/
       reading.astro                   #   延伸閱讀
     experiment/                       # 實驗與政策 → 基本收入實驗
       index.astro                     #   實驗總覽（兩階段時間軸）
-      pilot.astro                     #   第一階段：單親家庭實驗
+      single-parent.astro             #   第一階段：單親家庭實驗
+      life-freedom.astro              #   第二階段：生活自由計畫
     impact/                           # 我們的行動
       index.astro                     #   行動里程碑
       international/index.astro       #   國際交流列表 ← 新增場次加在這裡
@@ -48,7 +49,6 @@ src/
     about/                            # 關於我們
       index.astro                     #   願景與團隊
       press.astro                     #   媒體專區（媒體報導清單的正本）
-      transparency.astro              #   捐款徵信（不在頁首選單，從頁尾與捐款頁進入）
       join.astro                      #   加入我們（目前只有標題，內容待補）
     （根目錄另有 9 個舊網址的轉址頁，見「網址變更」一節）
   data/                               # 頁面文案（自團隊 docx 逐字轉出，非人工轉錄）
@@ -97,7 +97,7 @@ references-info/
 
 頂層 4 項 + 捐款 CTA。
 （「生活自由計畫」原為招募期間的頂層獨立入口，報名 2026/08/31 截止在即，
-已於 2026-08 收回「台灣的實驗」底下；網址 `/life-freedom/` 維持不變。）
+已於 2026-08 收回「台灣的實驗」底下。）
 
 2026-11 再調整一次：「台灣的實驗」改為「實驗與政策」，兩條主線各放一個入口，
 實驗的兩個階段改從實驗總覽頁進入；政策頁從「我們的行動」移過來。
@@ -106,6 +106,13 @@ references-info/
 新增「加入我們」。網址也趁正式上線前一併調整（當時新網址只在 dev 站，沒有對外連結，
 因此沒有留轉址頁）：政策頁 `/impact/policy/` → `/policy/`、
 報告書 `/impact/annual/` → `/impact/reports/`。
+
+同月第二輪網址調整，讓網址跟著頁面所屬的區塊：
+第一階段 `/experiment/pilot/` → `/experiment/single-parent/`、
+生活自由計畫 `/life-freedom/` → `/experiment/life-freedom/`、
+捐款徵信 `/about/transparency/` → `/support/transparency/`。
+舊站轉址頁（`/pilot-program/`、`/credit-donate/`）已改指向新網址；
+`/life-freedom/` 正式站上從未存在、協會也確認未對外使用，因此沒有留轉址頁。
 
 | 導覽 | 路徑 | 內容 |
 |---|---|---|
@@ -127,17 +134,16 @@ references-info/
 | 舊網址 | 新網址 |
 |---|---|
 | `/qa/` | `/ubi/faq/` |
-| `/pilot-program/` | `/experiment/pilot/` |
+| `/pilot-program/` | `/experiment/single-parent/` |
 | `/impacts/` | `/impact/` |
 | `/press/` | `/about/press/` |
-| `/credit-donate/` | `/about/transparency/` |
+| `/credit-donate/` | `/support/transparency/` |
 | `/2024report-impact/` | `/impact/reports/2024/` |
 | `/ubi-taiwan/2025report-impact/` | `/impact/reports/2025/` |
 | `/2023-korea-basic-income-summit/` | `/impact/international/2023-korea/` |
 | `/國際交流-2024英國巴斯bien高峰會/` | `/impact/international/2024-bath/` |
 
-`/life-freedom/` 是唯一不搬的頁面：報名入口在 JUJI 官方活動頁，招募期間（至 2026/08/31）
-可能有外部連結指入，改網址風險過高。
+（生活自由計畫原本刻意留在 `/life-freedom/` 不搬，2026-11 已移到 `/experiment/life-freedom/`，理由見上方「資訊架構」。）
 
 
 ## 與原站的差異備註
@@ -214,3 +220,9 @@ ls dist/sitemap*                                # 應有輸出
 5. **比對舊站的網址清單**：目前的 9 條轉址是依協會提供的清單建立的。
    切換前建議從舊站的 sitemap 或搜尋引擎收錄清單抓出完整網址，
    確認沒有遺漏——漏掉的舊網址會在切換後變成 404，而且通常兩三個月後才被發現。
+   **特別注意 `/zh/` 前綴**（2026-11 發現）：舊站的實際網址都帶 `/zh/`
+   （例如 `ubitaiwan.org/zh/credit-donate/`），但上表 9 個轉址頁接的是不帶 `/zh/` 的版本。
+   切換前要決定怎麼接住 `/zh/...` 的舊網址（例如伺服器端把 `/zh/*` 轉到對應的新網址），
+   否則舊站分享出去的連結可能全部 404。
+   另外，捐款徵信頁（`src/pages/support/transparency.astro`）目前連回舊站的
+   `ubitaiwan.org/zh/credit-donate/` 看明細。切換後那個網址會落到新站，要一併改掉。
